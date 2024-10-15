@@ -1,0 +1,62 @@
+body {
+    background-image: url(https://i.pinimg.com/control/564x/8b/18/05/8b1805be1d7258181fd44773f54651f7.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+h1 {
+ text-align: center
+}
+
+h1 {
+  font-family: Arial
+}
+
+h1 {
+  font-size: 40px
+}
+
+p {
+  text-align: right
+}
+
+p {
+  font-size: 30px
+}
+
+p {
+  font-family: Courier New
+}
+.flex-container {
+    display: flex; 
+    align-items: center; 
+}
+
+.image {
+    width: 400px; 
+    height: auto; 
+    margin-right: 10px; 
+}
+.flex-container {
+    display: flex; 
+    align-items: center; 
+}
+
+.image {
+    width: 400px; 
+    height: auto; 
+    margin-right: 10px; 
+}
+.image {
+    width: 300px;  
+    opacity: 0; 
+    animation: fadeIn 3s forwards; 
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0; 
+    }
+    to {
+        opacity: 1; 
+    }
+}
