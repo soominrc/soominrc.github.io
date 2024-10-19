@@ -1,8 +1,31 @@
-title {font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
-    ;color: teal;
-font-size: 55px;}
+h1 {
+font-size: 80;
+}
 
 body { background-color: blanchedalmond;
 place-content: center;
 }
 img {width: 100%;}
+body, html {
+    margin: 0;
+    height: 100%;
+    overflow: hidden; 
+}
+
+.background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    animation: colorChange 7s infinite; 
+}
+
+
+@keyframes colorChange {
+    0% { background-color: #ffafbd; } 
+    25% { background-color: #ffc3a0; } 
+    50% { background-color: #ff677d; } 
+    75% { background-color: #d4a5a5; } 
+    100% { background-color: #392f5a; } 
+}
