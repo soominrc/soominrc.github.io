@@ -18,39 +18,30 @@ body, html {
     opacity: 0.85; 
 }
 
-
 .text {
-    font-family:'Franklin Gothic Medium', sans-serif;	
+    font-family: 'Franklin Gothic Medium', sans-serif;	
     font-size: 90px;
-  color: white;
-  text-align: center;
+    color: white;
+    text-align: center;
     line-height: 1.5;
     letter-spacing: 10px;
     padding: 40px;
     margin: 20px;
-     text-shadow: -0.10px 0 black, 0.5px -0.5px 0 black, -0.5px 0.5px 0 black, 0.5px 0.5px 0 black;
+    text-shadow: -0.1px 0 black, 0.5px -0.5px 0 black, -0.5px 0.5px 0 black, 0.5px 0.5px 0 black;
 }
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-h2{
-  font-family: 'Snell Roundhand', cursive;
-  font-size: 60px;
-  opacity: 0.5;
+
+h2 {
+    font-family: 'Snell Roundhand', cursive;
+    font-size: 60px;
+    opacity: 0.5;
 }
 
 .link-list {
-    display: flexbox; 
+    display: flex; /* Corrected from flexbox to flex */
     gap: 30px; 
-  margin-top: 500px;
-  margin-left: -600px;
-}
-.link-list {
-    list-style-type: none;
-    padding:3px; 
+    margin-top: 50px; /* Adjusted for better positioning */
+    list-style-type: none; /* Merged list-style definition */
+    padding: 3px; 
 }
 
 .link-list li {
@@ -63,11 +54,12 @@ h2{
     font-size: 20px; 
     position: relative; 
     transition: color 0.5s ease;
-  opacity:.4;
+    opacity: 0.4;
 }
 
 .link-list a:hover {
     color: #ffc0cb; 
+    opacity: 1; /* Optional: make the link fully opaque on hover */
 }
 
 .link-list a::after {
@@ -78,9 +70,10 @@ h2{
     background: #3498db; 
     bottom: -5px; 
     left: 0;
-    transform: scaleX(1); 
+    transform: scaleX(0); /* Start hidden */
     transition: transform 0.3s ease; 
 }
 
 .link-list a:hover::after {
-  transform: scaleX(2);}
+    transform: scaleX(1); /* Show the line on hover */
+}
