@@ -2,10 +2,8 @@ h1 {
 font-size: 80;
 }
 
-body { background-color: blanchedalmond;
-place-content: center;
-}
-img {width: 100%;}
+
+
 body, html {
     margin: 0;
     height: 100%;
