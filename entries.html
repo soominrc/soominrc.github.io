@@ -69,6 +69,48 @@
             top: 0;
             z-index: 100000;
         }
+
+        .link-list {
+            display: flex;
+            gap: 30px; 
+            margin-top: 500px;
+            justify-content: center;
+            list-style-type: none;
+            padding: 3px; 
+        }
+
+        .link-list li {
+            margin: 10px 0; 
+        }
+
+        .link-list a {
+            text-decoration: none; 
+            color: #1ca9c9; 
+            font-size: 20px; 
+            position: relative; 
+            transition: color 0.5s ease;
+            opacity: 0.4;
+        }
+
+        .link-list a:hover {
+            color: #ffc0cb; 
+        }
+
+        .link-list a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: #3498db; 
+            bottom: -5px; 
+            left: 0;
+            transform: scaleX(1); 
+            transition: transform 0.3s ease; 
+        }
+
+        .link-list a:hover::after {
+            transform: scaleX(2);
+        }
     </style>
 </head>
 <body>
@@ -77,6 +119,13 @@
             <h1>Harmonic Collection</h1>
             <button id="entries-button" aria-label="View Entries">Entries</button>
         </div>
+        <ul class="link-list">
+            <li><a href="entry-1/index.html">Entry 1</a></li>
+            <li><a href="entry-2/index.html">Entry 2</a></li>
+            <li><a href="entry-3/index.html">Entry 3</a></li>
+            <li><a href="entry-4/index.html">Entry 4</a></li>
+            <li><a href="entry-5/index.html">Entry 5</a></li>
+        </ul>
     </div>
 
     <div class="glassy-overlay"></div>
@@ -185,5 +234,8 @@
     </script>
 </body>
 </html>
+
+
+
 
 
