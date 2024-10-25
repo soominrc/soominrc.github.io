@@ -1,32 +1,52 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Image Gallery</title>
+    <style>
+        body {
+            background-color: black;
+        }
 
-<meta charset="UTF-8">
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 100px;
+        }
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+        .image-gallery {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
 
-<link rel="stylesheet" href="styles.css">
+        img {
+            margin: 0 15px;
+            width: 300px; /* Adjust the width as needed */
+            animation: fadeIn 1s ease-in-out infinite alternate;
+        }
 
-<title>Image gallery</title>
-
+        @keyframes fadeIn {
+            0% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 
 <body>
-
-<div class="image-gallery">
-
-<img src="https://i.pinimg.com/564x/93/e2/83/93e2835cce7c6c391605b2bf0679640c.jpg" >
-
-<img src="https://i.pinimg.com/564x/b2/f8/12/b2f8128e6558a45447d84829049e244b.jpg" >
-
-<img src="https://i.pinimg.com/564x/d0/35/13/d0351306bba7d96033f1d6654055e0e8.jpg" alt="Description of image 3">
-
-
-</div>
-
+    <h1>Image Gallery</h1>
+    <div class="image-gallery">
+        <img src="https://i.pinimg.com/564x/93/e2/83/93e2835cce7c6c391605b2bf0679640c.jpg" alt="Image 1">
+        <img src="https://i.pinimg.com/564x/b2/f8/12/b2f8128e6558a45447d84829049e244b.jpg" alt="Image 2">
+        <img src="https://i.pinimg.com/564x/d0/35/13/d0351306bba7d96033f1d6654055e0e8.jpg" alt="Image 3">
+    </div>
 </body>
 
 </html>
