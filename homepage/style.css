@@ -1,79 +1,61 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%; 
+
+html, body {
+    background: #10092c;
+    overscroll-behavior: none;
+    font-family: "inter"; /* Added missing semicolon */
 }
 
-.background {
-    background-image: url(https://i.pinimg.com/enabled_hi/564x/26/67/f7/2667f789e14bab943318e379a529199d.jpg); 
-    background-size: cover; 
-    background-position: center;
-    height: 100vh; 
-    display: flex; 
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 150px;
-    opacity: 0.85; 
+.header {
+    padding: 4em;
+    opacity: 0.75;
 }
 
-.text {
-    font-family: 'Franklin Gothic Medium', sans-serif;	
-    font-size: 90px;
-    color: white;
-    text-align: center;
-    line-height: 1.5;
-    letter-spacing: 10px;
-    padding: 40px;
-    margin: 20px;
-    text-shadow: -0.1px 0 black, 0.5px -0.5px 0 black, -0.5px 0.5px 0 black, 0.5px 0.5px 0 black;
+.header h1 {
+    width: 60%;
+    background: #cfcfcf;
+    background: linear-gradient(to top, #cecece 0%, #ffffff 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 500;
+    font-size: 80px;
+    letter-spacing: -0.05em;
+    line-height: 1;
 }
 
-h2 {
-    font-family: 'Snell Roundhand', cursive;
-    font-size: 60px;
-    opacity: 0.5;
+button {
+    margin: 3em 0;
+    padding: 1em 1.5em;
+    color: #fff;
+    font-size: 16px;
+    border: 1px solid rgba(149, 99, 255, 0.5);
+    outline: none;
+    border-radius: 0.75em;
+    backdrop-filter: blur(20px); /* Removed space */
+    cursor: pointer;
+    background: linear-gradient( /* Fixed gradient syntax */
+        180deg,
+        rgba(60, 8, 126, 0) 0%,
+        rgba(60, 8, 126, 0.32) 100%
+    ),
+    rgba(112, 47, 255, 0.12);
+    box-shadow: inset 0 0 12px #bf97ff3d;
 }
 
-.link-list {
-    display: flex; /* Corrected from flexbox to flex */
-    gap: 30px; 
-    margin-top: 50px; /* Adjusted for better positioning */
-    list-style-type: none; /* Merged list-style definition */
-    padding: 3px; 
-}
-
-.link-list li {
-    margin: 10px 0; 
-}
-
-.link-list a {
-    text-decoration: none; 
-    color: #1ca9c9; 
-    font-size: 20px; 
-    position: relative; 
-    transition: color 0.5s ease;
-    opacity: 0.4;
-}
-
-.link-list a:hover {
-    color: #ffc0cb; 
-    opacity: 1; /* Optional: make the link fully opaque on hover */
-}
-
-.link-list a::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background: #3498db; 
-    bottom: -5px; 
+.glassy-overlay {
+    position: fixed;
+    top: 0;
     left: 0;
-    transform: scaleX(0); /* Start hidden */
-    transition: transform 0.3s ease; 
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(50px);
+    pointer-events: none;
 }
 
-.link-list a:hover::after {
-    transform: scaleX(1); /* Show the line on hover */
+.container {
+    position: absolute;
+    top: 0;
+    z-index: 100000;
 }
+
