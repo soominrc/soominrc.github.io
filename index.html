@@ -74,14 +74,17 @@
     <div class="container">
         <div class="header">
             <h1>Harmonic Collection</h1>
-            <button aria-label="View Entries">Entries</button>
+            <button id="entries-button" aria-label="View Entries">Entries</button>
         </div>
     </div>
 
     <div class="glassy-overlay"></div>
     <canvas></canvas>
-
     <script>
+        document.getElementById('entries-button').addEventListener('click', () => {
+            window.location.href = 'entries.html'; // Redirect to the entries page
+        });
+
         const canvas = document.querySelector("canvas");
         const ctx = canvas.getContext("2d");
 
@@ -181,6 +184,7 @@
     </script>
 </body>
 </html>
+
 
 
 
