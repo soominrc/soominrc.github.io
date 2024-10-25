@@ -20,12 +20,14 @@
             flex-direction: column;
             justify-content: center; /* Center content vertically */
             align-items: center; /* Center content horizontally */
+            position: relative; /* Needed for z-index stacking */
         }
 
         .header {
             padding: 2em;
             opacity: 0.75;
             text-align: center;
+            z-index: 10; /* Ensure header is above canvas */
         }
 
         .header h1 {
@@ -56,6 +58,7 @@
                 rgba(60, 8, 126, 0.32) 100%
             ), rgba(112, 47, 255, 0.12);
             box-shadow: inset 0 0 12px #bf97ff3d;
+            z-index: 10; /* Ensure button is above canvas */
         }
 
         .glassy-overlay {
@@ -76,6 +79,8 @@
             justify-content: center;
             list-style-type: none;
             padding: 0; /* Ensure no padding */
+            z-index: 10; /* Ensure links are above canvas */
+            position: relative; /* Needed for stacking */
         }
 
         .link-list li {
@@ -88,7 +93,7 @@
             font-size: 20px; 
             position: relative; 
             transition: color 0.5s ease;
-            opacity: 0.8; /* Increased visibility */
+            opacity: 1; /* Set to full opacity for visibility */
         }
 
         .link-list a:hover {
@@ -231,6 +236,7 @@
     </script>
 </body>
 </html>
+
 
 
 
