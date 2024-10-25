@@ -12,22 +12,22 @@
         }
 
         html, body {
-            background: #ffcccb; /* Light pink background */
+            background: #ffcccb; 
             overscroll-behavior: none;
             font-family: "Inter", sans-serif;
-            height: 100vh; /* Ensure body takes full height */
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Center content vertically */
-            align-items: center; /* Center content horizontally */
-            position: relative; /* Needed for z-index stacking */
+            justify-content: center;
+            align-items: center;
+            position: relative; 
         }
 
         .header {
             padding: 2em;
             opacity: 0.75;
             text-align: center;
-            z-index: 10; /* Ensure header is above canvas */
+            z-index: 10; 
         }
 
         .header h1 {
@@ -42,25 +42,7 @@
             line-height: 1;
         }
 
-        button {
-            margin: 2em 0;
-            padding: 1em 1.5em;
-            color: #fff;
-            font-size: 16px;
-            border: 1px solid rgba(149, 99, 255, 0.5);
-            outline: none;
-            border-radius: 0.75em;
-            backdrop-filter: blur(20px);
-            cursor: pointer;
-            background: linear-gradient(
-                180deg,
-                rgba(60, 8, 126, 0) 0%,
-                rgba(60, 8, 126, 0.32) 100%
-            ), rgba(112, 47, 255, 0.12);
-            box-shadow: inset 0 0 12px #bf97ff3d;
-            z-index: 10; /* Ensure button is above canvas */
-        }
-
+        
         .glassy-overlay {
             position: fixed;
             top: 0;
@@ -75,12 +57,12 @@
         .link-list {
             display: flex;
             gap: 30px; 
-            margin-top: 20px; /* Adjusted for spacing */
+            margin-top: 20px;
             justify-content: center;
             list-style-type: none;
-            padding: 0; /* Ensure no padding */
-            z-index: 10; /* Ensure links are above canvas */
-            position: relative; /* Needed for stacking */
+            padding: 0; 
+            z-index: 10; 
+            position: relative; /
         }
 
         .link-list li {
@@ -89,11 +71,12 @@
 
         .link-list a {
             text-decoration: none; 
-            color: #1ca9c9; 
+            color: #ffffff; 
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
             font-size: 20px; 
             position: relative; 
             transition: color 0.5s ease;
-            opacity: 1; /* Set to full opacity for visibility */
+            opacity: 1; 
         }
 
         .link-list a:hover {
@@ -120,7 +103,6 @@
 <body>
     <div class="header">
         <h1>Harmonic Collection</h1>
-        <button id="entries-button" aria-label="View Entries">Entries</button>
     </div>
     <ul class="link-list">
         <li><a href="entry-1/index.html">Entry 1</a></li>
@@ -207,8 +189,8 @@
             });
 
             const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, "rgba(255, 105, 180, 1)"); // Light pink
-            gradient.addColorStop(1, "rgba(220, 20, 60, 1)"); // Darker pink
+            gradient.addColorStop(0, "rgba(255, 105, 180, 1)");
+            gradient.addColorStop(1, "rgba(220, 20, 60, 1)"); 
 
             ctx.strokeStyle = gradient;
             ctx.lineCap = "round";
