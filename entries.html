@@ -3,45 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entries</title>
+    <title>Animated Gradients Homepage</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f0f0f0;
-            color: #333;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .link-list {
-            list-style-type: none;
-            padding: 20px;
+
+        html, body {
+            background: #ffebeb;
+            overscroll-behavior: none;
+            font-family: "Inter", sans-serif;
+            height: 100%;
         }
-        .link-list li {
-            margin: 10px 0;
+
+        .header {
+            padding: 4em;
+            opacity: 0.75;
+            text-align: center;
         }
-        .link-list a {
-            text-decoration: none;
-            color: #1ca9c9;
-            font-size: 20px;
-            transition: color 0.5s ease;
+
+        .header h1 {
+            width: 60%;
+            background: linear-gradient(to top, #cecece 0%, #ffffff 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 500;
+            font-size: 80px;
+            letter-spacing: -0.05em;
+            line-height: 1;
         }
-        .link-list a:hover {
-            color: #ffc0cb;
+
+        .glassy-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(50px);
+            pointer-events: none;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
         }
     </style>
 </head>
 <body>
-    <h1>Entries</h1>
-    <ul class="link-list">
-        <li><a href="entry-1/index.html">Entry 1</a></li>
-        <li><a href="entry-2/index.html">Entry 2</a></li>
-        <li><a href="entry-3/index.html">Entry 3</a></li>
-        <li><a href="entry-4/index.html">Entry 4</a></li>
-        <li><a href="entry-5/index.html">Entry 5</a></li>
-        <li><a href="entry-6/index.html">Entry 5</a></li>
-        <li><a href="entry-7/index.html">Entry 5</a></li>
-        <li><a href="entry-8/index.html">Entry 5</a></li>
+    <div class="container">
+        <div class="header">
+            <h1>Harmonic Collection Entries</h1>
+        </div>
+    </div>
 
+    <div class="glassy-overlay"></div>
+    <canvas></canvas>
 
+    <script>
+        const canvas = document.querySelector("canvas");
+        const ctx = canvas.getContext("2d");
 
-    </ul>
+        let mouseMoved = false;
+
+        const pointer = {
+            x: 0.5 * window.innerWidth,
+            y: 0.5 * window.innerHeight,
+        };
+        const params = {
+            pointsNumber: 40,
+            widthFactor: 10,
+            spring: 0.25,
+            friction: 0.5,
+        };
+        const trail = new Array(params.pointsNumber);
+        for (let i = 0; i < params.pointsNumber; i++) {
+            trail[i] = {
+                x: pointer.x,
+                y: pointer.y,
+                dx: 0,
+                dy: 0,
+            };
+        }
+
+        window.addEventListener("mousemove", (e) => {
+            mouseMoved = true;
+            updateMousePosition(e.pageX, e.pageY);
+        });
+
+        function updateMousePosition(eX, eY) {
+            pointer.x = eX;
+            pointer.y = eY;
+        }
+
+        setupCanvas();
+        update(0);
+        window.addEventListener("resize", setupCanvas);
+
+        function update(t) {
+            if (!mouseMoved) {
+                pointer.x = (0.5 + 0.3 * Math.cos(0.002 * t) * Math.sin(0.005 * t)) * window.innerWidth;
+                pointer.y = (0.5 + 0.2 * Math.cos(0.005 * t) + 0.1 * Math.cos(0.01 * t)) * window.innerHeight;
+            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            trail.forEach((p, pIdx) => {
+                const prev = pIdx === 0 ? pointer : trail[pIdx - 1];
+                const spring = pIdx === 0 ? 0.4 * params.spring : params.spring;
+                p.dx += (prev.x - p.x) * spring;
+                p.dy += (prev.y - p.y) * spring;
+                p.dx *= params.friction;
+                p.dy *= params.friction;
+                p.x += p.dx;
+                p.y += p.dy;
+            });
+
+            // Set the gradient to pink
+            var gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, "rgba(255, 105, 180, 1)"); // Light pink
+            gradient.addColorStop(1, "rgba(255, 20, 147, 1)"); // Dark pink
+
+            ctx.strokeStyle = gradient;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(trail[0].x, trail[0].y);
+
+            for (let i = 1; i < trail.length - 1; i++) {
+                const xc = 0.5 * (trail[i].x + trail[i + 1].x);
+                const yc = 0.5 * (trail[i].y + trail[i + 1].y);
+                ctx.quadraticCurveTo(trail[i].x, trail[i].y, xc, yc);
+                ctx.lineWidth = params.widthFactor * (params.pointsNumber - i);
+                ctx.stroke();
+            }
+            ctx.lineTo(trail[trail.length - 1].x, trail[trail.length - 1].y);
+            ctx.stroke();
+
+            window.requestAnimationFrame(update);
+        }
+
+        function setupCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+    </script>
 </body>
 </html>
+
+
