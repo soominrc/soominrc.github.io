@@ -1,8 +1,7 @@
-
 html, body {
     background: #10092c;
     overscroll-behavior: none;
-    font-family: "inter"; /* Added missing semicolon */
+    font-family: "Inter", sans-serif; /* Added fallback */
 }
 
 .header {
@@ -12,7 +11,6 @@ html, body {
 
 .header h1 {
     width: 60%;
-    background: #cfcfcf;
     background: linear-gradient(to top, #cecece 0%, #ffffff 100%);
     background-clip: text;
     -webkit-background-clip: text;
@@ -31,9 +29,9 @@ button {
     border: 1px solid rgba(149, 99, 255, 0.5);
     outline: none;
     border-radius: 0.75em;
-    backdrop-filter: blur(20px); /* Removed space */
+    backdrop-filter: blur(20px);
     cursor: pointer;
-    background: linear-gradient( /* Fixed gradient syntax */
+    background: linear-gradient(
         180deg,
         rgba(60, 8, 126, 0) 0%,
         rgba(60, 8, 126, 0.32) 100%
@@ -58,4 +56,5 @@ button {
     top: 0;
     z-index: 100000;
 }
+
 
