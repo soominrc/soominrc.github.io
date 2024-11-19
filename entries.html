@@ -21,6 +21,7 @@
             justify-content: center; /* Center content vertically */
             align-items: center; /* Center content horizontally */
             position: relative; /* Needed for z-index stacking */
+            color: white; /* Set text color to white */
         }
 
         .header {
@@ -40,8 +41,8 @@
             font-size: 80px;
             letter-spacing: -0.05em;
             line-height: 1;
+            color: white; /* Ensure h1 text is white */
         }
-
 
         .glassy-overlay {
             position: fixed;
@@ -71,7 +72,7 @@
 
         .link-list a {
             text-decoration: none; 
-            color: #1ca9c9; 
+            color: white; /* Set link text color to white */
             font-size: 20px; 
             position: relative; 
             transition: color 0.5s ease;
@@ -79,19 +80,20 @@
         }
 
         .link-list a:hover {
-            color: #ffc0cb; 
+            color: #ffc0cb; /* Light pink hover effect */
         }
 
+        /* Make the line under the links white */
         .link-list a::after {
             content: '';
             position: absolute;
             width: 100%;
             height: 2px;
-            background: #3498db; 
-            bottom: -5px; 
+            background: white; /* White color for the line */
+            bottom: -5px;
             left: 0;
-            transform: scaleX(1); 
-            transition: transform 0.3s ease; 
+            transform: scaleX(1);
+            transition: transform 0.3s ease;
         }
 
         .link-list a:hover::after {
@@ -101,7 +103,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>Harmonic Collection</h1>
+       
     </div>
     <ul class="link-list">
         <li><a href="entry-1/index.html">Entry 1</a></li>
@@ -109,17 +111,13 @@
         <li><a href="entry-3/index.html">Entry 3</a></li>
         <li><a href="entry-4/index.html">Entry 4</a></li>
         <li><a href="entry-5/index.html">Entry 5</a></li>
-        <li><a href="entry-6/index.html">Entry 5</a></li>
-        <li><a href="entry-7/index.html">Entry 5</a></li>
-
-
+        <li><a href="entry-6/index.html">Entry 6</a></li>
+        <li><a href="entry-7/index.html">Entry 7</a></li>
     </ul>
 
     <div class="glassy-overlay"></div>
     <canvas></canvas>
     <script>
-        
-
         const canvas = document.querySelector("canvas");
         const ctx = canvas.getContext("2d");
 
@@ -189,11 +187,8 @@
                 p.y += p.dy;
             });
 
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, "rgba(255, 105, 180, 1)"); // Light pink
-            gradient.addColorStop(1, "rgba(220, 20, 60, 1)"); // Darker pink
-
-            ctx.strokeStyle = gradient;
+            // Set stroke color to white
+            ctx.strokeStyle = "white"; 
             ctx.lineCap = "round";
             ctx.beginPath();
             ctx.moveTo(trail[0].x, trail[0].y);
