@@ -171,43 +171,36 @@
     <canvas></canvas>
 
     <script>
-        // Function to generate a random hex color
-        function randomColor() {
-            return "#" + Math.floor(Math.random() * 16777215).toString(16);
+        // Function to generate a random pastel color in HSL format
+        function randomPastelColor() {
+            const hue = Math.floor(Math.random() * 360); // Random hue (0 - 360 degrees)
+            const saturation = Math.floor(Math.random() * 20) + 40; // Low saturation (40 - 60)
+            const lightness = Math.floor(Math.random() * 20) + 80; // High lightness (80 - 100)
+
+            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         }
 
-        // Ensure that colors are not too close to the background color
-        function isValidColor(color) {
-            let hex = color.replace("#", "");
-            let r = parseInt(hex.slice(0, 2), 16);
-            let g = parseInt(hex.slice(2, 4), 16);
-            let b = parseInt(hex.slice(4, 6), 16);
-            return !(r > 200 && g > 200 && b > 200); // Prevent too light colors
-        }
-
-        // Generate 4 random colors ensuring they are not too light
-        function generateRandomColors() {
+        // Generate 4 random pastel colors
+        function generateRandomPastelColors() {
             const colors = [];
             while (colors.length < 4) {
-                const color = randomColor();
-                if (isValidColor(color)) {
-                    colors.push(color);
-                }
+                const color = randomPastelColor();
+                colors.push(color);
             }
             return colors;
         }
 
-        // Get 4 random colors every time the page loads
-        const randomColors = generateRandomColors();
+        // Get 4 random pastel colors every time the page loads
+        const pastelColors = generateRandomPastelColors();
 
-        // Set random background color (choose one color from randomColors)
-        document.body.style.backgroundColor = randomColors[0];
+        // Set random pastel background color (choose one color from pastelColors)
+        document.body.style.backgroundColor = pastelColors[0];
 
-        // Set random colors for the animated gradient blob
-        const blobColor1 = randomColors[0];
-        const blobColor2 = randomColors[1];
-        const blobColor3 = randomColors[2];
-        const blobColor4 = randomColors[3];
+        // Set random pastel colors for the animated gradient blob
+        const blobColor1 = pastelColors[0];
+        const blobColor2 = pastelColors[1];
+        const blobColor3 = pastelColors[2];
+        const blobColor4 = pastelColors[3];
 
         const canvas = document.querySelector("canvas");
         const ctx = canvas.getContext("2d");
@@ -338,4 +331,5 @@
     </script>
 </body>
 </html>
+
 
