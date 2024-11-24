@@ -6,7 +6,7 @@
     <title>Animated Gradients Homepage</title>
     <style>
         * {
-            margin: 0;                
+            margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
@@ -23,18 +23,18 @@
         .header {
             padding: 4em;
             opacity: 0.75;
-            animation: fadeInUp 1.5s ease forwards; 
-            transform: translateY(30px); 
+            animation: fadeInUp 1.5s ease forwards;
+            transform: translateY(30px);
         }
 
         @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(30px); 
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
-                transform: translateY(0); 
+                transform: translateY(0);
             }
         }
 
@@ -50,77 +50,31 @@
             text-align: center;
         }
 
-        .header h2 {
-            color: white;
-            text-align: center;
-            font-size: 36px;
-            font-style: italic;
-        }
-
         .header p {
             font-size: 18px;
             font-style: normal;
-            color: white; 
-        }
-
-        /* Style for the fun fact texts with a white outline box */
-        .slide-fact {
-            display: none; /* Initially hidden */
-            font-size: 18px;
-            font-style: normal;
             color: white;
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-            border: 2px solid white; /* White border */
-            border-radius: 10px; /* Rounded corners */
-            padding: 20px; /* Padding inside the box */
-            margin: 30px auto; /* Increased margin to push text lower */
-            width: 80%; /* Make the box take up 80% of the width */
-            box-sizing: border-box; /* Ensure padding is included in the width calculation */
-            text-align: center; /* Center text inside the box */
         }
 
-        /* Style for the Previous and Next buttons (clear/white) */
+        /* Transparent button style */
         button {
             margin: 1em;
             padding: 1em 1.5em;
             color: white; /* Button text color */
             font-size: 16px;
-            border: 2px solid white; /* Subtle white border */
+            border: 1px solid rgba(255, 255, 255, 0.5); /* Subtle white border */
             outline: none;
             border-radius: 0.75em;
             backdrop-filter: blur(20px);
             cursor: pointer;
             background-color: transparent; /* Transparent background */
-            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.3); /* White shadow for button */
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.3); /* Subtle white shadow */
         }
 
-        /* Hover effect to give buttons some interaction */
+        /* Button hover effect */
         button:hover {
             background-color: rgba(255, 255, 255, 0.1); /* Slight white background on hover */
-            border-color: white; /* Highlight border on hover */
-        }
-
-        /* Style for the buttons container to align them properly */
-        .slide-buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 2em;
-        }
-
-        /* Individual button style */
-        .slide-buttons button {
-            font-size: 18px;
-            padding: 12px 20px;
-            border-radius: 5px;
-            background-color: transparent; /* Transparent background */
-            color: white; /* White text */
-            border: 2px solid white; /* White border */
-            transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
-        }
-
-        .slide-buttons button:hover {
-            background-color: rgba(255, 255, 255, 0.1); /* White hover background */
-            border-color: white; /* Make the border more prominent on hover */
+            border-color: rgba(255, 255, 255, 0.8); /* More prominent border on hover */
         }
 
         .glassy-overlay {
@@ -138,7 +92,19 @@
             position: absolute;
             top: 0;
             z-index: 100000;
-            text-align: center; 
+            text-align: center;
+            width: 100%;
+        }
+
+        .fact-slide {
+            display: none; /* Hide all slides by default */
+            transition: transform 1s ease-in-out;
+            text-align: center;
+            margin-bottom: 2em;
+        }
+
+        .fact-slide.active {
+            display: block; /* Show the active slide */
         }
 
         .button-container {
@@ -147,31 +113,57 @@
             margin-top: 2em;
         }
 
-        .question {
-            color: white;
-            font-size: 24px;
-            margin-bottom: 1em;
+        .slide-buttons button {
+            
         }
 
+        .slide-buttons button:hover {
+            background-color: #45a049;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <h1>Random Facts about Color Theory!</h1>
-            <p class="slide-fact">Sir Isaac Newton, famous for his work on gravity, is also credited with creating the first color wheel in 1666. He mapped out the colors of the rainbow and placed them in a circle to demonstrate how they relate to each other. This laid the foundation for modern color theory.</p>
-            <p class="slide-fact">Surveys have shown that blue is the most universally liked color, with it being the favorite color of about 40% of people worldwide. It is associated with calm, trust, and professionalism, which is why it’s often used in corporate logos and uniforms.</p>
-            <p class="slide-fact">The RGB color model, used for screens and digital displays, stands for Red, Green, and Blue. But did you know that magenta is essentially what happens when red and blue light are mixed? In subtractive color mixing, magenta is used as one of the primary colors for printers (along with cyan and yellow).</p>
-            <p class="slide-fact">Pink was not widely recognized as a color until the 18th century. It is actually a tint of red (red mixed with white), and the word "pink" didn't appear in the English language until around 1700. Before that, pink was often called light red or rose.</p>
-            <p class="slide-fact">Warm colors like red and yellow can make objects appear larger and closer, while cool colors like blue and green tend to make objects appear smaller and farther away. This is why some interior designers use warm colors in small rooms to make them feel larger and more inviting.</p>
-            <p class="slide-fact">In subtractive color mixing (like with paint), black is considered the absence of color because it occurs when all wavelengths of light are absorbed. On the other hand, in additive color mixing (light), black is the absence of light altogether.</p>
-            <p class="slide-fact">The color green is known to promote relaxation and is also said to enhance focus and concentration. It’s often used in classrooms and study areas for this reason. It's also the most visible color to the human eye, helping it stand out without being overwhelming.</p>
-        </div>
 
-        <!-- Slide buttons -->
-        <div class="slide-buttons">
-            <button id="prevBtn">Previous</button>
-            <button id="nextBtn">Next</button>
+            <!-- Fun Facts wrapped in .fact-slide divs -->
+            <div class="fact-slide active">
+                <p>Sir Isaac Newton, famous for his work on gravity, is also credited with creating the first color wheel in 1666. He mapped out the colors of the rainbow and placed them in a circle to demonstrate how they relate to each other. This laid the foundation for modern color theory.</p>
+            </div>
+            <div class="fact-slide">
+                <p>Surveys have shown that blue is the most universally liked color, with it being the favorite color of about 40% of people worldwide. It is associated with calm, trust, and professionalism, which is why it’s often used in corporate logos and uniforms.</p>
+            </div>
+            <div class="fact-slide">
+                <p>The RGB color model, used for screens and digital displays, stands for Red, Green, and Blue. But did you know that magenta is essentially what happens when red and blue light are mixed? In subtractive color mixing, magenta is used as one of the primary colors for printers (along with cyan and yellow).</p>
+            </div>
+            <div class="fact-slide">
+                <p>Pink was not widely recognized as a color until the 18th century. It is actually a tint of red (red mixed with white), and the word "pink" didn't appear in the English language until around 1700. Before that, pink was often called light red or rose.</p>
+            </div>
+            <div class="fact-slide">
+                <p>Warm colors like red and yellow can make objects appear larger and closer, while cool colors like blue and green tend to make objects appear smaller and farther away. This is why some interior designers use warm colors in small rooms to make them feel larger and more inviting.</p>
+            </div>
+            <div class="fact-slide">
+                <p>In subtractive color mixing (like with paint), black is considered the absence of color because it occurs when all wavelengths of light are absorbed. On the other hand, in additive color mixing (light), black is the absence of light altogether.</p>
+            </div>
+            <div class="fact-slide">
+                <p>The color green is known to promote relaxation and is also said to enhance focus and concentration. It’s often used in classrooms and study areas for this reason. It's also the most visible color to the human eye, helping it stand out without being overwhelming.</p>
+            </div>
+
+            <!-- Slide Navigation Buttons -->
+            <div class="slide-buttons">
+                <button id="prevBtn">Previous</button>
+                <button id="nextBtn">Next</button>
+            </div>
         </div>
     </div>
 
@@ -179,32 +171,171 @@
     <canvas></canvas>
 
     <script>
-        // JavaScript code (same as previous one) for slide functionality, canvas animation, etc.
-        const slides = document.querySelectorAll('.slide-fact');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
+        const canvas = document.querySelector("canvas");
+        const ctx = canvas.getContext("2d");
 
-        let currentSlide = 0;
-
-        function showSlide(index) {
-            slides.forEach((slide, i) => {
-                slide.style.display = (i === index) ? 'block' : 'none';
-            });
+        let mouseMoved = false;
+        const pointer = {
+            x: 0.5 * window.innerWidth,
+            y: 0.5 * window.innerHeight,
+        };
+        const params = {
+            pointsNumber: 40,
+            widthFactor: 10,
+            mouseThreshold: 0.5,
+            spring: 0.25,
+            friction: 0.5,
+        };
+        const trail = new Array(params.pointsNumber);
+        for (let i = 0; i < params.pointsNumber; i++) {
+            trail[i] = {
+                x: pointer.x,
+                y: pointer.y,
+                dx: 0,
+                dy: 0,
+            };
         }
 
-        prevBtn.addEventListener('click', () => {
-            currentSlide = (currentSlide === 0) ? slides.length - 1 : currentSlide - 1;
-            showSlide(currentSlide);
+        // Generate random hex color
+        function randomColor() {
+            return "#" + Math.floor(Math.random() * 16777215).toString(16);
+        }
+
+        // Ensure that colors are not too close to the background color
+        function isValidColor(color) {
+            let hex = color.replace("#", "");
+            let r = parseInt(hex.slice(0, 2), 16);
+            let g = parseInt(hex.slice(2, 4), 16);
+            let b = parseInt(hex.slice(4, 6), 16);
+            return !(r > 200 && g > 200 && b > 200);
+        }
+
+        // Generate 4 random colors ensuring they are not too light
+        function generateRandomColors() {
+            const colors = [];
+            while (colors.length < 4) {
+                const color = randomColor();
+                if (isValidColor(color)) {
+                    colors.push(color);
+                }
+            }
+            return colors;
+        }
+
+        // Get 4 random colors
+        const randomColors = generateRandomColors();
+
+        // Set random background color (choose one color from randomColors)
+        document.body.style.backgroundColor = randomColors[0];
+
+        // Set random colors for the animated gradient blob
+        const blobColor1 = randomColors[0];
+        const blobColor2 = randomColors[1];
+        const blobColor3 = randomColors[2];
+        const blobColor4 = randomColors[3];
+
+        window.addEventListener("click", (e) => {
+            updateMousePosition(e.pageX, e.pageY);
+        });
+        window.addEventListener("mousemove", (e) => {
+            mouseMoved = true;
+            updateMousePosition(e.pageX, e.pageY);
+        });
+        window.addEventListener("touchmove", (e) => {
+            mouseMoved = true;
+            updateMousePosition(e.targetTouches[0].pageX, e.targetTouches[0].pageY);
         });
 
-        nextBtn.addEventListener('click', () => {
-            currentSlide = (currentSlide === slides.length - 1) ? 0 : currentSlide + 1;
-            showSlide(currentSlide);
+        function updateMousePosition(eX, eY) {
+            pointer.x = eX;
+            pointer.y = eY;
+        }
+
+        setupCanvas();
+        update(0);
+        window.addEventListener("resize", setupCanvas);
+
+        function update(t) {
+            if (!mouseMoved) {
+                pointer.x =
+                    (0.5 + 0.3 * Math.cos(0.002 * t) * Math.sin(0.005 * t)) *
+                    window.innerWidth;
+                pointer.y =
+                    (0.5 + 0.2 * Math.cos(0.005 * t) + 0.1 * Math.cos(0.01 * t)) *
+                    window.innerHeight;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            trail.forEach((p, pIdx) => {
+                const prev = pIdx === 0 ? pointer : trail[pIdx - 1];
+                const spring = pIdx === 0 ? 0.4 * params.spring : params.spring;
+                p.dx += (prev.x - p.x) * spring;
+                p.dy += (prev.y - p.y) * spring;
+                p.dx *= params.friction;
+                p.dy *= params.friction;
+                p.x += p.dx;
+                p.y += p.dy;
+            });
+
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, blobColor1);
+            gradient.addColorStop(0.33, blobColor2);
+            gradient.addColorStop(0.66, blobColor3);
+            gradient.addColorStop(1, blobColor4);
+
+            ctx.strokeStyle = gradient;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(trail[0].x, trail[0].y);
+
+            for (let i = 1; i < trail.length - 1; i++) {
+                const xc = 0.5 * (trail[i].x + trail[i + 1].x);
+                const yc = 0.5 * (trail[i].y + trail[i + 1].y);
+                ctx.quadraticCurveTo(trail[i].x, trail[i].y, xc, yc);
+                ctx.lineWidth = params.widthFactor * (params.pointsNumber - i);
+                ctx.stroke();
+            }
+
+            ctx.lineTo(trail[trail.length - 1].x, trail[trail.length - 1].y);
+            ctx.stroke();
+
+            window.requestAnimationFrame(update);
+        }
+
+        function setupCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        // Slide functionality
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll(".fact-slide");
+
+        function showSlide(index) {
+            if (index < 0 || index >= slides.length) return;
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].classList.remove("active");
+            }
+            slides[index].classList.add("active");
+        }
+
+        document.getElementById("nextBtn").addEventListener("click", () => {
+            if (currentSlideIndex < slides.length - 1) {
+                showSlide(currentSlideIndex + 1);
+                currentSlideIndex++;
+            }
         });
 
-        showSlide(currentSlide); // Initialize with the first slide visible
+        document.getElementById("prevBtn").addEventListener("click", () => {
+            if (currentSlideIndex > 0) {
+                showSlide(currentSlideIndex - 1);
+                currentSlideIndex--;
+            }
+        });
+
+        // Initialize first slide
+        showSlide(currentSlideIndex);
     </script>
 </body>
-</html>
-
+</html>  
 
