@@ -129,6 +129,20 @@
             width: 100%;
             height: 100%;
         }
+
+        /* Small text message to inform the user */
+        .refresh-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -169,6 +183,11 @@
 
     <div class="glassy-overlay"></div>
     <canvas></canvas>
+
+    <!-- Text message about refreshing the page -->
+    <div class="refresh-message">
+        Refresh the page to see a new random color!
+    </div>
 
     <script>
         // Function to generate a random pastel color with higher contrast
@@ -331,6 +350,7 @@
     </script>
 </body>
 </html>
+
 
 
 
