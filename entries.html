@@ -12,23 +12,23 @@
         }
 
         html, body {
-            background: #ffcccb; /* Light pink background */
+            background: #ffcccb;
             overscroll-behavior: none;
             font-family: "Inter", sans-serif;
-            height: 100vh; /* Ensure body takes full height */
+            height: 100vh; 
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Center content vertically */
-            align-items: center; /* Center content horizontally */
-            position: relative; /* Needed for z-index stacking */
-            color: white; /* Set text color to white */
+            justify-content: center; 
+            align-items: center; 
+            position: relative; 
+            color: white; 
         }
 
         .header {
             padding: 2em;
             opacity: 0.75;
             text-align: center;
-            z-index: 10; /* Ensure header is above canvas */
+            z-index: 10; 
         }
 
         .header h1 {
@@ -41,7 +41,7 @@
             font-size: 80px;
             letter-spacing: -0.05em;
             line-height: 1;
-            color: white; /* Ensure h1 text is white */
+            color: white; 
         }
 
         .glassy-overlay {
@@ -58,12 +58,12 @@
         .link-list {
             display: flex;
             gap: 30px; 
-            margin-top: 20px; /* Adjusted for spacing */
+            margin-top: 20px; 
             justify-content: center;
             list-style-type: none;
-            padding: 0; /* Ensure no padding */
-            z-index: 10; /* Ensure links are above canvas */
-            position: relative; /* Needed for stacking */
+            padding: 0;
+            z-index: 10; 
+            position: relative; 
         }
 
         .link-list li {
@@ -72,24 +72,24 @@
 
         .link-list a {
             text-decoration: none; 
-            color: white; /* Set link text color to white */
+            color: white; 
             font-size: 20px; 
             position: relative; 
             transition: color 0.5s ease;
-            opacity: 1; /* Set to full opacity for visibility */
+            opacity: 1; 
         }
 
         .link-list a:hover {
-            color: #ffc0cb; /* Light pink hover effect */
+            color: #ffc0cb; 
         }
 
-        /* Make the line under the links white */
+      
         .link-list a::after {
             content: '';
             position: absolute;
             width: 100%;
             height: 2px;
-            background: white; /* White color for the line */
+            background: white; 
             bottom: -5px;
             left: 0;
             transform: scaleX(1);
@@ -188,7 +188,7 @@
                 p.y += p.dy;
             });
 
-            // Set stroke color to white
+   
             ctx.strokeStyle = "white"; 
             ctx.lineCap = "round";
             ctx.beginPath();

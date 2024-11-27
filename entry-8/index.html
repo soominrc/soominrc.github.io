@@ -56,25 +56,24 @@
             color: white;
         }
 
-        /* Transparent button style */
+       
         button {
             margin: 1em;
             padding: 1em 1.5em;
-            color: white; /* Button text color */
+            color: white; 
             font-size: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.5); /* Subtle white border */
+            border: 1px solid rgba(255, 255, 255, 0.5); 
             outline: none;
             border-radius: 0.75em;
             backdrop-filter: blur(20px);
             cursor: pointer;
-            background-color: transparent; /* Transparent background */
-            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.3); /* Subtle white shadow */
+            background-color: transparent; 
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.3);
         }
 
-        /* Button hover effect */
         button:hover {
-            background-color: rgba(255, 255, 255, 0.1); /* Slight white background on hover */
-            border-color: rgba(255, 255, 255, 0.8); /* More prominent border on hover */
+            background-color: rgba(255, 255, 255, 0.1); 
+            border-color: rgba(255, 255, 255, 0.8); 
         }
 
         .glassy-overlay {
@@ -97,14 +96,14 @@
         }
 
         .fact-slide {
-            display: none; /* Hide all slides by default */
+            display: none; 
             transition: transform 1s ease-in-out;
             text-align: center;
             margin-bottom: 2em;
         }
 
         .fact-slide.active {
-            display: block; /* Show the active slide */
+            display: block; 
         }
 
         .button-container {
@@ -130,7 +129,6 @@
             height: 100%;
         }
 
-        /* Small text message to inform the user */
         .refresh-message {
             position: fixed;
             bottom: 20px;
@@ -150,7 +148,6 @@
         <div class="header">
             <h1>Random Facts about Color Theory!</h1>
 
-            <!-- Fun Facts wrapped in .fact-slide divs -->
             <div class="fact-slide active">
                 <p>Sir Isaac Newton, famous for his work on gravity, is also credited with creating the first color wheel in 1666. He mapped out the colors of the rainbow and placed them in a circle to demonstrate how they relate to each other. This laid the foundation for modern color theory.</p>
             </div>
@@ -173,7 +170,6 @@
                 <p>The color green is known to promote relaxation and is also said to enhance focus and concentration. It’s often used in classrooms and study areas for this reason. It's also the most visible color to the human eye, helping it stand out without being overwhelming.</p>
             </div>
 
-            <!-- Slide Navigation Buttons -->
             <div class="slide-buttons">
                 <button id="prevBtn">Previous</button>
                 <button id="nextBtn">Next</button>
@@ -184,22 +180,19 @@
     <div class="glassy-overlay"></div>
     <canvas></canvas>
 
-    <!-- Text message about refreshing the page -->
     <div class="refresh-message">
         Refresh the page to see a new random color!
     </div>
 
     <script>
-        // Function to generate a random pastel color with higher contrast
         function randomPastelColor() {
-            const hue = Math.floor(Math.random() * 360); // Random hue (0 - 360 degrees)
-            const saturation = Math.floor(Math.random() * 30) + 50; // Increased saturation (50 - 80)
-            const lightness = Math.floor(Math.random() * 15) + 60; // Slightly lower lightness (60 - 75)
+            const hue = Math.floor(Math.random() * 360);
+            const saturation = Math.floor(Math.random() * 30) + 50; 
+            const lightness = Math.floor(Math.random() * 15) + 60;\
 
             return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
         }
 
-        // Generate 4 random pastel colors with higher contrast
         function generateRandomPastelColors() {
             const colors = [];
             while (colors.length < 4) {
@@ -209,13 +202,10 @@
             return colors;
         }
 
-        // Get 4 random pastel colors every time the page loads
         const pastelColors = generateRandomPastelColors();
 
-        // Set random pastel background color (choose one color from pastelColors)
         document.body.style.backgroundColor = pastelColors[0];
 
-        // Set random pastel colors for the animated gradient blob
         const blobColor1 = pastelColors[0];
         const blobColor2 = pastelColors[1];
         const blobColor3 = pastelColors[2];
@@ -319,7 +309,6 @@
             canvas.height = window.innerHeight;
         }
 
-        // Slide functionality
         let currentSlideIndex = 0;
         const slides = document.querySelectorAll(".fact-slide");
 
@@ -345,7 +334,6 @@
             }
         });
 
-        // Initialize first slide
         showSlide(currentSlideIndex);
     </script>
 </body>

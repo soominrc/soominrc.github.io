@@ -67,16 +67,15 @@
         button {
             margin: 1em;
             padding: 1em 1.5em;
-            color: #fff; /* Button text color */
+            color: #fff; 
             font-size: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.5); /* White border */
+            border: 1px solid rgba(255, 255, 255, 0.5);
             outline: none;
             border-radius: 0.75em;
             backdrop-filter: blur(20px);
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.12); /* White background */
-            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.3); /* White shadow */
-        }
+            background: rgba(255, 255, 255, 0.12); 
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.3);
 
         .glassy-overlay {
             position: fixed;
@@ -199,8 +198,8 @@
             });
 
             const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, "rgba(0, 100, 0, 1)"); // Dark green
-            gradient.addColorStop(1, "rgba(0, 100, 0, 1)"); // Dark green
+            gradient.addColorStop(0, "rgba(0, 100, 0, 1)"); 
+            gradient.addColorStop(1, "rgba(0, 100, 0, 1)"); 
 
             ctx.strokeStyle = gradient;
             ctx.lineCap = "round";
