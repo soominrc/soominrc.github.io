@@ -12,13 +12,24 @@
         }
 
         html, body {
-            background: #ffffe0; 
-            overscroll-behavior: none;
-            font-family: "Inter", sans-serif;
             height: 100vh; 
+            font-family: "Inter", sans-serif;
             display: flex;
             justify-content: center; 
-            align-items: center; 
+            align-items: center;
+            transition: background-color 0.5s, color 0.5s; /* Smooth transition for background and text color */
+        }
+
+        /* Default Day Mode */
+        .day-mode {
+            background: #ffffe0; 
+            color: #333;
+        }
+
+        /* Night Mode styles */
+        .night-mode {
+            background: #1d1d1d;
+            color: #fff;
         }
 
         .header {
@@ -64,22 +75,24 @@
             color: white; 
         }
 
+        /* Updated button style */
         button {
             margin: 3em 0;
             padding: 1em 1.5em;
-            color: #fff;
+            color: white; /* White text */
             font-size: 16px;
-            border: 1px solid rgba(149, 99, 255, 0.5);
+            border: 1px solid white; /* White border */
             outline: none;
             border-radius: 0.75em;
             backdrop-filter: blur(20px);
             cursor: pointer;
-            background: linear-gradient(
-                180deg,
-                rgba(60, 8, 126, 0) 0%,
-                rgba(60, 8, 126, 0.32) 100%
-            ), rgba(112, 47, 255, 0.12);
-            box-shadow: inset 0 0 12px #bf97ff3d;
+            background: transparent; /* Transparent background */
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.1); /* Light box-shadow to make the button stand out */
+        }
+
+        button:hover {
+            background: rgba(255, 255, 255, 0.1); /* Subtle white background when hovered */
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.2); /* Slightly stronger box-shadow on hover */
         }
 
         .glassy-overlay {
@@ -101,18 +114,44 @@
         }
     </style>
 </head>
-<body>
+<body class="day-mode">
     <div class="container">
         <div class="header">
             <h1>4 Qualities of Color Theory</h1>
-           
-            <p>Color theory encompasses several key qualities that explain how colors interact and affect one another. Hue refers to the actual color itself, such as red, blue, or green, and can be classified as primary, secondary, or tertiary. Saturation describes the intensity or purity of a color; highly saturated colors appear vivid and bright, while desaturated colors appear more muted or grayish, influencing their emotional impact. Value indicates the lightness or darkness of a color, which is essential for creating contrast and depth in designs—high-value colors are lighter, whereas low-value colors are darker. Lastly, temperature categorizes colors as warm (reds, oranges, yellows) or cool (blues, greens, purples), affecting the mood and atmosphere of a design. Understanding these qualities allows artists and designers to create visually appealing and effective color combinations</p>
+            <p>Color theory encompasses several key qualities that explain how colors interact and affect one another. Hue refers to the actual color itself, such as red, blue, or green, and can be classified as primary, secondary, or tertiary. Saturation describes the intensity or purity of a color; highly saturated colors appear vivid and bright, while desaturated colors appear more muted or grayish, influencing their emotional impact. Value indicates the lightness or darkness of a color, which is essential for creating contrast and depth in designs—high-value colors are lighter, whereas low-value colors are darker. Lastly, temperature categorizes colors as warm (reds, oranges, yellows) or cool (blues, greens, purples), affecting the mood and atmosphere of a design. Understanding these qualities allows artists and designers to create visually appealing and effective color combinations.</p>
+            <button id="toggleBtn">Switch to Night Mode</button>
         </div>
     </div>
 
     <div class="glassy-overlay"></div>
     <canvas></canvas>
+
     <script>
+        const toggleBtn = document.getElementById('toggleBtn');
+        const body = document.body;
+
+        // Check for saved theme in localStorage
+        if (localStorage.getItem('theme') === 'night') {
+            body.classList.add('night-mode');
+            body.classList.remove('day-mode');
+            toggleBtn.innerText = "Switch to Day Mode";
+        }
+
+        // Toggle between Day and Night Mode
+        toggleBtn.addEventListener('click', () => {
+            if (body.classList.contains('day-mode')) {
+                body.classList.remove('day-mode');
+                body.classList.add('night-mode');
+                toggleBtn.innerText = "Switch to Day Mode";
+                localStorage.setItem('theme', 'night');  // Save preference
+            } else {
+                body.classList.remove('night-mode');
+                body.classList.add('day-mode');
+                toggleBtn.innerText = "Switch to Night Mode";
+                localStorage.setItem('theme', 'day');  // Save preference
+            }
+        });
+
         const canvas = document.querySelector("canvas");
         const ctx = canvas.getContext("2d");
 
