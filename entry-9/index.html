@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Gradients Homepage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            background: #FFC0CB; 
+            overscroll-behavior: none;
+            font-family: "Inter", sans-serif;
+            min-height: 100%; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: auto;
+            flex-direction: column;
+        }
+
+        .header {
+            padding: 4em;
+            opacity: 0.9;
+            animation: fadeInUp 1.5s ease forwards;
+            transform: translateY(30px);
+            z-index: 10;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: white;
+            font-weight: 500;
+            font-size: 48px;
+            letter-spacing: -0.05em;
+            line-height: 1.4;
+            margin-bottom: 1.5em;
+        }
+
+        .header h2 {
+            color: white;
+            font-size: 32px;
+            font-weight: 600;
+            margin-top: 2em;
+            margin-bottom: 1em;
+        }
+
+        .header p {
+            font-size: 18px;
+            color: white;
+            line-height: 1.6;
+            margin-bottom: 1.5em;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header ul {
+            font-size: 18px;
+            color: white;
+            line-height: 1.6;
+            padding-left: 20px;
+            margin-bottom: 2em;
+        }
+
+        .header li {
+            margin-bottom: 10px;
+        }
+
+        button {
+            margin: 1em;
+            padding: 1em 1.5em;
+            color: #fff;
+            font-size: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            outline: none;
+            border-radius: 0.75em;
+            backdrop-filter: blur(20px);
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.3);
+        }
+
+        .glassy-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.1); 
+            backdrop-filter: blur(30px);
+            z-index: 5; 
+            pointer-events: none; 
+        }
+
+        .container {
+            position: relative;
+            z-index: 100000;
+            text-align: center;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 2em;
+        }
+
+        .question {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 1em;
+            font-weight: 600;
+        }
+
+        .color-picker-container {
+            margin-top: 2em;
+            text-align: center;
+        }
+
+        .color-picker-label {
+            font-size: 18px;
+            color: white;
+            margin-right: 10px;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Understanding Color Theory</h1>
+            <p>Color theory is the foundation of how we use and understand color in art and design. It's not just about picking colors that look good together—it's about understanding how colors interact with each other and how they can evoke certain emotions, moods, and responses in viewers. Whether you're designing a website, painting a masterpiece, or selecting colors for a brand, color theory guides these choices to create harmony and impact.</p>
+            
+            <h2>The Color Wheel</h2>
+            <p>The color wheel is a tool that artists and designers use to organize colors based on their relationships. It's made up of primary colors (red, blue, yellow), secondary colors (green, orange, purple), and tertiary colors. The wheel helps identify complementary colors, analogous colors, and other color schemes that can create a balanced and visually appealing composition.</p>
+
+            <h2>Color Harmony</h2>
+            <p>Color harmony refers to the idea that certain combinations of colors are pleasing to the eye. Common color schemes include:</p>
+            <ul>
+                <li><strong>Complementary:</strong> Colors that are opposite each other on the wheel (e.g., red and green).</li>
+                <li><strong>Analogous:</strong> Colors that are next to each other on the wheel (e.g., blue, teal, and green).</li>
+                <li><strong>Triadic:</strong> Three colors that are evenly spaced around the wheel (e.g., red, yellow, and blue).</li>
+            </ul>
+
+            <p>By understanding how colors relate to one another, we can create designs that evoke emotions, direct attention, and communicate messages more effectively.</p>
+        </div>
+
+        <div class="question">
+            Have you noticed that colors can affect your mood?
+        </div>
+
+        <div class="button-container">
+            <button id="yesButton">Yes</button>
+            <button id="noButton">No</button>
+        </div>
+
+        <div class="color-picker-container">
+            <label for="colorPicker" class="color-picker-label">Pick a color:</label>
+            <input type="color" id="colorPicker" value="#FFC0CB"> 
+        </div>
+    </div>
+
+    <div class="glassy-overlay"></div>
+    <canvas></canvas>
+
+    <script>
+        const canvas = document.querySelector("canvas");
+        const ctx = canvas.getContext("2d");
+
+        let mouseMoved = false;
+        let selectedColor = "#FFC0CB"; 
+
+        const pointer = {
+            x: 0.5 * window.innerWidth,
+            y: 0.5 * window.innerHeight,
+        };
+
+        const params = {
+            pointsNumber: 40,
+            widthFactor: 10,
+            mouseThreshold: 0.5,
+            spring: 0.25,
+            friction: 0.5,
+        };
+
+        const trail = new Array(params.pointsNumber);
+        for (let i = 0; i < params.pointsNumber; i++) {
+            trail[i] = {
+                x: pointer.x,
+                y: pointer.y,
+                dx: 0,
+                dy: 0,
+            };
+        }
+
+        window.addEventListener("click", (e) => {
+            updateMousePosition(e.pageX, e.pageY);
+        });
+
+        window.addEventListener("mousemove", (e) => {
+            mouseMoved = true;
+            updateMousePosition(e.pageX, e.pageY);
+        });
+
+        window.addEventListener("touchmove", (e) => {
+            mouseMoved = true;
+            updateMousePosition(e.targetTouches[0].pageX, e.targetTouches[0].pageY);
+        });
+
+        document.getElementById('colorPicker').addEventListener('input', (e) => {
+            selectedColor = e.target.value; 
+            updateBackgroundColor(); 
+        });
+
+        function updateMousePosition(eX, eY) {
+            pointer.x = eX;
+            pointer.y = eY;
+        }
+
+        setupCanvas();
+        update(0);
+        window.addEventListener("resize", setupCanvas);
+
+        function update(t) {
+            if (!mouseMoved) {
+                pointer.x =
+                    (0.5 + 0.3 * Math.cos(0.002 * t) * Math.sin(0.005 * t)) *
+                    window.innerWidth;
+                pointer.y =
+                    (0.5 + 0.2 * Math.cos(0.005 * t) + 0.1 * Math.cos(0.01 * t)) *
+                    window.innerHeight;
+            }
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            trail.forEach((p, pIdx) => {
+                const prev = pIdx === 0 ? pointer : trail[pIdx - 1];
+                const spring = pIdx === 0 ? 0.4 * params.spring : params.spring;
+                p.dx += (prev.x - p.x) * spring;
+                p.dy += (prev.y - p.y) * spring;
+                p.dx *= params.friction;
+                p.dy *= params.friction;
+                p.x += p.dx;
+                p.y += p.dy;
+            });
+
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, selectedColor);
+            gradient.addColorStop(1, selectedColor);
+
+            ctx.strokeStyle = gradient;
+            ctx.lineCap = "round";
+            ctx.beginPath();
+            ctx.moveTo(trail[0].x, trail[0].y);
+
+            for (let i = 1; i < trail.length - 1; i++) {
+                const xc = 0.5 * (trail[i].x + trail[i + 1].x);
+                const yc = 0.5 * (trail[i].y + trail[i + 1].y);
+                ctx.quadraticCurveTo(trail[i].x, trail[i].y, xc, yc);
+                ctx.lineWidth = params.widthFactor * (params.pointsNumber - i);
+                ctx.stroke();
+            }
+
+            ctx.lineTo(trail[trail.length - 1].x, trail[trail.length - 1].y);
+            ctx.stroke();
+
+            window.requestAnimationFrame(update);
+        }
+
+        function setupCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function updateBackgroundColor() {
+            document.body.style.background = selectedColor;
+        }
+
+     
+        updateBackgroundColor();
+    </script>
+</body>
+</html>
