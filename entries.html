@@ -6,42 +6,65 @@
     <title>Animated Gradients Homepage</title>
     <style>
         * {
-            margin: 0;                
+            margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         html, body {
-            background: #ffcccb;
+            background: #ffcccb; /* Soft baby pink background */
             overscroll-behavior: none;
-            font-family: "Inter", sans-serif;
-            height: 100vh; 
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center; 
-            align-items: center; 
-            position: relative; 
-            color: white; 
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            color: white;
+            overflow: hidden;
+            text-align: center;
         }
 
         .header {
-            padding: 2em;
-            opacity: 0.75;
-            text-align: center;
-            z-index: 10; 
+            padding: 3em 2em;
+            opacity: 0.85;
+            z-index: 10;
+            max-width: 900px;
+            margin-bottom: 2em;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .header h1 {
-            width: 60%;
             background: linear-gradient(to top, #cecece 0%, #ffffff 100%);
             background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-weight: 500;
-            font-size: 80px;
+            font-size: 4rem;
+            font-weight: 700;
             letter-spacing: -0.05em;
-            line-height: 1;
-            color: white; 
+            line-height: 1.2;
+            color: white;
+            margin-bottom: 1.5em;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: white;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .glassy-overlay {
@@ -50,61 +73,80 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(50px);
             pointer-events: none;
+            z-index: 5;
         }
 
         .link-list {
             display: flex;
-            gap: 30px; 
-            margin-top: 20px; 
+            flex-direction: column;
+            gap: 20px;
             justify-content: center;
             list-style-type: none;
             padding: 0;
-            z-index: 10; 
-            position: relative; 
+            z-index: 10;
+            position: relative;
+            margin-top: 2em;
         }
 
         .link-list li {
-            margin: 10px 0; 
+            margin: 10px 0;
         }
 
         .link-list a {
-            text-decoration: none; 
-            color: white; 
-            font-size: 20px; 
-            position: relative; 
-            transition: color 0.5s ease;
-            opacity: 1; 
+            text-decoration: none;
+            color: white;
+            font-size: 1.25rem;
+            position: relative;
+            padding: 10px 20px;
+            border: 2px solid white; /* White outline around each link */
+            border-radius: 8px; /* Rounded corners for the border */
+            transition: all 0.3s ease;
+            opacity: 0.85;
         }
 
         .link-list a:hover {
-            color: #ffc0cb; 
+            color: #ffc0cb; /* Hover effect color */
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.2); /* Slight background color on hover */
+            border-color: #ffc0cb; /* Change border color on hover */
         }
 
-      
         .link-list a::after {
             content: '';
             position: absolute;
             width: 100%;
             height: 2px;
-            background: white; 
-            bottom: -5px;
+            background: white;
+            bottom: 0;
             left: 0;
-            transform: scaleX(1);
+            transform: scaleX(0);
             transition: transform 0.3s ease;
         }
 
         .link-list a:hover::after {
-            transform: scaleX(2);
+            transform: scaleX(1);
         }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
     </style>
 </head>
 <body>
     <div class="header">
-       
+        <h1>Welcome to the Color Theory Hub</h1>
+        <p>Explore how color influences design, emotion, and visual impact. Learn the art of color harmony and its practical uses in creative projects.</p>
     </div>
+
     <ul class="link-list">
         <li><a href="entry-1/index.html">Entry 1</a></li>
         <li><a href="entry-2/index.html">Entry 2</a></li>
@@ -116,17 +158,16 @@
         <li><a href="entry-8/index.html">Entry 8</a></li>
         <li><a href="entry-9/index.html">Entry 9</a></li>
         <li><a href="entry-10/index.html">Entry 10</a></li>
-
     </ul>
 
     <div class="glassy-overlay"></div>
     <canvas></canvas>
+
     <script>
         const canvas = document.querySelector("canvas");
         const ctx = canvas.getContext("2d");
 
         let mouseMoved = false;
-
         const pointer = {
             x: 0.5 * window.innerWidth,
             y: 0.5 * window.innerHeight,
@@ -171,10 +212,10 @@
 
         function update(t) {
             if (!mouseMoved) {
-                pointer.x = 
+                pointer.x =
                     (0.5 + 0.3 * Math.cos(0.002 * t) * Math.sin(0.005 * t)) *
                     window.innerWidth;
-                pointer.y = 
+                pointer.y =
                     (0.5 + 0.2 * Math.cos(0.005 * t) + 0.1 * Math.cos(0.01 * t)) *
                     window.innerHeight;
             }
@@ -191,8 +232,7 @@
                 p.y += p.dy;
             });
 
-   
-            ctx.strokeStyle = "white"; 
+            ctx.strokeStyle = "white";
             ctx.lineCap = "round";
             ctx.beginPath();
             ctx.moveTo(trail[0].x, trail[0].y);
@@ -218,6 +258,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
