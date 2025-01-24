@@ -3,213 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Gradients Homepage</title>
+    <title>Coding Challenge WK1</title>
     <style>
         * {
-            margin: 0;                
-            padding: 0;
+            margin: 0;
+            padding: 20px;
             box-sizing: border-box;
         }
 
         html, body {
-            background: #add8e6; /* Light blue background */
-            overscroll-behavior: none;
-            font-family: "Inter", sans-serif;
-            height: 100vh; /* Full height for body */
+            background: #5072A7;
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
             display: flex;
-            justify-content: center; /* Center content */
-            align-items: center; /* Center content */
-        }
-
-        .header {
-            padding: 4em;
-            opacity: 0.75;
-            animation: fadeInUp 1.5s ease forwards; /* Add animation */
-            transform: translateY(30px); /* Start below */
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px); /* Start 30px lower */
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0); /* End at original position */
-            }
-        }
-
-        .header h1 {
-            width: 60%;
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: white;
-            font-weight: 500;
-            font-size: 100px;
-            letter-spacing: -0.05em;
-            line-height: 1.2;
-            text-align: center;
-        }
-
-        .header h2 {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
             color: white;
+            overflow: hidden;
             text-align: center;
-            font-size: 36px;
-            font-style: italic;
         }
-      
-        .header p {
+
+        .link-list {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .link-list li {
+            margin: 10px 0;
+        }
+
+        .link-list a {
+            color: white;
+            text-decoration: none;
             font-size: 18px;
-            font-style: normal;
-            color: white; /* Ensure text is visible */
+            padding: 10px 20px;
+            border: 2px solid white;
+            border-radius: 5px;
         }
 
-        button {
-            margin: 3em 0;
-            padding: 1em 1.5em;
-            color: #fff;
-            font-size: 16px;
-            border: 1px solid rgba(149, 99, 255, 0.5);
-            outline: none;
-            border-radius: 0.75em;
-            backdrop-filter: blur(20px);
-            cursor: pointer;
-            background: linear-gradient(
-                180deg,
-                rgba(60, 8, 126, 0) 0%,
-                rgba(60, 8, 126, 0.32) 100%
-            ), rgba(112, 47, 255, 0.12);
-            box-shadow: inset 0 0 12px #bf97ff3d;
-        }
-
-        .glassy-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(50px);
-            pointer-events: none;
-        }
-
-        .container {
-            position: absolute;
-            top: 0;
-            z-index: 100000;
-            text-align: center; /* Center content inside container */
+        .link-list a:hover {
+            background: white;
+            color: #ffcccb;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Color Theory Definition</h1>
-            <h2>(kuh ·lr - thee · ur · ee)</h2>
-            <p>Color theory is the study of how colors interact with each other and how they can be combined to create visually pleasing designs. It is both a science and an art, explaining the relationships between colors, how they can be mixed or contrasted, and the psychological effects they have on people.</p>
-        </div>
-    </div>
 
-    <div class="glassy-overlay"></div>
-    <canvas></canvas>
-    <script>
-        const canvas = document.querySelector("canvas");
-        const ctx = canvas.getContext("2d");
+    <p> Goodbye Week 1! 𓂃₊ ⊹ </p>
 
-        let mouseMoved = false;
+    <ul class="link-list">
+        <li><a href="entry-1/index.html">Entry 1</a></li>
+        <li><a href="entry-2/index.html">Entry 2</a></li>
+        <li><a href="entry-3/index.html">Entry 3</a></li>
+    </ul>
 
-        const pointer = {
-            x: 0.5 * window.innerWidth,
-            y: 0.5 * window.innerHeight,
-        };
-        const params = {
-            pointsNumber: 40,
-            widthFactor: 10,
-            mouseThreshold: 0.5,
-            spring: 0.25,
-            friction: 0.5,
-        };
-        const trail = new Array(params.pointsNumber);
-        for (let i = 0; i < params.pointsNumber; i++) {
-            trail[i] = {
-                x: pointer.x,
-                y: pointer.y,
-                dx: 0,
-                dy: 0,
-            };
-        }
-
-        window.addEventListener("click", (e) => {
-            updateMousePosition(e.pageX, e.pageY);
-        });
-        window.addEventListener("mousemove", (e) => {
-            mouseMoved = true;
-            updateMousePosition(e.pageX, e.pageY);
-        });
-        window.addEventListener("touchmove", (e) => {
-            mouseMoved = true;
-            updateMousePosition(e.targetTouches[0].pageX, e.targetTouches[0].pageY);
-        });
-
-        function updateMousePosition(eX, eY) {
-            pointer.x = eX;
-            pointer.y = eY;
-        }
-
-        setupCanvas();
-        update(0);
-        window.addEventListener("resize", setupCanvas);
-
-        function update(t) {
-            if (!mouseMoved) {
-                pointer.x = 
-                    (0.5 + 0.3 * Math.cos(0.002 * t) * Math.sin(0.005 * t)) *
-                    window.innerWidth;
-                pointer.y = 
-                    (0.5 + 0.2 * Math.cos(0.005 * t) + 0.1 * Math.cos(0.01 * t)) *
-                    window.innerHeight;
-            }
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            trail.forEach((p, pIdx) => {
-                const prev = pIdx === 0 ? pointer : trail[pIdx - 1];
-                const spring = pIdx === 0 ? 0.4 * params.spring : params.spring;
-                p.dx += (prev.x - p.x) * spring;
-                p.dy += (prev.y - p.y) * spring;
-                p.dx *= params.friction;
-                p.dy *= params.friction;
-                p.x += p.dx;
-                p.y += p.dy;
-            });
-
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, "rgba(0, 0, 139, 1)"); // Dark blue start
-            gradient.addColorStop(1, "rgba(0, 0, 139, 1)"); // Dark blue end
-
-            ctx.strokeStyle = gradient;
-            ctx.lineCap = "round";
-            ctx.beginPath();
-            ctx.moveTo(trail[0].x, trail[0].y);
-
-            for (let i = 1; i < trail.length - 1; i++) {
-                const xc = 0.5 * (trail[i].x + trail[i + 1].x);
-                const yc = 0.5 * (trail[i].y + trail[i + 1].y);
-                ctx.quadraticCurveTo(trail[i].x, trail[i].y, xc, yc);
-                ctx.lineWidth = params.widthFactor * (params.pointsNumber - i);
-                ctx.stroke();
-            }
-
-            ctx.lineTo(trail[trail.length - 1].x, trail[trail.length - 1].y);
-            ctx.stroke();
-
-            window.requestAnimationFrame(update);
-        }
-
-        function setupCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-    </script>
 </body>
 </html>
-
