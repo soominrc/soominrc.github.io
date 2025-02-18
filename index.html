@@ -105,6 +105,11 @@
       opacity: 0;
       transition: opacity 1s ease-out;
     }
+
+    .fade-out-transition {
+      transition: opacity 1s ease-out;
+      opacity: 1;
+    }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Zapfino&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
@@ -133,7 +138,6 @@
   </main>
 
   <script>
-    
     const learnMoreLink = document.querySelector('.navbar .logo');
     const slideContainer = document.getElementById('slide-container');
     
@@ -141,18 +145,19 @@
     learnMoreLink.addEventListener('click', function(event) {
         event.preventDefault(); 
         
-       
+        // Add the fade-out effect to the body or container
         document.body.classList.add('fade-out');
         
-        
+        // After the fade-out transition is finished, navigate to the next page
         setTimeout(function() {
-            window.location.href = 'choose-your-ripple.html'; 
-        }, 1000); 
+            window.location.href = 'choose-your-ripple.html'; // Navigate to the next page
+        }, 1000); // Wait for the animation to finish before redirecting
     });
   </script>
 
 </body>
 </html>
+
 
 
 
