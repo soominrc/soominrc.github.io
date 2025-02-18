@@ -59,7 +59,7 @@
       margin: 0 auto;
       padding: 20px;
       padding-top: 100px;
-      transition: transform 1s ease-in-out; /* Smooth slide transition */
+      transition: transform 1s ease-in-out; 
     }
 
     .ripple-text {
@@ -68,7 +68,7 @@
       flex-wrap: wrap;
       align-items: center;
       margin-right: 190px;
-      padding-right: 1px;
+      padding-right: 3px;
       font: 600 300px/1 "Inter", sans-serif;
     }
 
@@ -80,12 +80,30 @@
 
     .effect-text {
       color: #000;
-      margin-top: -80px;
-      font: 700 412px/1 "Inter", sans-serif;
+      margin-top: -10px;
+      font: 600 412px/1 "Inter", sans-serif;
+    }
+
+    /* Make the parentheses Arial and smaller for inner parentheses */
+    .parentheses, .inner-parentheses {
+      font-family: 'Arial', sans-serif;
+    }
+
+    .parentheses {
+      font-size: 300px; /* Keep the parentheses large */
+    }
+
+    .inner-parentheses {
+      font-size: 200px; /* Make the inner parentheses smaller */
     }
 
     .slide-down {
-      transform: translateY(100%); /* Slide down effect */
+      transform: translateY(100%); 
+    }
+
+    .fade-out {
+      opacity: 0;
+      transition: opacity 1s ease-out;
     }
   </style>
   <link href="https://fonts.googleapis.com/css2?family=Zapfino&display=swap" rel="stylesheet" />
@@ -93,7 +111,6 @@
 </head>
 <body>
 
-  <!-- Navigation Bar -->
   <nav class="navbar">
     <a href="#" class="logo">Learn more!</a>
     <div class="nav-links">
@@ -103,7 +120,7 @@
   </nav>
 
   <main class="ripple-container" id="slide-container">
-    <h1 class="visually-hidden">Ripple Effect</h1>
+   
     <div class="ripple-text" role="text" aria-label="ripple">
       <span class="ripple-text-r">r</span>
       <span>ip</span>
@@ -116,26 +133,27 @@
   </main>
 
   <script>
-    // Get the Learn more link and the container to slide
+    
     const learnMoreLink = document.querySelector('.navbar .logo');
     const slideContainer = document.getElementById('slide-container');
     
     // Add event listener to the Learn more link
     learnMoreLink.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent default behavior (page reload)
+        event.preventDefault(); 
         
-        // Apply the slide-down class
-        slideContainer.classList.add('slide-down');
+       
+        document.body.classList.add('fade-out');
         
-        // After the slide transition is finished, navigate to the next page
+        
         setTimeout(function() {
-            window.location.href = 'choose-your-ripple.html'; // Navigate to the next page
-        }, 1000); // Wait for the animation to finish before redirecting
+            window.location.href = 'choose-your-ripple.html'; 
+        }, 1000); 
     });
   </script>
 
 </body>
 </html>
+
 
 
 
