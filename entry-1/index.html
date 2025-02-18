@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ripple Effect with Smooth Cursor</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100%;
+            background-color: #fff;
+            cursor: none; /* Hide default cursor */
+        }
+
+        .cursor {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(51, 175, 214, 0.4); 
+            pointer-events: none; 
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 30px; 
+            transition: all 0.2s ease-out;
+            opacity: 0.8;
+        }
+
+        .cursor-ripple {
+            animation: ripple 0.8s ease-out forwards; 
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: translate(-50%, -50%) scale(1); 
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(4); 
+                opacity: 0; 
+            }
+        }
+
+        .ripple-text {
+            font-size: 100px;
+            font-family: 'Helvetica Neue Light', 'Helvetica Neue', sans-serif;
+            font-weight: 300;
+            text-align: justify;
+            width: 100%;
+            padding: 20px;
+            min-height: 100vh; /* Ensure content area is big enough for scrolling */
+        }
+
+        .highlight {
+            display: inline-block;
+            font-weight: 300;
+            font-size: 1.2em;
+        }
+
+        .icon {
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .highlight a:hover .icon {
+            fill: #33AFD6; 
+        }
+
+        /* Increase the font size for the last three words */
+        .bigger-text {
+            font-size: 1.5em;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="ripple-text">
+    RIPPLE EFFECT IS SEEN AROUND<br>
+    IN PERSONAL ACTS WHERE 1 SMALL GESTURE INSPIRES A CHAIN OF REACTION.<br>
+    PLAYS OUT IN<br>
+    <span class="highlight">((SOCIAL))
+        <a href="social-entry.html">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2" fill="none" />
+                <circle cx="12" cy="12" r="6" stroke="black" stroke-width="2" fill="none" />
+                <circle cx="12" cy="12" r="2" stroke="black" stroke-width="2" fill="none" />
+            </svg>
+        </a>
+    </span><br>
+    
+    <!-- Switch the placement of ENVIRONMENTAL and EMOTIONAL -->
+    <span class="highlight">((EMOTIONAL))
+        <a href="emotional-entry.html">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2" fill="none" />
+                <circle cx="12" cy="12" r="6" stroke="black" stroke-width="2" fill="none" />
+                <circle cx="12" cy="12" r="2" stroke="black" stroke-width="2" fill="none" />
+            </svg>
+        </a>
+    </span><br>
+
+    <span class="highlight bigger-text">((ENVIRONMENTAL))
+        <a href="environmental-entry.html">
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2" fill="none" />
+                <circle cx="12" cy="12" r="6" stroke="black" stroke-width="2" fill="none" />
+                <circle cx="12" cy="12" r="2" stroke="black" stroke-width="2" fill="none" />
+            </svg>
+        </a>
+    </span>
+</div>
+
+<div class="cursor"></div>
+
+<script>
+    const cursor = document.querySelector('.cursor');
+    
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+    const speed = 0.1; 
+
+    function updateCursor() {
+        cursorX += (mouseX - cursorX) * speed;
+        cursorY += (mouseY - cursorY) * speed;
+
+        cursor.style.left = `${cursorX}px`;
+        cursor.style.top = `${cursorY}px`;
+
+        requestAnimationFrame(updateCursor); 
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.pageX;
+        mouseY = e.pageY;
+
+        
+        cursor.classList.add('cursor-ripple');
+
+        
+        setTimeout(() => {
+            cursor.classList.remove('cursor-ripple');
+        }, 800); 
+    });
+
+    
+    const icons = document.querySelectorAll('.highlight a');
+    icons.forEach((icon) => {
+        icon.addEventListener('mouseover', () => {
+            cursor.style.backgroundColor = 'rgba(51, 175, 214, 0.6)'; 
+        });
+        icon.addEventListener('mouseout', () => {
+            cursor.style.backgroundColor = 'rgba(51, 175, 214, 0.4)'; 
+        });
+    });
+
+    updateCursor(); 
+</script>
+
+</body>
+</html>
