@@ -1,228 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Gradients Homepage</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;                
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ripple Effect Homepage</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background-color: #f7f7f7;
+    }
 
-        html, body {
-            background: #10092c;
-            overscroll-behavior: none;
-            font-family: "Roboto", sans-serif;
-        }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.8); 
+      padding: 15px 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 1px 15px rgba(0, 0, 0, 0.15); 
+      backdrop-filter: blur(5px); 
+      border-bottom: 2px solid rgba(0, 0, 0, 0.1); 
+    }
 
-        .top-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 15px 20px;
-            background: rgba(255, 255, 255, 0.8); 
-            display: flex; */
-            justify-content: space-between; 
-            align-items: center; 
-            color: #333; 
-            font-size: 18px;
-            font-weight: 300; 
-            letter-spacing: 0.05em;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-        }
+    .navbar .logo {
+      color: black;
+      font-size: 23px;
+      font-weight: bold;
+      text-decoration: none;
+    }
 
-        .top-bar .left {
-            font-size: 20px;
-            font-weight: 300; 
-            letter-spacing: 0.05em;
-        }
+    .navbar .nav-links {
+      display: flex;
+      gap: 20px;
+    }
 
-        .top-bar .right {
-            font-size: 20px;
-            font-weight: 300; 
-            letter-spacing: 0.05em;
-        }
+    .navbar .nav-links a {
+      color: black;
+      text-decoration: none;
+      font-size: 18px;
+    }
 
-        .header {
-            padding: 4em;
-            opacity: 0.75;
-            margin-top: 50px; 
-        }
+    .navbar .nav-links a:hover {
+      color: #73C2FB;
+    }
 
-        .header h1 {
-            width: 60%;
-            background: linear-gradient(to top, #cecece 0%, #ffffff 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 500;
-            font-size: 80px;
-            letter-spacing: -0.05em;
-            line-height: 1;
-        }
+    .ripple-container {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      width: 100%;
+      max-width: 1484px;
+      margin: 0 auto;
+      padding: 20px;
+      padding-top: 100px;
+      transition: transform 1s ease-in-out; /* Smooth slide transition */
+    }
 
-        button {
-            margin: 3em 0;
-            padding: 1em 1.5em;
-            color: #fff;
-            font-size: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.5); 
-            outline: none;
-            border-radius: 0.75em;
-            backdrop-filter: blur(20px);
-            cursor: pointer;
-            background: transparent;
-            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.2); 
-        }
+    .ripple-text {
+      color: #000;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-right: 190px;
+      padding-right: 1px;
+      font: 600 300px/1 "Inter", sans-serif;
+    }
 
-        button:hover {
-            background: rgba(255, 255, 255, 0.1); 
-        }
+    .ripple-text-r {
+      font-family: 'Zapfino', cursive;
+      font-size: 300px;
+      color: #000;
+    }
 
-        .glassy-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(50px);
-            pointer-events: none;
-        }
+    .effect-text {
+      color: #000;
+      margin-top: -80px;
+      font: 700 412px/1 "Inter", sans-serif;
+    }
 
-        .container {
-            position: absolute;
-            top: 0;
-            z-index: 100000;
-        }
-    </style>
+    .slide-down {
+      transform: translateY(100%); /* Slide down effect */
+    }
+
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Zapfino&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet" />
 </head>
 <body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <a href="#" class="logo">Learn more!</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <main class="ripple-container" id="slide-container">
+    <h1 class="visually-hidden">Ripple Effect</h1>
+    <div class="ripple-text" role="text" aria-label="ripple">
+      <span class="ripple-text-r">r</span>
+      <span>ip</span>
+      <span class="parentheses">(</span>
+      <span class="inner-parentheses">()</span>
+      <span class="parentheses">)</span>
+      <span class="ripple-text-end">le</span>
+    </div>
+    <div class="effect-text" role="text" aria-label="effect">effect</div>
+  </main>
+
+  <script>
+    // Get the Learn more link and the container to slide
+    const learnMoreLink = document.querySelector('.navbar .logo');
+    const slideContainer = document.getElementById('slide-container');
     
-    <div class="top-bar">
-        <div class="left">Harmonic Collection: Color Theory</div>
-        <div class="right">Rachel Chong</div>
-    </div>
+    // Add event listener to the Learn more link
+    learnMoreLink.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default behavior (page reload)
+        
+        // Apply the slide-down class
+        slideContainer.classList.add('slide-down');
+        
+        // After the slide transition is finished, navigate to the next page
+        setTimeout(function() {
+            window.location.href = 'choose-your-ripple.html'; // Navigate to the next page
+        }, 1000); // Wait for the animation to finish before redirecting
+    });
+  </script>
 
-    <div class="container">
-        <div class="header">
-            <h1>Harmonic Collection</h1>
-            <button id="entries-button" aria-label="View Entries">Entries</button>
-        </div>
-    </div>
-
-    <div class="glassy-overlay"></div>
-    <canvas></canvas>
-
-    <script>
-        document.getElementById('entries-button').addEventListener('click', () => {
-            window.location.href = 'entries.html'; // Redirect to the entries page
-        });
-
-        const canvas = document.querySelector("canvas");
-        const ctx = canvas.getContext("2d");
-
-        let mouseMoved = false;
-
-        const pointer = {
-            x: 0.5 * window.innerWidth,
-            y: 0.5 * window.innerHeight,
-        };
-        const params = {
-            pointsNumber: 40,
-            widthFactor: 10,
-            mouseThreshold: 0.5,
-            spring: 0.25,
-            friction: 0.5,
-        };
-        const trail = new Array(params.pointsNumber);
-        for (let i = 0; i < params.pointsNumber; i++) {
-            trail[i] = {
-                x: pointer.x,
-                y: pointer.y,
-                dx: 0,
-                dy: 0,
-            };
-        }
-
-        window.addEventListener("click", (e) => {
-            updateMousePosition(e.pageX, e.pageY);
-        });
-        window.addEventListener("mousemove", (e) => {
-            mouseMoved = true;
-            updateMousePosition(e.pageX, e.pageY);
-        });
-        window.addEventListener("touchmove", (e) => {
-            mouseMoved = true;
-            updateMousePosition(e.targetTouches[0].pageX, e.targetTouches[0].pageY);
-        });
-
-        function updateMousePosition(eX, eY) {
-            pointer.x = eX;
-            pointer.y = eY;
-        }
-
-        setupCanvas();
-        update(0);
-        window.addEventListener("resize", setupCanvas);
-
-        function update(t) {
-            if (!mouseMoved) {
-                pointer.x =
-                    (0.5 + 0.3 * Math.cos(0.002 * t) * Math.sin(0.005 * t)) *
-                    window.innerWidth;
-                pointer.y =
-                    (0.5 + 0.2 * Math.cos(0.005 * t) + 0.1 * Math.cos(0.01 * t)) *
-                    window.innerHeight;
-            }
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            trail.forEach((p, pIdx) => {
-                const prev = pIdx === 0 ? pointer : trail[pIdx - 1];
-                const spring = pIdx === 0 ? 0.4 * params.spring : params.spring;
-                p.dx += (prev.x - p.x) * spring;
-                p.dy += (prev.y - p.y) * spring;
-                p.dx *= params.friction;
-                p.dy *= params.friction;
-                p.x += p.dx;
-                p.y += p.dy;
-            });
-
-            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-            gradient.addColorStop(0, "rgba(160, 93, 134, 1)");
-            gradient.addColorStop(1, "rgba(57, 34, 115, 1)");
-
-            ctx.strokeStyle = gradient;
-            ctx.lineCap = "round";
-            ctx.beginPath();
-            ctx.moveTo(trail[0].x, trail[0].y);
-
-            for (let i = 1; i < trail.length - 1; i++) {
-                const xc = 0.5 * (trail[i].x + trail[i + 1].x);
-                const yc = 0.5 * (trail[i].y + trail[i + 1].y);
-                ctx.quadraticCurveTo(trail[i].x, trail[i].y, xc, yc);
-                ctx.lineWidth = params.widthFactor * (params.pointsNumber - i);
-                ctx.stroke();
-            }
-
-            ctx.lineTo(trail[trail.length - 1].x, trail[trail.length - 1].y);
-            ctx.stroke();
-
-            window.requestAnimationFrame(update);
-        }
-
-        function setupCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-    </script>
 </body>
 </html>
+
 
 
 

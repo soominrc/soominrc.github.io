@@ -3,260 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animated Gradients Homepage</title>
+    <title>Choose Your Ripple</title>
     <style>
-        * {
+        @font-face {
+            font-family: 'Desktop';
+            src: url('fonts/desktop-font.woff2') format('woff2'),
+                 url('fonts/desktop-font.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Aston Script Bold';
+            src: url('fonts/aston-script-bold.woff2') format('woff2'),
+                 url('fonts/aston-script-bold.woff') format('woff');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Pixelify Sans';
+            src: url('fonts/pixelify-sans.woff2') format('woff2'),
+                 url('fonts/pixelify-sans.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --primary-color: #000000;
+            --background-color: #ffffff;
+            --accent-color: #0000ff;
+        }
+
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            background: #ffcccb; /* Soft baby pink background */
-            overscroll-behavior: none;
-            font-family: 'Inter', sans-serif;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            color: white;
-            overflow: hidden;
-            text-align: center;
-        }
-
-        .header {
-            padding: 3em 2em;
-            opacity: 0.85;
-            z-index: 10;
-            max-width: 900px;
-            margin-bottom: 2em;
-            animation: fadeIn 1.5s ease-out;
-        }
-
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .header h1 {
-            background: linear-gradient(to top, #cecece 0%, #ffffff 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 4rem;
-            font-weight: 700;
-            letter-spacing: -0.05em;
-            line-height: 1.2;
-            color: white;
-            margin-bottom: 1.5em;
-        }
-
-        .header p {
-            font-size: 1.2rem;
+            font-family: 'Helvetica neue', Arial, sans-serif;
             line-height: 1.6;
-            color: white;
-            max-width: 800px;
+            color: var(--primary-color);
+            background-color: var(--background-color);
+        }
+
+        .choose-ripple-container {
+            max-width: 1800px;
             margin: 0 auto;
+            padding: 2rem;
+            position: relative;
         }
 
-        .glassy-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(50px);
-            pointer-events: none;
-            z-index: 5;
+        .choose-ripple-title {
+            font-size: 3rem;
+            text-indent: -10px;
+            margin-bottom: 4rem;
+            text-align: left;
         }
 
-        .link-list {
+        .ripple-options {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            justify-content: center;
-            list-style-type: none;
-            padding: 0;
-            z-index: 10;
-            position: relative;
-            margin-top: 2em;
+            gap: 2rem;
         }
 
-        .link-list li {
-            margin: 10px 0;
+        .ripple-option {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 1rem;
+            transition: background-color 0.3s ease;
         }
 
-        .link-list a {
-            text-decoration: none;
-            color: white;
-            font-size: 1.25rem;
-            position: relative;
-            padding: 10px 20px;
-            border: 2px solid white; /* White outline around each link */
-            border-radius: 8px; /* Rounded corners for the border */
-            transition: all 0.3s ease;
-            opacity: 0.85;
+        .ripple-option:hover,
+        .ripple-option:focus-within {
+            background-color: rgba(0, 0, 0, 0.05);
         }
 
-        .link-list a:hover {
-            color: #ffc0cb; /* Hover effect color */
-            opacity: 1;
-            background-color: rgba(255, 255, 255, 0.2); /* Slight background color on hover */
-            border-color: #ffc0cb; /* Change border color on hover */
+        .ripple-number {
+            font-family: 'Pixelify Sans', sans-serif;
+            font-size: 2rem;
+            font-weight: normal;
+            min-width: 3rem;
         }
 
-        .link-list a::after {
-            content: '';
+        .ripple-text {
+            font-size: 1.5rem;
+            flex-grow: 1;
+            margin: 0;
+        }
+
+        .script-font {
+            font-family: 'Aston Script Bold', cursive;
+            font-weight: bold;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary-color);
+        }
+
+        .effect-layer {
             position: absolute;
-            width: 100%;
-            height: 2px;
-            background: white;
-            bottom: 0;
-            left: 0;
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-
-        .link-list a:hover::after {
-            transform: scaleX(1);
-        }
-
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10rem;
+            opacity: 0.1;
+            filter: blur(8px);
             pointer-events: none;
+            user-select: none;
         }
 
+        @media (max-width: 768px) {
+            .choose-ripple-title {
+                font-size: 2rem;
+            }
+
+            .ripple-number {
+                font-size: 1.5rem;
+            }
+
+            .ripple-text {
+                font-size: 1.2rem;
+            }
+
+            .icon {
+                width: 20px;
+                height: 20px;
+            }
+
+            .effect-layer {
+                font-size: 6rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .ripple-option {
+                transition: none;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="header">
-      
-    </div>
-
-    <ul class="link-list">
-        <li><a href="entry-1/index.html">Entry 1</a></li>
-        <li><a href="entry-2/index.html">Entry 2</a></li>
-        <li><a href="entry-3/index.html">Entry 3</a></li>
-        <li><a href="entry-4/index.html">Entry 4</a></li>
-        <li><a href="entry-5/index.html">Entry 5</a></li>
-        <li><a href="entry-6/index.html">Entry 6</a></li>
-        <li><a href="entry-7/index.html">Entry 7</a></li>
-        <li><a href="entry-8/index.html">Entry 8</a></li>
-        <li><a href="entry-9/index.html">Entry 9</a></li>
-        <li><a href="entry-10/index.html">Entry 10</a></li>
-    </ul>
-
-    <div class="glassy-overlay"></div>
-    <canvas></canvas>
-
-    <script>
-        const canvas = document.querySelector("canvas");
-        const ctx = canvas.getContext("2d");
-
-        let mouseMoved = false;
-        const pointer = {
-            x: 0.5 * window.innerWidth,
-            y: 0.5 * window.innerHeight,
-        };
-        const params = {
-            pointsNumber: 40,
-            widthFactor: 10,
-            mouseThreshold: 0.5,
-            spring: 0.25,
-            friction: 0.5,
-        };
-        const trail = new Array(params.pointsNumber);
-        for (let i = 0; i < params.pointsNumber; i++) {
-            trail[i] = {
-                x: pointer.x,
-                y: pointer.y,
-                dx: 0,
-                dy: 0,
-            };
-        }
-
-        window.addEventListener("click", (e) => {
-            updateMousePosition(e.pageX, e.pageY);
-        });
-        window.addEventListener("mousemove", (e) => {
-            mouseMoved = true;
-            updateMousePosition(e.pageX, e.pageY);
-        });
-        window.addEventListener("touchmove", (e) => {
-            mouseMoved = true;
-            updateMousePosition(e.targetTouches[0].pageX, e.targetTouches[0].pageY);
-        });
-
-        function updateMousePosition(eX, eY) {
-            pointer.x = eX;
-            pointer.y = eY;
-        }
-
-        setupCanvas();
-        update(0);
-        window.addEventListener("resize", setupCanvas);
-
-        function update(t) {
-            if (!mouseMoved) {
-                pointer.x =
-                    (0.5 + 0.3 * Math.cos(0.002 * t) * Math.sin(0.005 * t)) *
-                    window.innerWidth;
-                pointer.y =
-                    (0.5 + 0.2 * Math.cos(0.005 * t) + 0.1 * Math.cos(0.01 * t)) *
-                    window.innerHeight;
-            }
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            trail.forEach((p, pIdx) => {
-                const prev = pIdx === 0 ? pointer : trail[pIdx - 1];
-                const spring = pIdx === 0 ? 0.4 * params.spring : params.spring;
-                p.dx += (prev.x - p.x) * spring;
-                p.dy += (prev.y - p.y) * spring;
-                p.dx *= params.friction;
-                p.dy *= params.friction;
-                p.x += p.dx;
-                p.y += p.dy;
-            });
-
-            ctx.strokeStyle = "white";
-            ctx.lineCap = "round";
-            ctx.beginPath();
-            ctx.moveTo(trail[0].x, trail[0].y);
-
-            for (let i = 1; i < trail.length - 1; i++) {
-                const xc = 0.5 * (trail[i].x + trail[i + 1].x);
-                const yc = 0.5 * (trail[i].y + trail[i + 1].y);
-                ctx.quadraticCurveTo(trail[i].x, trail[i].y, xc, yc);
-                ctx.lineWidth = params.widthFactor * (params.pointsNumber - i);
-                ctx.stroke();
-            }
-
-            ctx.lineTo(trail[trail.length - 1].x, trail[trail.length - 1].y);
-            ctx.stroke();
-
-            window.requestAnimationFrame(update);
-        }
-
-        function setupCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-    </script>
+    <main class="choose-ripple-container">
+        <h1 class="choose-ripple-title" id="main-heading">
+            CHOOSE YOUR RI<span aria-hidden="true">(())</span>PLE
+        </h1>
+        <section class="ripple-options" aria-labelledby="main-heading">
+            <div class="ripple-option">
+                <span class="ripple-number" aria-hidden="true">1</span>
+                <p class="ripple-text">First Ripple Option</p>
+            </div>
+            <div class="ripple-option">
+                <span class="ripple-number" aria-hidden="true">2</span>
+                <p class="ripple-text">Second Ripple Option</p>
+            </div>
+            <div class="ripple-option">
+                <span class="ripple-number" aria-hidden="true">3</span>
+                <p class="ripple-text">Third Ripple Option</p>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
+
 
 
 
