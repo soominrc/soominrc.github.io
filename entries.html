@@ -3,202 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choose Your Ripple</title>
+    <title>Ripple Effect</title>
     <style>
-        @font-face {
-            font-family: 'Desktop';
-            src: url('fonts/desktop-font.woff2') format('woff2'),
-                 url('fonts/desktop-font.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Aston Script Bold';
-            src: url('fonts/aston-script-bold.woff2') format('woff2'),
-                 url('fonts/aston-script-bold.woff') format('woff');
-            font-weight: bold;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        @font-face {
-            font-family: 'Pixelify Sans';
-            src: url('fonts/pixelify-sans.woff2') format('woff2'),
-                 url('fonts/pixelify-sans.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-
-        :root {
-            --primary-color: #000000;
-            --background-color: #ffffff;
-            --accent-color: #0000ff;
-        }
-
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Helvetica neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: var(--primary-color);
-            background-color: var(--background-color);
-        }
-
-        .choose-ripple-container {
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-        }
-
-        .choose-ripple-title {
-            font-size: 3rem;
-            text-indent: -10px
-            margin-bottom: 4rem;
-      
-          text-align: left;
-        }
-
-        .ripple-options {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .ripple-option {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 1rem;
-            transition: background-color 0.3s ease;
-        }
-
-        .ripple-option:hover,
-        .ripple-option:focus-within {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        .ripple-number {
-            font-family: 'Pixelify Sans', sans-serif;
-            font-size: 2rem;
-            font-weight: normal;
-            min-width: 3rem;
+            margin: 0; /* Remove default margin to ensure full width and height */
+            height: 100%; /* Allow the page to take full height */
+            overflow-y: scroll; /* Enable scrolling */
         }
 
         .ripple-text {
-            font-size: 1.5rem;
-            flex-grow: 1;
-            margin: 0;
+            font-size: 100px;
+            font-family: 'Helvetica Neue Light', 'Helvetica Neue', sans-serif;
+            font-weight: 300;
+            text-align: justify; /* Justify the text */
+            width: 100%; /* Make the container take up the full width */
+            padding: 20px; /* Optional: adds space around the text */
+            min-height: 100vh; /* Ensures there is enough height for scrolling */
         }
 
-        .script-font {
-            font-family: 'Aston Script Bold', cursive;
-            font-weight: bold;
+        .highlight {
+            display: inline-block;
+            font-weight: 300;
+            font-size: 1.2em;
         }
 
         .icon {
-            width: 24px;
-            height: 24px;
-            fill: var(--primary-color);
-        }
-
-        .effect-layer {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 10rem;
-            opacity: 0.1;
-            filter: blur(8px);
-            pointer-events: none;
-            user-select: none;
-        }
-
-        @media (max-width: 768px) {
-            .choose-ripple-title {
-                font-size: 2rem;
-            }
-
-            .ripple-number {
-                font-size: 1.5rem;
-            }
-
-            .ripple-text {
-                font-size: 1.2rem;
-            }
-
-            .icon {
-                width: 20px;
-                height: 20px;
-            }
-
-            .effect-layer {
-                font-size: 6rem;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .ripple-option {
-                transition: none;
-            }
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            vertical-align: middle; /* Align the icon with the text */
         }
     </style>
 </head>
 <body>
-    <main class="choose-ripple-container">
-        <h1 class="choose-ripple-title" id="main-heading">
-            CHOOSE YOUR RI<span aria-hidden="true">(())</span>PLE
-        </h1>
-        <section class="ripple-options" aria-labelledby="main-heading">
-            <div class="ripple-option">
-                <span class="ripple-number" aria-hidden="true">01</span>
-                <h2 class="ripple-text">
-                    SOCIAL <span class="script-font">Ripple</span>
-                </h2>
-                <svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
-                    <path d="M13.49 11.38c.43-1.22.17-2.64-.81-3.62-1.11-1.11-2.79-1.3-4.1-.59l2.35 2.35-1.41 1.41-2.35-2.35c-.71 1.32-.52 2.99.59 4.1.98.98 2.4 1.24 3.62.81l3.41 3.41c.2.2.51.2.71 0l1.4-1.4c.2-.2.2-.51 0-.71l-3.41-3.41z"/>
-                </svg>
-            </div>
-            <div class="ripple-option">
-                <span class="ripple-number" aria-hidden="true">02</span>
-                <h2 class="ripple-text">
-                    ENVIRONMENTAL <span class="script-font">Ripple</span>
-                </h2>
-                <svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
-                    <path d="M13.49 11.38c.43-1.22.17-2.64-.81-3.62-1.11-1.11-2.79-1.3-4.1-.59l2.35 2.35-1.41 1.41-2.35-2.35c-.71 1.32-.52 2.99.59 4.1.98.98 2.4 1.24 3.62.81l3.41 3.41c.2.2.51.2.71 0l1.4-1.4c.2-.2.2-.51 0-.71l-3.41-3.41z"/>
-                </svg>
-            </div>
-            <div class="ripple-option">
-                <span class="ripple-number" aria-hidden="true">03</span>
-                <h2 class="ripple-text">
-                    ECONOMIC <span class="script-font">Ripple</span>
-                </h2>
-                <svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
-                    <path d="M13.49 11.38c.43-1.22.17-2.64-.81-3.62-1.11-1.11-2.79-1.3-4.1-.59l2.35 2.35-1.41 1.41-2.35-2.35c-.71 1.32-.52 2.99.59 4.1.98.98 2.4 1.24 3.62.81l3.41 3.41c.2.2.51.2.71 0l1.4-1.4c.2-.2.2-.51 0-.71l-3.41-3.41z"/>
-                </svg>
-            </div>
-            <div class="ripple-option">
-                <span class="ripple-number" aria-hidden="true">04</span>
-                <h2 class="ripple-text">
-                    CHOOSE YOUR <span class="script-font">Ripple</span>
-                </h2>
-                <svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"/>
-                    <path d="M13.49 11.38c.43-1.22.17-2.64-.81-3.62-1.11-1.11-2.79-1.3-4.1-.59l2.35 2.35-1.41 1.41-2.35-2.35c-.71 1.32-.52 2.99.59 4.1.98.98 2.4 1.24 3.62.81l3.41 3.41c.2.2.51.2.71 0l1.4-1.4c.2-.2.2-.51 0-.71l-3.41-3.41z"/>
-                </svg>
-            </div>
-        </section>
-        <div class="effect-layer" aria-hidden="true">EFFECT</div>
-    </main>
+    <div class="ripple-text">
+        RIPPLE EFFECT IS SEEN AROUND<br>
+        IN PERSONAL ACTS WHERE 1 SMALL GESTURE INSPIRES A CHAIN OF REACTION.<br>
+        PLAYS OUT IN<br>
+        <span class="highlight">((SOCIAL))
+            <!-- Ripple icon next to SOCIAL -->
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2" fill="none" />
+                <circle cx="12" cy="12" r="6" stroke="black" stroke-width="2" fill="none" />
+                <circle cx="12" cy="12" r="2" stroke="black" stroke-width="2" fill="none" />
+            </svg>
+        </span><br>
+
+        <span class="highlight">((ENVIRONMENTAL))
+            <!-- Ripple icon next to ENVIRONMENTAL -->
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2" fill="none" />
+                <circle cx="12" cy="12" r="6" stroke="black" stroke-width="2" fill="none" />
+                <circle cx="12" cy="12" r="2" stroke="black" stroke-width="2" fill="none" />
+            </svg>
+        </span><br>
+
+        <span class="highlight">((EMOTIONAL))
+            <!-- Ripple icon next to EMOTIONAL -->
+            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2" fill="none" />
+                <circle cx="12" cy="12" r="6" stroke="black" stroke-width="2" fill="none" />
+                <circle cx="12" cy="12" r="2" stroke="black" stroke-width="2" fill="none" />
+            </svg>
+        </span>
+    </div>
 </body>
 </html>
+
 
 
 
