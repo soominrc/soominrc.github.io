@@ -10,49 +10,76 @@
       font-family: "Inter", sans-serif;
       background-color: #f7f7f7;
       overflow-x: hidden;
+      height: 100vh; 
+      width: 100vw;
+      transition: filter 0.3s ease;
+      font-size: 2.5vw; /* Responsive font size based on viewport width */
     }
 
     .navbar {
-      position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: rgba(255, 255, 255, 0.8); 
-      padding: 15px 20px;
+      background-color: rgba(255, 255, 255, 0.8);
+      padding: 2vw 4vw; /* Proportional padding */
       z-index: 100;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 1px 15px rgba(0, 0, 0, 0.15); 
-      backdrop-filter: blur(5px); 
-      border-bottom: 2px solid rgba(0, 0, 0, 0.1); 
-      font-family: 'Helvetica Neue', sans-serif; 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 1px 15px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(5px);
+      border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+      position: relative;
     }
 
     .navbar .logo {
       color: black;
-      font-size: 23px;
-      font-weight: 100;  
+      font-size: 3vw; /* Adjusted font size for logo */
+      font-weight: 100;
       text-decoration: none;
-      transition: color 0.3s ease; 
+      transition: color 0.3s ease;
     }
 
     .navbar .nav-links {
       display: flex;
-      gap: 50px;
+      gap: 3vw;
     }
 
     .navbar .nav-links a {
       color: black;
       text-decoration: none;
-      font-size: 25px;
-      font-weight: 100; 
+      font-size: 2.5vw; /* Responsive font size for links */
+      font-weight: 100;
       transition: color 0.3s ease;
     }
 
     .navbar .nav-links a:hover,
     .navbar .logo:hover {
-      color: #73C2FB; 
+      color: #73C2FB;
+    }
+
+    .navbar .toggle-button {
+      cursor: pointer;
+      font-size: 1.5vw; /* Adjusted for responsiveness */
+      color: black;
+      background-color: transparent;
+      border: 1px solid black;
+      padding: 1vw 2vw; /* Proportional padding */
+      border-radius: 25px;
+      transition: background-color 0.5s ease, transform 0.2s ease, color 0.3s ease;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 2vw; /* Slightly more left margin */
+    }
+
+    .navbar .toggle-button:hover {
+      background-color: black;
+      color: white; 
+      transform: scale(1.08);
+    }
+
+    .navbar .toggle-button:focus {
+      outline: none;
     }
 
     .ripple-container {
@@ -61,12 +88,11 @@
       align-items: flex-start;
       justify-content: center;
       width: 100%;
-      max-width: 1484px;
+      max-width: 100vw; /* Ensure it's proportionate */
       margin: 0 auto;
-      padding: 20px;
-      padding-top: 100px;
-      transition: transform 1s ease-in-out; 
-      font-family: 'Helvetica Neue', sans-serif; 
+      padding: 2vw;
+      padding-top: 10vw;
+      transition: transform 1s ease-in-out;
     }
 
     .ripple-text {
@@ -74,22 +100,22 @@
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      margin-right: 190px;
-      padding-right: 3px;
-      font: 600 300px/1 "Helvetica Neue Thin", sans-serif; 
+      margin-right: 10vw; /* Adjusted margin for responsiveness */
+      padding-right: 1vw;
+      font: 600 15vw/1 "Helvetica Neue Thin", sans-serif;
       position: relative;
     }
 
     .ripple-text-r {
       font-family: 'Zapfino', cursive;
-      font-size: 300px;
+      font-size: 15vw;
       color: #000;
     }
 
     .effect-text {
       color: #000;
-      margin-top: -10px;
-      font: 600 412px/1 "Helvetica Neue Thin", sans-serif; 
+      margin-top: -2vw;
+      font: 600 20vw/1 "Helvetica Neue Thin", sans-serif;
     }
 
     .parentheses, .inner-parentheses {
@@ -97,15 +123,11 @@
     }
 
     .parentheses {
-      font-size: 300px; 
+      font-size: 15vw;
     }
 
     .inner-parentheses {
-      font-size: 200px; 
-    }
-
-    .slide-down {
-      transform: translateY(100%); 
+      font-size: 10vw;
     }
 
     .fade-out {
@@ -120,24 +142,41 @@
 
     .content {
       position: relative;
-      padding-top: 150px; 
+      padding-top: 15vw;
+    }
+
+    /* === WATER RIPPLE EFFECT === */
+    .water-ripple-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
     }
   </style>
+
+  <!-- Load Custom Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Zapfino&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue+Thin&display=swap" rel="stylesheet" />
 </head>
 <body>
 
+  <!-- Removed the beach image, ripple effect is applied globally -->
+  <div class="water-ripple-bg"></div>
+
   <nav class="navbar">
     <a href="#" class="logo">Learn more!</a>
     <div class="nav-links">
       <a href="#about">About</a>
-      <a href="contact"></a>
+      <a href="contact">Contact</a>
     </div>
+    <!-- Toggle button for Ripple Effect -->
+    <button class="toggle-button" onclick="toggleRipple()">off</button>
   </nav>
 
-  <main class="ripple-container" id="slide-container">
-    <div class="ripple-text" role="text" aria-label="ripple">
+  <main class="ripple-container">
+    <div class="ripple-text" role="text">
       <span class="ripple-text-r">r</span>
       <span>ip</span>
       <span class="parentheses">(</span>
@@ -145,26 +184,65 @@
       <span class="parentheses">)</span>
       <span class="ripple-text-end">le</span>
     </div>
-    <div class="effect-text" role="text" aria-label="effect">effect</div>
+    <div class="effect-text" role="text">effect</div>
   </main>
+
+  <!-- SVG Filter for Water Ripple Effect -->
+  <svg width="0" height="0">
+    <filter id="water-ripple">
+      <feTurbulence id="turb1" type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="2" result="warp1"/>
+      <feTurbulence id="turb2" type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="99" result="warp2"/>
+      <feBlend in="warp1" in2="warp2" mode="multiply" result="combinedWarp"/>
+      <feDisplacementMap in="SourceGraphic" in2="combinedWarp" scale="50" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </svg>
 
   <script>
     const learnMoreLink = document.querySelector('.navbar .logo');
-    const slideContainer = document.getElementById('slide-container');
-    
+    const turbulence1 = document.getElementById('turb1');
+    const turbulence2 = document.getElementById('turb2');
+
+    let t = 0;
+    let rippleActive = false;
+
+    function animateRipples() {
+      if (!rippleActive) return;
+
+      const freq1 = 0.02 + 0.005 * Math.sin(t); 
+      const freq2 = 0.03 + 0.005 * Math.cos(t * 1.2); 
+
+      turbulence1.setAttribute('baseFrequency', freq1.toFixed(4));
+      turbulence2.setAttribute('baseFrequency', freq2.toFixed(4));
+
+      t += 0.002; 
+      requestAnimationFrame(animateRipples);
+    }
+
+    function toggleRipple() {
+      rippleActive = !rippleActive;
+      if (rippleActive) {
+        document.body.style.filter = 'url(#water-ripple)';
+        animateRipples();
+      } else {
+        document.body.style.filter = 'none';
+      }
+      document.querySelector('.toggle-button').textContent = rippleActive ? 'on' : 'off';
+    }
+
+    animateRipples();
+
     learnMoreLink.addEventListener('click', function(event) {
-        event.preventDefault(); 
-        
-        document.body.classList.add('fade-out');
-        
-        setTimeout(function() {
-            window.location.href = 'entries.html'; 
-        }, 1000); 
+      event.preventDefault();
+      document.body.classList.add('fade-out');
+      setTimeout(() => {
+        window.location.href = 'entries.html';
+      }, 1000);
     });
   </script>
 
 </body>
 </html>
+
 
 
 
