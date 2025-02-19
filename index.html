@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ripple Effect Homepage</title>
+  <title>Realistic Ripple Effect Homepage</title>
   <style>
     body {
       margin: 0;
       font-family: "Inter", sans-serif;
-      background-color: #f7f7f7; /* Solid background instead of beach image */
+      background-color: #f7f7f7;
       overflow-x: hidden;
-      height: 100vh; /* Full screen height */
-      width: 100vw; /* Full screen width */
+      height: 100vh;
+      width: 100vw;
       transition: filter 0.3s ease;
     }
 
@@ -58,28 +58,24 @@
 
     .navbar .toggle-button {
       cursor: pointer;
-      font-size: 19px; /* Smaller font size */
+      font-size: 19px;
       color: black;
       background-color: transparent;
       border: 1px solid black; 
-      padding: 8px 15px; /* Smaller padding */
+      padding: 8px 15px;
       border-radius: 25px;
       transition: background-color 0.5s ease, transform 0.2s ease, color 0.3s ease;
       font-weight: bold;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-left: 20px; /* Align to the left with some margin */
+      margin-left: 20px;
     }
 
     .navbar .toggle-button:hover {
       background-color: black;
-      color: white; /* Invert text color on hover */
-      transform: scale(1.08); /* Slightly enlarge on hover */
-    }
-
-    .navbar .toggle-button:focus {
-      outline: none;
+      color: white;
+      transform: scale(1.08);
     }
 
     .ripple-container {
@@ -153,7 +149,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      z-index: -1; /* Keep it behind everything */
+      z-index: -1;
     }
   </style>
 
@@ -191,10 +187,22 @@
   <!-- SVG Filter for Water Ripple Effect -->
   <svg width="0" height="0">
     <filter id="water-ripple">
-      <feTurbulence id="turb1" type="fractalNoise" baseFrequency="0.02" numOctaves="3" seed="2" result="warp1"/>
-      <feTurbulence id="turb2" type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="99" result="warp2"/>
-      <feBlend in="warp1" in2="warp2" mode="multiply" result="combinedWarp"/>
-      <feDisplacementMap in="SourceGraphic" in2="combinedWarp" scale="50" xChannelSelector="R" yChannelSelector="G"/>
+      <!-- Create more complex layers of turbulence to simulate 3D ripples -->
+      <feTurbulence id="turb1" type="fractalNoise" baseFrequency="0.02" numOctaves="7" seed="1" result="warp1"/>
+      <feTurbulence id="turb2" type="fractalNoise" baseFrequency="0.03" numOctaves="5" seed="50" result="warp2"/>
+      <feTurbulence id="turb3" type="fractalNoise" baseFrequency="0.04" numOctaves="6" seed="30" result="warp3"/>
+      
+      <!-- Add Gaussian blur to soften the ripples and make them appear more realistic -->
+      <feGaussianBlur in="warp1" stdDeviation="3" result="blurredWarp1"/>
+      <feGaussianBlur in="warp2" stdDeviation="4" result="blurredWarp2"/>
+      <feGaussianBlur in="warp3" stdDeviation="5" result="blurredWarp3"/>
+
+      <!-- Combine layers with different blur levels for smooth transition -->
+      <feBlend in="blurredWarp1" in2="blurredWarp2" mode="multiply" result="combinedWarp1"/>
+      <feBlend in="combinedWarp1" in2="blurredWarp3" mode="multiply" result="combinedWarp"/>
+      
+      <!-- Apply displacement map with stronger scale for more intense ripples -->
+      <feDisplacementMap in="SourceGraphic" in2="combinedWarp" scale="120" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
   </svg>
 
@@ -202,35 +210,44 @@
     const learnMoreLink = document.querySelector('.navbar .logo');
     const turbulence1 = document.getElementById('turb1');
     const turbulence2 = document.getElementById('turb2');
+    const turbulence3 = document.getElementById('turb3');
 
     let t = 0;
-    let rippleActive = false; // Start with ripple effect inactive
+    let rippleActive = false;
 
     function animateRipples() {
-      if (!rippleActive) return; // Stop animation if ripple is inactive
+      if (!rippleActive) return;
 
-      const freq1 = 0.02 + 0.005 * Math.sin(t); // Reduced the multiplier to slow down the effect
-      const freq2 = 0.03 + 0.005 * Math.cos(t * 1.2); // Reduced the multiplier to slow down the effect
+      // Adjust the frequencies to create smoother transitions for the ripples
+      const freq1 = 0.02 + 0.005 * Math.sin(t * 0.5); // Slower sine wave for more realistic movement
+      const freq2 = 0.03 + 0.005 * Math.cos(t * 1.5);
+      const freq3 = 0.04 + 0.003 * Math.sin(t * 2);
 
-      turbulence1.setAttribute('baseFrequency', freq1.toFixed(4));
-      turbulence2.setAttribute('baseFrequency', freq2.toFixed(4));
+      // Slight variation in amplitude to simulate depth
+      const amp1 = 1 + 0.2 * Math.sin(t * 0.3);
+      const amp2 = 1 + 0.1 * Math.cos(t * 0.6);
+      const amp3 = 1 + 0.15 * Math.sin(t * 1.8);
 
-      t += 0.002; // Reduced the increment value to slow down the frequency changes
+      turbulence1.setAttribute('baseFrequency', (freq1 * amp1).toFixed(4));
+      turbulence2.setAttribute('baseFrequency', (freq2 * amp2).toFixed(4));
+      turbulence3.setAttribute('baseFrequency', (freq3 * amp3).toFixed(4));
+
+      t += 0.002; // Slow down frequency changes for more gradual ripple evolution
       requestAnimationFrame(animateRipples);
     }
 
     function toggleRipple() {
-      rippleActive = !rippleActive; // Toggle the state
+      rippleActive = !rippleActive;
       if (rippleActive) {
-        document.body.style.filter = 'url(#water-ripple)'; // Apply the ripple effect
-        animateRipples(); // Start the animation again if ripple is enabled
+        document.body.style.filter = 'url(#water-ripple)';
+        animateRipples();
       } else {
-        document.body.style.filter = 'none'; // Disable the ripple effect
+        document.body.style.filter = 'none';
       }
-      document.querySelector('.toggle-button').textContent = rippleActive ? 'on' : 'off'; // Change button text to 'on' or 'off'
+      document.querySelector('.toggle-button').textContent = rippleActive ? 'on' : 'off';
     }
 
-    animateRipples(); // Start the ripple animation initially
+    animateRipples();
 
     learnMoreLink.addEventListener('click', function(event) {
       event.preventDefault();
@@ -243,6 +260,8 @@
 
 </body>
 </html>
+
+
 
 
 
