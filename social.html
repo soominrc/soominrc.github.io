@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #ffffff;
+      overflow-x: hidden;
+      height: 100vh;
+      width: 100vw;
+      transition: filter 0.3s ease;
+      padding-top: 80px;
+    }
+
+    .navbar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 100;
+    }
+
+    .navbar .logo {
+      font-size: 24px;
+      font-weight: 300;
+      font-family: 'Helvetica Neue', light;
+      text-decoration: none;
+      color: black;
+      transition: color 0.3s ease;
+    }
+
+    .navbar .logo:hover {
+      color: #73C2FB;
+    }
+
+    .content {
+      text-align: justify;
+      margin-top: 100px;
+      padding: 20px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    .content h1 {
+      font-size: 80px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .content h2, .content p {
+      font-family: 'Helvetica Neue', sans-serif;
+      text-align: justify;
+    }
+
+    /* Circle Button for Facts */
+    .circle {
+      width: 60px;
+      height: 60px;
+      background-color: #73C2FB;
+      border-radius: 50%;
+      position: fixed;
+      bottom: 50px;
+      right: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .circle:hover {
+      transform: scale(1.2);
+      background: #559edf;
+    }
+
+    /* Facts List */
+    .example-list {
+      display: none;
+      border: 1px solid black;
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 10px;
+      position: fixed;
+      bottom: 120px;
+      right: 50px;
+      max-width: 320px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 200;
+    }
+
+    .example-list h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .example-list p {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">Home</a>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="content">
+    <h1>01 (SOCIAL)</h1>
+    <h2>Every little thing we do can have a bigger impact than we realize.</h2>
+    <p>
+      The social ripple effect is all about how a single kind gesture, an inspiring conversation, or a positive action 
+      can set off a chain reaction, influencing people and communities in ways we never imagined.
+    </p>
+    <p>
+      When we help a stranger, share an uplifting message, or stand up for what's right, we encourage others to do the same. 
+      Over time, these small ripples turn into waves, shaping cultures, transforming societies, and making the world a better place. 
+      The best part? Anyone can start this ripple of change.
+    </p>
+    <p>
+      In today's interconnected world, our actions—whether online or in person—matter. A simple act of kindness, a moment of advocacy, 
+      or spreading awareness can reach and inspire countless lives. What starts as one small drop can grow into an unstoppable wave of 
+      positivity and progress.
+    </p>
+    <p><strong>Start your ripple today.</strong></p>
+  </div>
+
+  <!-- Floating Circle Button for Facts -->
+  <div class="circle" onclick="toggleExamples()">+</div>
+
+  <!-- Facts Popup -->
+  <div class="example-list" id="exampleList">
+    <h2>Where has this been seen?</h2>
+    <p>The Ice Bucket Challenge (2014): Raised over $115 million for ALS research.</p>
+    <p>#BlackLivesMatter (2013-Present): A movement for racial justice and systemic change.</p>
+    <p>The Pay-It-Forward Coffee Chain: Encouraged communities to spread kindness.</p>
+  </div>
+
+  <script>
+    function toggleExamples() {
+      var exampleList = document.getElementById("exampleList");
+      exampleList.style.display = (exampleList.style.display === "none" || exampleList.style.display === "") ? "block" : "none";
+    }
+  </script>
+
+</body>
+</html>
