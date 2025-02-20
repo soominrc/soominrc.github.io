@@ -19,7 +19,7 @@
     .navbar {
       width: 100%;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       padding: 15px 20px;
       position: fixed;
@@ -34,7 +34,6 @@
     .navbar .logo {
       font-size: 24px;
       font-weight: 300;
-      font-family: 'Helvetica Neue', light;
       text-decoration: none;
       color: black;
       transition: color 0.3s ease;
@@ -45,36 +44,86 @@
     }
 
     .content {
-      text-align: justify;
-      margin-top: 100px;
+      text-align: center;
+      margin-top: 120px;
       padding: 20px;
-      max-width: 800px;
+      max-width: 900px;
       margin-left: auto;
       margin-right: auto;
       line-height: 1.6;
     }
 
     .content h1 {
-      font-size: 80px;
-      font-weight: bold;
+      font-size: 90px;
+      font-weight: lighter;
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
+      margin-top: -50px;
     }
 
-    .content h2, .content p {
+    .bigger-text {
+      font-size: 160px; 
+      font-family: "Sinhala Sangam MN", sans-serif;
+      font-weight: bold;
+      display: block;
+      text-align: center;
+      line-height: 140px;
+    }
+
+    .content h2 {
+      font-family: 'Helvetica Neue', sans-serif;
+      text-align: center;
+      font-size: 28px;
+      margin-top: -20px;
+      margin-bottom: 30px;
+    }
+
+    .content p {
       font-family: 'Helvetica Neue', sans-serif;
       text-align: justify;
+      padding-left: 50px;
+      padding-right: 50px;
+      font-size: 18px;
     }
 
-    /* Circle Button for Facts */
+    /* Squiggly Effect Around the Circle Button */
+    .squiggly-wrapper {
+      position: fixed;
+      bottom: 42px;
+      right: 42px;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+
+    .squiggly-svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      stroke: black;
+      stroke-width: 3;
+      fill: none;
+      stroke-dasharray: 10;
+      animation: squiggle 1.5s linear infinite;
+    }
+
+    @keyframes squiggle {
+      0% {
+        stroke-dashoffset: 20;
+      }
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* Floating Circle Button with Pastel Ombre */
     .circle {
       width: 60px;
       height: 60px;
-      background-color: #73C2FB;
       border-radius: 50%;
-      position: fixed;
-      bottom: 50px;
-      right: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -82,12 +131,15 @@
       font-size: 24px;
       color: white;
       font-weight: bold;
+      background: linear-gradient(135deg, #B3DFFC, #89CFF0); /* Pastel Ombre */
       transition: transform 0.3s ease, background 0.3s ease;
+      z-index: 300;
+      box-shadow: 0px 4px 10px rgba(137, 207, 240, 0.5);
     }
 
     .circle:hover {
       transform: scale(1.2);
-      background: #559edf;
+      background: linear-gradient(135deg, #A6D8F5, #74BEE9); /* Slightly darker pastel blue on hover */
     }
 
     /* Facts List */
@@ -121,16 +173,16 @@
 
   <!-- Navbar -->
   <nav class="navbar">
-    <a href="index.html" class="logo">Home</a>
+    <a href="index.html" class="logo">Home</a> <!-- FIXED Home Link -->
   </nav>
 
   <!-- Main Content -->
   <div class="content">
-    <h1>01 (SOCIAL)</h1>
+    <h1><span class="bigger-text">01</span> SOCIAL</h1> <!-- "01" -->
     <h2>Every little thing we do can have a bigger impact than we realize.</h2>
     <p>
       The social ripple effect is all about how a single kind gesture, an inspiring conversation, or a positive action 
-      can set off a chain reaction, influencing people and communities in ways we never imagined.
+      can set off a chain reaction, influencing people and communities. When we positively influence someone, they may, in turn, do the same for you or someone else.
     </p>
     <p>
       When we help a stranger, share an uplifting message, or stand up for what's right, we encourage others to do the same. 
@@ -138,15 +190,20 @@
       The best part? Anyone can start this ripple of change.
     </p>
     <p>
-      In today's interconnected world, our actions—whether online or in person—matter. A simple act of kindness, a moment of advocacy, 
-      or spreading awareness can reach and inspire countless lives. What starts as one small drop can grow into an unstoppable wave of 
-      positivity and progress.
+      In today's interconnected world, a simple act of kindness, a moment of advocacy, 
+      or spreading awareness can reach and inspire countless lives. What starts as one small drop can grow into an unstoppable wave of positivity and progress.
     </p>
     <p><strong>Start your ripple today.</strong></p>
   </div>
 
-  <!-- Floating Circle Button for Facts -->
-  <div class="circle" onclick="toggleExamples()">+</div>
+  <!-- Squiggly Effect Wrapper -->
+  <div class="squiggly-wrapper">
+    <svg class="squiggly-svg">
+      <circle cx="40" cy="40" r="35"></circle>
+    </svg>
+    <!-- Floating Circle Button -->
+    <div class="circle" onclick="toggleExamples()">+</div>
+  </div>
 
   <!-- Facts Popup -->
   <div class="example-list" id="exampleList">
@@ -165,3 +222,4 @@
 
 </body>
 </html>
+
