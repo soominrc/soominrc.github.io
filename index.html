@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Realistic Ripple Effect Homepage</title>
+  <title> Ripple Effect Homepage</title>
   <style>
     body {
       margin: 0;
@@ -15,6 +15,7 @@
       transition: filter 0.3s ease;
     }
 
+    /* Navbar Styles */
     .navbar {
       width: 100%;
       display: flex;
@@ -27,7 +28,10 @@
       backdrop-filter: blur(5px);
       border-bottom: 2px solid rgba(0, 0, 0, 0.1);
       font-family: 'Helvetica Neue', sans-serif; 
-      position: relative;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
     }
 
     .navbar .logo {
@@ -46,7 +50,7 @@
     .navbar .nav-links a {
       color: black;
       text-decoration: none;
-      font-size: 25px;
+      font-size: 18px;
       font-weight: 100;
       transition: color 0.3s ease;
     }
@@ -62,7 +66,7 @@
       color: black;
       background-color: transparent;
       border: 1px solid black; 
-      padding: 8px 15px;
+      padding: 8px 16px;
       border-radius: 25px;
       transition: background-color 0.5s ease, transform 0.2s ease, color 0.3s ease;
       font-weight: bold;
@@ -78,53 +82,60 @@
       transform: scale(1.08);
     }
 
+    /* Ripple Container */
     .ripple-container {
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
       width: 100%;
       max-width: 1484px;
       margin: 0 auto;
       padding: 20px;
-      padding-top: 100px;
+      padding-top: 120px;
       transition: transform 1s ease-in-out;
       font-family: 'Helvetica Neue', sans-serif;
+      text-align: center;
+      margin-top: 100px; /* For a smoother page load */
     }
 
     .ripple-text {
       color: #000;
       display: flex;
       flex-wrap: wrap;
-      align-items: center;
-      margin-right: 190px;
-      padding-right: 3px;
-      font: 600 300px/1 "Helvetica Neue Thin", sans-serif;
+      justify-content: center;
+      font: 700 460px/1 "Helvetica Neue Thin", sans-serif;
       position: relative;
     }
 
     .ripple-text-r {
-      font-family: 'Zapfino', cursive;
-      font-size: 300px;
-      color: #000;
-    }
+  font-family: 'Zapfino', cursive;
+  font-size: 400px;
+  color: #000;
+  transform: translateX(-85px); 
+}
+
+
 
     .effect-text {
       color: #000;
       margin-top: -10px;
-      font: 600 412px/1 "Helvetica Neue Thin", sans-serif;
+      font: 600 460px/1 "Helvetica Neue Thin", sans-serif;
     }
 
     .parentheses, .inner-parentheses {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Beth Ellen', sans-serif;
+      padding-top: 70px;
     }
 
     .parentheses {
-      font-size: 300px;
+      font-size: 330px;
     }
 
     .inner-parentheses {
-      font-size: 200px;
+      font-size: 220px;
+      margin-top: 0px;
+      padding-top: 110px;
     }
 
     .fade-out {
@@ -151,11 +162,45 @@
       height: 100vh;
       z-index: -1;
     }
+
+    /* Responsive Adjustments */
+    @media screen and (max-width: 768px) {
+      .navbar .nav-links {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .navbar .toggle-button {
+        font-size: 16px;
+        padding: 8px 12px;
+        margin-left: 10px;
+        
+      }
+
+      .ripple-text {
+        font-size: 12vw;
+      }
+
+      .effect-text {
+        font-size: 16vw;
+      }
+
+      .parentheses {
+        font-size: 12vw;
+      }
+
+      .inner-parentheses {
+        font-size: 9vw;
+      }
+    }
   </style>
 
   <!-- Load Custom Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Zapfino&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue+Thin&display=swap" rel="stylesheet" />
+   <link href="https://fonts.googleapis.com/css2?family=Beth+Ellen&display=swap" rel="stylesheet" />
+</head>
 </head>
 <body>
 
@@ -260,6 +305,7 @@
 
 </body>
 </html>
+
 
 
 
