@@ -5,16 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entries</title>
     <style>
-        /* General Styles */
+        
         body {
             margin: 0;
             height: 100%;
             background-color: #fff;
             font-family: 'Helvetica Neue', sans-serif;
-            cursor: none; /* Hide default cursor */
+            cursor: none; 
         }
 
-        /* Hover Effect on Text */
         .highlight {
             position: relative;
             display: inline-block;
@@ -46,7 +45,6 @@
             }
         }
 
-        /* Ripple Effect Cursor */
         .cursor {
             position: absolute;
             border-radius: 50%;
@@ -57,7 +55,7 @@
             height: 30px;
             transition: all 0.2s ease-out;
             opacity: 0.8;
-            z-index: 1000; /* Ensures cursor is always visible */
+            z-index: 1000;
         }
 
         .cursor-ripple {
@@ -75,7 +73,6 @@
             }
         }
 
-        /* Page Text and Layout */
         .ripple-text {
             font-size: 100px;
             font-weight: 300;
@@ -87,7 +84,6 @@
             z-index: 2;
         }
 
-        /* Circular Icons */
         .circle-icon {
             display: inline-block;
             width: 20px;
@@ -96,7 +92,7 @@
             background-color: black;
             border-radius: 50%;
             transition: background 0.3s ease, transform 0.2s ease;
-            position: relative; /* Ensures clickability */
+            position: relative;
             z-index: 10;
         }
 
@@ -116,7 +112,6 @@
             font-size: 1.5em;
         }
 
-        /* Particles.js Background */
         #particles-js {
             position: fixed;
             width: 100%;
@@ -125,14 +120,40 @@
             left: 0;
             z-index: -1;
         }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 19px;
+            color: black;
+            background-color: transparent;
+            border: 1.5px solid black; 
+            padding: 8px 50px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-family: 'Helvetica Neue', sans-serif;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.5s ease, transform 0.2s ease, color 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: black;
+            color: #73C2FB;
+            transform: scale(1.08);
+        }
+
     </style>
 </head>
 <body>
 
-<!-- Particle.js Background -->
 <div id="particles-js"></div>
 
-<!-- Main Content -->
+<a href="homepage.html" class="home-button">home</a>
+
 <div class="ripple-text">
     RIPPLE EFFECT IS SEEN AROUND<br>
     IN PERSONAL ACTS WHERE 1 SMALL GESTURE INSPIRES A CHAIN OF REACTION.<br>
@@ -157,14 +178,11 @@
     </span>
 </div>
 
-<!-- Ripple Effect Cursor -->
 <div class="cursor"></div>
 
-<!-- Script for Cursor and Particle.js -->
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 <script>
-    // Particles.js Initialization
     particlesJS("particles-js", {
         particles: {
             number: { value: 50 },
@@ -180,7 +198,6 @@
         }
     });
 
-    // Custom Cursor Animation
     const cursor = document.querySelector('.cursor');
     let mouseX = 0, mouseY = 0;
     let cursorX = 0, cursorY = 0;
@@ -200,7 +217,6 @@
         mouseX = e.pageX;
         mouseY = e.pageY;
 
-        // Add Ripple Effect to Cursor
         cursor.classList.add('cursor-ripple');
 
         setTimeout(() => {
@@ -208,11 +224,10 @@
         }, 800);
     });
 
-    // Fix Clickability of Circle Icons
     document.querySelectorAll('.circle-icon').forEach(icon => {
         icon.addEventListener('click', (event) => {
-            event.stopPropagation(); // Stops any conflicting event bubbling
-            const link = icon.closest('a'); // Finds the closest anchor tag
+            event.stopPropagation();
+            const link = icon.closest('a');
             if (link) {
                 window.location.href = link.href;
             }
