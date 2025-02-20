@@ -15,7 +15,6 @@
       transition: filter 0.3s ease;
     }
 
-    /* Navbar Styles */
     .navbar {
       width: 100%;
       display: flex;
@@ -153,7 +152,6 @@
       padding-top: 150px;
     }
 
-    /* === WATER RIPPLE EFFECT === */
     .water-ripple-bg {
       position: fixed;
       top: 0;
@@ -163,7 +161,6 @@
       z-index: -1;
     }
 
-    /* Responsive Adjustments */
     @media screen and (max-width: 768px) {
       .navbar .nav-links {
         flex-direction: column;
@@ -196,7 +193,6 @@
     }
   </style>
 
-  <!-- Load Custom Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Zapfino&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue+Thin&display=swap" rel="stylesheet" />
    <link href="https://fonts.googleapis.com/css2?family=Beth+Ellen&display=swap" rel="stylesheet" />
@@ -204,7 +200,6 @@
 </head>
 <body>
 
-  <!-- Removed the beach image, ripple effect is applied globally -->
   <div class="water-ripple-bg"></div>
 
   <nav class="navbar">
@@ -213,7 +208,6 @@
       <a href="#about">About</a>
       <a href="contact">Contact</a>
     </div>
-    <!-- Toggle button for Ripple Effect -->
     <button class="toggle-button" onclick="toggleRipple()">off</button>
   </nav>
 
@@ -229,24 +223,19 @@
     <div class="effect-text" role="text">effect</div>
   </main>
 
-  <!-- SVG Filter for Water Ripple Effect -->
   <svg width="0" height="0">
     <filter id="water-ripple">
-      <!-- Create more complex layers of turbulence to simulate 3D ripples -->
       <feTurbulence id="turb1" type="fractalNoise" baseFrequency="0.02" numOctaves="7" seed="1" result="warp1"/>
       <feTurbulence id="turb2" type="fractalNoise" baseFrequency="0.03" numOctaves="5" seed="50" result="warp2"/>
       <feTurbulence id="turb3" type="fractalNoise" baseFrequency="0.04" numOctaves="6" seed="30" result="warp3"/>
       
-      <!-- Add Gaussian blur to soften the ripples and make them appear more realistic -->
       <feGaussianBlur in="warp1" stdDeviation="3" result="blurredWarp1"/>
       <feGaussianBlur in="warp2" stdDeviation="4" result="blurredWarp2"/>
       <feGaussianBlur in="warp3" stdDeviation="5" result="blurredWarp3"/>
 
-      <!-- Combine layers with different blur levels for smooth transition -->
       <feBlend in="blurredWarp1" in2="blurredWarp2" mode="multiply" result="combinedWarp1"/>
       <feBlend in="combinedWarp1" in2="blurredWarp3" mode="multiply" result="combinedWarp"/>
       
-      <!-- Apply displacement map with stronger scale for more intense ripples -->
       <feDisplacementMap in="SourceGraphic" in2="combinedWarp" scale="120" xChannelSelector="R" yChannelSelector="G"/>
     </filter>
   </svg>
@@ -263,12 +252,10 @@
     function animateRipples() {
       if (!rippleActive) return;
 
-      // Adjust the frequencies to create smoother transitions for the ripples
-      const freq1 = 0.02 + 0.005 * Math.sin(t * 0.5); // Slower sine wave for more realistic movement
+      const freq1 = 0.02 + 0.005 * Math.sin(t * 0.5); 
       const freq2 = 0.03 + 0.005 * Math.cos(t * 1.5);
       const freq3 = 0.04 + 0.003 * Math.sin(t * 2);
 
-      // Slight variation in amplitude to simulate depth
       const amp1 = 1 + 0.2 * Math.sin(t * 0.3);
       const amp2 = 1 + 0.1 * Math.cos(t * 0.6);
       const amp3 = 1 + 0.15 * Math.sin(t * 1.8);
@@ -277,7 +264,7 @@
       turbulence2.setAttribute('baseFrequency', (freq2 * amp2).toFixed(4));
       turbulence3.setAttribute('baseFrequency', (freq3 * amp3).toFixed(4));
 
-      t += 0.002; // Slow down frequency changes for more gradual ripple evolution
+      t += 0.002; 
       requestAnimationFrame(animateRipples);
     }
 
