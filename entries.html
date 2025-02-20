@@ -57,6 +57,7 @@
             height: 30px;
             transition: all 0.2s ease-out;
             opacity: 0.8;
+            z-index: 1000; /* Ensures cursor is always visible */
         }
 
         .cursor-ripple {
@@ -95,6 +96,8 @@
             background-color: black;
             border-radius: 50%;
             transition: background 0.3s ease, transform 0.2s ease;
+            position: relative; /* Ensures clickability */
+            z-index: 10;
         }
 
         .circle-icon:hover {
@@ -105,6 +108,8 @@
         .highlight a {
             display: inline-flex;
             align-items: center;
+            text-decoration: none;
+            color: inherit;
         }
 
         .bigger-text {
@@ -133,21 +138,21 @@
     IN PERSONAL ACTS WHERE 1 SMALL GESTURE INSPIRES A CHAIN OF REACTION.<br>
     PLAYS OUT IN<br>
 
-    <span class="highlight">((SOCIAL))
+    <span class="highlight">
         <a href="social.html">
-            <span class="circle-icon"></span>
-        </a>
-    </span><br>
-    
-    <span class="highlight">((EMOTIONAL))
-        <a href="https://www.example.com/emotional">
-            <span class="circle-icon"></span>
+            ((SOCIAL)) <span class="circle-icon"></span>
         </a>
     </span><br>
 
-    <span class="highlight bigger-text">((ENVIRONMENTAL))
+    <span class="highlight">
+        <a href="https://www.example.com/emotional">
+            ((EMOTIONAL)) <span class="circle-icon"></span>
+        </a>
+    </span><br>
+
+    <span class="highlight bigger-text">
         <a href="https://www.example.com/environmental">
-            <span class="circle-icon"></span>
+            ((ENVIRONMENTAL)) <span class="circle-icon"></span>
         </a>
     </span>
 </div>
@@ -194,23 +199,23 @@
     document.addEventListener('mousemove', (e) => {
         mouseX = e.pageX;
         mouseY = e.pageY;
-        
+
         // Add Ripple Effect to Cursor
         cursor.classList.add('cursor-ripple');
-        
+
         setTimeout(() => {
             cursor.classList.remove('cursor-ripple');
-        }, 800); 
+        }, 800);
     });
 
-    // Change Cursor Color on Circle Hover
-    const icons = document.querySelectorAll('.circle-icon');
-    icons.forEach((icon) => {
-        icon.addEventListener('mouseover', () => {
-            cursor.style.backgroundColor = 'rgba(51, 175, 214, 0.6)';
-        });
-        icon.addEventListener('mouseout', () => {
-            cursor.style.backgroundColor = 'rgba(51, 175, 214, 0.4)';
+    // Fix Clickability of Circle Icons
+    document.querySelectorAll('.circle-icon').forEach(icon => {
+        icon.addEventListener('click', (event) => {
+            event.stopPropagation(); // Stops any conflicting event bubbling
+            const link = icon.closest('a'); // Finds the closest anchor tag
+            if (link) {
+                window.location.href = link.href;
+            }
         });
     });
 
@@ -219,6 +224,7 @@
 
 </body>
 </html>
+
 
 
 
