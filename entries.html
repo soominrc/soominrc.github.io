@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ripple Effect with Smooth Cursor</title>
+    <title>Entries</title>
     <style>
         /* General Styles */
         body {
             margin: 0;
             height: 100%;
-            background-color: #fff; /* White background */
+            background-color: #fff;
             font-family: 'Helvetica Neue', sans-serif;
             cursor: none; /* Hide default cursor */
         }
@@ -76,30 +76,35 @@
 
         /* Page Text and Layout */
         .ripple-text {
-            font-size: 100px; /* Text size from your original code */
+            font-size: 100px;
             font-weight: 300;
             text-align: justify;
             width: 100%;
             padding: 20px;
             margin-top: 100px;
             position: relative;
-            z-index: 2; /* Keep text above the particles */
+            z-index: 2;
         }
 
-        .icon {
-            width: 40px;
-            height: 40px;
+        /* Circular Icons */
+        .circle-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
             margin-left: 10px;
-            vertical-align: middle;
+            background-color: black;
+            border-radius: 50%;
+            transition: background 0.3s ease, transform 0.2s ease;
         }
 
-        a {
-            text-decoration: none;
-            color: black;
+        .circle-icon:hover {
+            background-color: #33AFD6;
+            transform: scale(1.2);
         }
 
-        .highlight a:hover .icon {
-            fill: #33AFD6;
+        .highlight a {
+            display: inline-flex;
+            align-items: center;
         }
 
         .bigger-text {
@@ -108,12 +113,12 @@
 
         /* Particles.js Background */
         #particles-js {
-            position: fixed; /* Fix to cover entire screen */
+            position: fixed;
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
-            z-index: -1; /* Make sure particles stay in the background */
+            z-index: -1;
         }
     </style>
 </head>
@@ -127,33 +132,22 @@
     RIPPLE EFFECT IS SEEN AROUND<br>
     IN PERSONAL ACTS WHERE 1 SMALL GESTURE INSPIRES A CHAIN OF REACTION.<br>
     PLAYS OUT IN<br>
+
     <span class="highlight">((SOCIAL))
-        <a href="pages/social.html">Social</a>
-            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2" fill="none" />
-                <circle cx="12" cy="12" r="6" stroke="black" stroke-width="2" fill="none" />
-                <circle cx="12" cy="12" r="2" stroke="black" stroke-width="2" fill="none" />
-            </svg>
+        <a href="pages/social.html">
+            <span class="circle-icon"></span>
         </a>
     </span><br>
     
     <span class="highlight">((EMOTIONAL))
         <a href="https://www.example.com/emotional">
-            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2" fill="none" />
-                <circle cx="12" cy="12" r="6" stroke="black" stroke-width="2" fill="none" />
-                <circle cx="12" cy="12" r="2" stroke="black" stroke-width="2" fill="none" />
-            </svg>
+            <span class="circle-icon"></span>
         </a>
     </span><br>
 
     <span class="highlight bigger-text">((ENVIRONMENTAL))
         <a href="https://www.example.com/environmental">
-            <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" stroke="black" stroke-width="2" fill="none" />
-                <circle cx="12" cy="12" r="6" stroke="black" stroke-width="2" fill="none" />
-                <circle cx="12" cy="12" r="2" stroke="black" stroke-width="2" fill="none" />
-            </svg>
+            <span class="circle-icon"></span>
         </a>
     </span>
 </div>
@@ -209,8 +203,8 @@
         }, 800); 
     });
 
-    // Change Cursor Color on Icon Hover
-    const icons = document.querySelectorAll('.highlight a');
+    // Change Cursor Color on Circle Hover
+    const icons = document.querySelectorAll('.circle-icon');
     icons.forEach((icon) => {
         icon.addEventListener('mouseover', () => {
             cursor.style.backgroundColor = 'rgba(51, 175, 214, 0.6)';
@@ -225,6 +219,8 @@
 
 </body>
 </html>
+
+
 
 
 
