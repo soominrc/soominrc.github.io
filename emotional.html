@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Social</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #ffffff;
+      overflow-x: hidden;
+      height: 100vh;
+      width: 100vw;
+      transition: filter 0.3s ease;
+      padding-top: 80px;
+    }
+
+    .navbar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      backdrop-filter: blur(8px);
+      background: rgba(255, 255, 255, 0.8);
+      z-index: 100;
+    }
+
+    .nav-button {
+      font-size: 24px;
+      cursor: pointer;
+      color: black;
+      text-decoration: none;
+      font-weight: lighter;
+      padding: 10px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-button:hover {
+      color: #73C2FB;
+    }
+
+    .content {
+      text-align: center;
+      margin-top: 120px;
+      padding: 20px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    .content h1 {
+      font-size: 90px;
+      font-weight: lighter;
+      text-align: center;
+      margin-bottom: 10px;
+      margin-top: -50px;
+    }
+
+    .bigger-text {
+      font-size: 160px; 
+      font-family: "Sinhala Sangam MN", sans-serif;
+      font-weight: bold;
+      display: block;
+      text-align: center;
+      line-height: 140px;
+    }
+
+    .content h2 {
+      font-family: 'Helvetica Neue Light', sans-serif;
+      text-align: center;
+      font-size: 28px;
+      margin-top: -20px;
+      margin-bottom: 30px;
+      font-weight: lighter;
+    }
+
+    .content p {
+      font-family: 'Helvetica Neue', sans-serif;
+      text-align: justify;
+      padding-left: 50px;
+      padding-right: 50px;
+      font-size: 18px;
+    }
+
+    .bold-text {
+      font-weight: bold;
+    }
+
+    .squiggly-wrapper {
+      position: fixed;
+      bottom: 42px;
+      right: 42px;
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+
+    .squiggly-svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      stroke: black;
+      stroke-width: 3;
+      fill: none;
+      stroke-dasharray: 10;
+      animation: squiggle 1.5s linear infinite;
+    }
+
+    @keyframes squiggle {
+      0% {
+        stroke-dashoffset: 20;
+      }
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    .circle {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 24px;
+      color: white;
+      font-weight: bold;
+      background: linear-gradient(135deg, #B3DFFC, #89CFF0);
+      transition: transform 0.3s ease, background 0.3s ease;
+      z-index: 300;
+      box-shadow: 0px 4px 10px rgba(137, 207, 240, 0.5);
+    }
+
+    .circle:hover {
+      transform: scale(1.2);
+      background: linear-gradient(135deg, #A6D8F5, #74BEE9);
+    }
+
+    .example-list {
+      display: none;
+      border: 1px solid black;
+      background: white;
+      color: black;
+      padding: 20px;
+      border-radius: 10px;
+      position: fixed;
+      bottom: 120px;
+      right: 50px;
+      max-width: 320px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      z-index: 200;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Gabriel+Sans:wght@100&display=swap');
+
+    .gabriel-sans {
+      font-family: 'Gabriel Sans', sans-serif;
+      font-weight: 100;
+      color: #73C2FB;
+      text-decoration: none;
+    }
+
+    .gabriel-sans:hover {
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="social.html" class="nav-button">← Back</a>
+    <a href="enviormental.html" class="nav-button">Forward →</a>
+  </nav>
+
+  <div class="content">
+    <h1><span class="bigger-text">02</span> (EMOTIONAL)</h1>
+    <h2>Powerful people are powerful influences </h2>
+    
+    <p> It’s no secret that emotions have a powerful impact on our lives, but what about the potential effects of those feelings beyond ourselves? The Emotional Ripple Effect is a known phenomenon where emotions, spread beyond just the individual, influencing others and shaping broader social dynamics.  </p>
+        <p> The ripple effect can manifest in both positive and negative ways. A simple act of kindness—such as a genuine compliment, a thoughtful gesture, or a moment of encouragement—can uplift someone’s mood, prompting them to pass that positivity forward. In contrast, negative emotions like frustration, cynicism, or hostility can create a chain reaction, dampening morale and spreading unease within a group. Just like a stone being thrown into a pond creates ripples, our emotions, expressions, and actions can do the same spreading impact around us, often in ways we don’t even notice. Neuroscientific studies suggest that humans are wired for emotional contagion—where we subconsciously synchronize in emotions.</p>
+    
+    <p>In a world where negativity often takes over headlines and social media, being more intentional about spreading positivity can create lasting change. By understanding the emotional ripple effect, we are able to take responsibility for the energy we bring into interactions and consciously choose to contribute to better choices.</p>
+
+
+    <p class="bold-text">Start your ripple today.</p>
+  </div>
+
+  <div class="squiggly-wrapper" onclick="togglePopup(event)">
+    <svg class="squiggly-svg">
+      <circle cx="40" cy="40" r="35"></circle>
+    </svg>
+    <div class="circle">+</div>
+  </div>
+
+  <div class="example-list" id="exampleList">
+    <h2>Where has this been seen?</h2>
+    <p>#TheFreeHugsCampaign 2004 - Present: Started by Juan Mann, became a global sensation after a video of him offering hugs to strangers went viral in 2006. </p>
+    <p>The Blind Man’s Sign 2013 – A simple wording change on a blind man’s sign led to more generosity, showing how small shifts in perspective create emotional ripples.
+      <a href="https://youtu.be/CNhYbJbqg-Y?si=kp55ffZEQpn2QE6N" target="_blank" class="gabriel-sans">(Watch the video)</a>
+    </p>
+    <p>Celeberties/Influencers: When a celebrity speaks openly about their struggles with mental health which then spreads awareness. </p>
+  </div>
+
+  <script>
+    function togglePopup(event) {
+      event.stopPropagation(); 
+      let popup = document.getElementById("exampleList");
+      popup.style.display = (popup.style.display === "block") ? "none" : "block";
+    }
+
+    document.addEventListener("click", function(event) {
+      let popup = document.getElementById("exampleList");
+      if (popup.style.display === "block" && !popup.contains(event.target) && !event.target.closest(".squiggly-wrapper")) {
+        popup.style.display = "none";
+      }
+    });
+  </script>
+
+</body>
+</html>
