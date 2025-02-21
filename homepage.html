@@ -8,11 +8,39 @@
     body {
       margin: 0;
       font-family: "Inter", sans-serif;
-      background-color: #f7f7f7;
       overflow-x: hidden;
       height: 100vh;
       width: 100vw;
       transition: filter 0.3s ease;
+      position: relative;
+      
+      /* ✅ Correct background image */
+      background-image: url('https://i.pinimg.com/736x/cd/83/be/cd83bed3de445243c913af8700da8d8a.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+    }
+
+    /* ✅ Dark overlay to improve contrast */
+    .background-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4); /* Subtle dark overlay */
+      z-index: -1;
+    }
+
+    /* Ensuring ripple effect applies only to text */
+    .ripple-effect {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1; /* Behind text but above background */
+      filter: url(#water-ripple);
     }
 
     .navbar {
@@ -20,118 +48,98 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background-color: rgba(255, 255, 255, 0.8);
+      background: rgba(0, 0, 0, 0.5);
       padding: 15px 20px;
       z-index: 100;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 1px 15px rgba(0, 0, 0, 0.15);
-      backdrop-filter: blur(5px);
-      border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-      font-family: 'Helvetica Neue', sans-serif; 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      font-family: 'Helvetica Neue', sans-serif;
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
     }
 
-    .navbar .logo {
-      color: black;
-      font-size: 23px;
-      font-weight: 200;
-      text-decoration: none;
-      border: 1.5px solid black;
-      padding: 8px 50px;
-      border-radius: 25px;
-      transition: background-color 0.5s ease, transform 0.2s ease, color 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .navbar .logo:hover {
-      background-color: black;
-      color: #73C2FB;
-      transform: scale(1.08);
-    }
-
-    .navbar .toggle-button {
-      cursor: pointer;
-      font-size: 19px;
-      color: black;
-      background-color: transparent;
-      border: 1.5px solid black; 
-      padding: 8px 50px;
-      border-radius: 25px;
-      transition: background-color 0.5s ease, transform 0.2s ease, color 0.3s ease;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .navbar .toggle-button:hover {
-      background-color: black;
+    .navbar .logo, .navbar .toggle-button {
       color: white;
-      transform: scale(1.08);
+      font-size: 20px;
+      font-weight: 300;
+      text-decoration: none;
+      border: 1.5px solid white;
+      padding: 10px 40px;
+      border-radius: 25px;
+      transition: all 0.4s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
     }
 
-   .ripple-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: 1484px;
-  margin: 0 auto;
-  padding: 120px 20px 20px; 
-  font-family: 'Helvetica Neue', sans-serif;
-  text-align: center;
-}
+    .navbar .logo:hover, .navbar .toggle-button:hover {
+      background-color: white;
+      color: #222;
+      transform: scale(1.05);
+    }
+
+    .ripple-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 1484px;
+      margin: 0 auto;
+      padding: 120px 20px 20px;
+      font-family: 'Helvetica Neue', sans-serif;
+      text-align: center;
+      position: relative;
+      z-index: 10;
+    }
+
     .ripple-text {
-      color: #000;
+      color: white;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      font: 600 390px/1 "Helvetica Neue Thin", sans-serif;
+      font: 600 360px/1 "Helvetica Neue Thin", sans-serif;
       position: relative;
+      text-shadow: 5px 5px 20px rgba(0, 0, 0, 0.6); /* Stronger shadow for readability */
+      filter: url(#water-ripple); /* Apply ripple effect */
     }
 
     .ripple-text-r {
       font-family: 'Zapfino', cursive;
-      font-size: 400px;
-      color: #000;
+      font-size: 380px;
+      color: white;
       padding-top: 40px;
-      transform: translateX(-80px); 
+      transform: translateX(-80px);
+      text-shadow: 5px 5px 20px rgba(0, 0, 0, 0.6);
     }
 
     .effect-text {
-      color: #000;
+      color: white;
       margin-top: -10px;
-      font: 600 440px/1 "Helvetica Neue Thin", sans-serif;
+      font: 600 380px/1 "Helvetica Neue Thin", sans-serif;
+      text-shadow: 5px 5px 20px rgba(0, 0, 0, 0.6);
+      filter: url(#water-ripple); /* Apply ripple effect */
     }
 
     .parentheses, .inner-parentheses {
       font-family: 'Beth Ellen', sans-serif;
       padding-top: 80px;
+      color: white;
     }
 
     .parentheses {
-      font-size: 310px;
+      font-size: 290px;
     }
 
     .inner-parentheses {
-      font-size: 220px;
+      font-size: 200px;
       font-weight: 600;
       margin-top: 0px;
       padding-top: 110px;
-    }
-
-    .water-ripple-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
     }
   </style>
 
@@ -141,11 +149,11 @@
 </head>
 <body>
 
-  <div class="water-ripple-bg"></div>
+  <div class="background-overlay"></div>
 
   <nav class="navbar">
-    <a href="#" class="logo">learn more</a>
-    <button class="toggle-button" onclick="toggleRipple()">off</button>
+    <a href="#" class="logo">Learn More</a>
+    <button class="toggle-button" onclick="toggleRipple()">Off</button>
   </nav>
 
   <main class="ripple-container">
@@ -176,23 +184,18 @@
 
     function animateRipples() {
       if (!rippleActive) return;
-
       const freq = 0.02 + 0.005 * Math.sin(t * 0.5);
       turbulence.setAttribute('baseFrequency', freq.toFixed(4));
-
       t += 0.02;
       requestAnimationFrame(animateRipples);
     }
 
     function toggleRipple() {
       rippleActive = !rippleActive;
-      if (rippleActive) {
-        document.body.style.filter = 'url(#water-ripple)';
-        animateRipples();
-      } else {
-        document.body.style.filter = 'none';
-      }
-      document.querySelector('.toggle-button').textContent = rippleActive ? 'on' : 'off';
+      const rippleText = document.querySelectorAll('.ripple-text, .effect-text');
+      rippleText.forEach(el => el.style.filter = rippleActive ? 'url(#water-ripple)' : 'none');
+      document.querySelector('.toggle-button').textContent = rippleActive ? 'On' : 'Off';
+      if (rippleActive) animateRipples();
     }
 
     learnMoreLink.addEventListener('click', function(event) {
@@ -204,6 +207,7 @@
 
 </body>
 </html>
+
 
 
 
