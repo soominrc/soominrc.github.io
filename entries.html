@@ -10,12 +10,47 @@
             height: 100%;
             background-color: #fff;
             font-family: 'Helvetica Neue', sans-serif;
-            cursor: none; 
+            cursor: none;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        .highlight {
-            position: relative;
-            display: inline-block;
+        /* Ripple-Inspired Minimal Cursor */
+        .cursor {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: rgba(51, 175, 214, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out, opacity 0.2s ease-in-out;
+            z-index: 1000;
+        }
+
+        /* Cursor Ripple Effect */
+        .cursor-ripple {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: rgba(51, 175, 214, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0;
+            animation: rippleExpand 0.6s ease-out forwards;
+            z-index: 999;
+        }
+
+        @keyframes rippleExpand {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(6);
+                opacity: 0;
+            }
         }
 
         /* Pulse Effect for Icons */
@@ -65,10 +100,6 @@
             align-items: center;
             text-decoration: none;
             color: inherit;
-        }
-
-        .bigger-text {
-            font-size: clamp(1em, 4vw, 1.5em);
         }
 
         #particles-js {
@@ -162,7 +193,7 @@
         </a>
     </span><br>
 
-    <span class="highlight bigger-text">
+    <span class="highlight">
         <a href="environmental.html">
             ((ENVIRONMENTAL)) <span class="pulse-icon"></span>
         </a>
@@ -190,29 +221,22 @@
     });
 
     const cursor = document.querySelector('.cursor');
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
-    const speed = 0.1;
-
-    function updateCursor() {
-        cursorX += (mouseX - cursorX) * speed;
-        cursorY += (mouseY - cursorY) * speed;
-
-        cursor.style.left = `${cursorX}px`;
-        cursor.style.top = `${cursorY}px`;
-
-        requestAnimationFrame(updateCursor);
-    }
 
     document.addEventListener('mousemove', (e) => {
-        mouseX = e.pageX;
-        mouseY = e.pageY;
+        cursor.style.left = `${e.clientX}px`;
+        cursor.style.top = `${e.clientY}px`;
+    });
 
-        cursor.classList.add('cursor-ripple');
+    document.addEventListener('click', (e) => {
+        const ripple = document.createElement('div');
+        ripple.classList.add('cursor-ripple');
+        ripple.style.left = `${e.clientX}px`;
+        ripple.style.top = `${e.clientY}px`;
+        document.body.appendChild(ripple);
 
         setTimeout(() => {
-            cursor.classList.remove('cursor-ripple');
-        }, 800);
+            ripple.remove();
+        }, 600);
     });
 
     document.querySelectorAll('.pulse-icon').forEach(icon => {
@@ -225,11 +249,12 @@
         });
     });
 
-    updateCursor();
 </script>
 
 </body>
 </html>
+
+
 
 
 
