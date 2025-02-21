@@ -11,36 +11,23 @@
       overflow-x: hidden;
       height: 100vh;
       width: 100vw;
-      transition: filter 0.3s ease;
       position: relative;
-      
-      /* ✅ Correct background image */
       background-image: url('https://i.pinimg.com/736x/cd/83/be/cd83bed3de445243c913af8700da8d8a.jpg');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
     }
 
-    /* ✅ Dark overlay to improve contrast */
     .background-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.4); /* Subtle dark overlay */
+      background: rgba(0, 0, 0, 0.4); /* Dark overlay stays */
       z-index: -1;
-    }
-
-    /* Ensuring ripple effect applies only to text */
-    .ripple-effect {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1; /* Behind text but above background */
-      filter: url(#water-ripple);
+      filter: none;
+      transition: filter 0.3s ease;
     }
 
     .navbar {
@@ -95,6 +82,8 @@
       text-align: center;
       position: relative;
       z-index: 10;
+      filter: none;
+      transition: filter 0.3s ease;
     }
 
     .ripple-text {
@@ -104,8 +93,7 @@
       justify-content: center;
       font: 600 360px/1 "Helvetica Neue Thin", sans-serif;
       position: relative;
-      text-shadow: 5px 5px 20px rgba(0, 0, 0, 0.6); /* Stronger shadow for readability */
-      filter: url(#water-ripple); /* Apply ripple effect */
+      text-shadow: 5px 5px 20px rgba(0, 0, 0, 0.6);
     }
 
     .ripple-text-r {
@@ -122,7 +110,6 @@
       margin-top: -10px;
       font: 600 380px/1 "Helvetica Neue Thin", sans-serif;
       text-shadow: 5px 5px 20px rgba(0, 0, 0, 0.6);
-      filter: url(#water-ripple); /* Apply ripple effect */
     }
 
     .parentheses, .inner-parentheses {
@@ -142,10 +129,6 @@
       padding-top: 110px;
     }
   </style>
-
-  <link href="https://fonts.googleapis.com/css2?family=Zapfino&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue+Thin&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Beth+Ellen&display=swap" rel="stylesheet" />
 </head>
 <body>
 
@@ -170,44 +153,47 @@
 
   <svg width="0" height="0">
     <filter id="water-ripple">
-      <feTurbulence id="turbulence" type="fractalNoise" baseFrequency="0.02" numOctaves="6" seed="3" />
+      <feTurbulence id="turbulence" type="fractalNoise" baseFrequency="0" numOctaves="6" seed="3" />
       <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="50" />
     </filter>
   </svg>
 
   <script>
-    const learnMoreLink = document.querySelector('.navbar .logo');
     const turbulence = document.getElementById('turbulence');
-
     let t = 0;
     let rippleActive = false;
 
     function animateRipples() {
       if (!rippleActive) return;
       const freq = 0.02 + 0.005 * Math.sin(t * 0.5);
-      turbulence.setAttribute('baseFrequency', freq.toFixed(4));
-      t += 0.02;
+      turbulence.setAttribute('baseFrequency', freq.toFixed(6));
+      t += 0.01;
       requestAnimationFrame(animateRipples);
     }
 
     function toggleRipple() {
       rippleActive = !rippleActive;
-      const rippleText = document.querySelectorAll('.ripple-text, .effect-text');
-      rippleText.forEach(el => el.style.filter = rippleActive ? 'url(#water-ripple)' : 'none');
-      document.querySelector('.toggle-button').textContent = rippleActive ? 'On' : 'Off';
-      if (rippleActive) animateRipples();
-    }
+      const backgroundOverlay = document.querySelector('.background-overlay');
+      const rippleContainer = document.querySelector('.ripple-container');
 
-    learnMoreLink.addEventListener('click', function(event) {
-      event.preventDefault();
-      document.body.classList.add('fade-out');
-      setTimeout(() => window.location.href = 'entries.html', 1000);
-    });
+      // Apply ripple effect to both background and text container
+      backgroundOverlay.style.filter = rippleActive ? 'url(#water-ripple)' : 'none';
+      rippleContainer.style.filter = rippleActive ? 'url(#water-ripple)' : 'none';
+      document.querySelector('.toggle-button').textContent = rippleActive ? 'On' : 'Off';
+
+      if (rippleActive) {
+        setTimeout(() => {
+          turbulence.setAttribute('baseFrequency', '0.02');
+          animateRipples();
+        }, 100);
+      } else {
+        turbulence.setAttribute('baseFrequency', '0');
+      }
+    }
   </script>
 
 </body>
 </html>
-
 
 
 
