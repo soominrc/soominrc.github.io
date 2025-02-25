@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1 INPUT 1 OUTPUT TEMPLATE</title>
+  <style>
+    body {
+      background-color: #FFB6C1;
+      margin: 280px;
+      padding-bottom: 30px;
+      font-family: Arial, sans-serif;
+    }
+    
+    /* Example styling for the h1 */
+    h1 {
+      text-align: center;
+      margin-top: 20px;
+    }
+    
+    /* STYLE FOR THE INPUT FIELD */
+    #charInput {
+      /* Add desired styles here */
+    }
+
+    /* STYLE FOR THE SUBMIT BUTTON */
+    #submitButton {
+      /* Add desired styles here */
+    }
+
+    #displayedImage {
+      display: none; /* Mandatory so that the image is hidden initially */
+    }
+  </style>
+</head>
+<body>
+  <h1>Enter a letter (A–M) to see characters!</h1>
+
+  <input type="text" id="charInput" maxlength="1" />
+
+  <button onclick="displayImage()" id="submitButton">Show character 〃★</button>
+
+  <img id="displayedImage" src="" alt="Displayed Image" />
+
+  <!-- Image Display Script Below -->
+  <script>
+    // Array of images
+    // DIRECTIONS: UPDATE THE URLS WITH THE RELATIVE LINKS OF YOUR IMAGES
+    const images = [
+      "https://i.pinimg.com/736x/5e/9d/10/5e9d107c3ea348775548e30d83989ec7.jpg", // A
+      "https://i.pinimg.com/736x/7a/72/ab/7a72ab407925b885ea1e6d1e7253de81.jpg", // B
+      "https://i.pinimg.com/736x/33/db/a4/33dba4d52b1ecdf9bbc49e8bfa285edd.jpg", // C
+      "https://i.pinimg.com/736x/aa/a4/ed/aaa4ed01deeb84354a9d1c66e2ebc48e.jpg", // D
+      "https://i.pinimg.com/736x/9d/35/01/9d3501a84eaaaf1fa4f727d075ee4ced.jpg", // E
+      "https://i.pinimg.com/736x/e9/6e/8d/e96e8dd6444e085f511b7c460ed335be.jpg", // F
+      "https://i.pinimg.com/736x/18/51/ff/1851fffc0bf1aabace9ac05929807051.jpg", // G
+      "https://i.pinimg.com/736x/7d/39/2f/7d392f0cd20423eba428c98cfa1fbdae.jpg", // H
+      "https://i.pinimg.com/736x/8c/36/42/8c36421ac18a2906710dc0add1526168.jpg", // I
+      "https://i.pinimg.com/736x/7e/3e/f6/7e3ef6991b385cf038e13f59580a62f5.jpg", // J
+      "https://i.pinimg.com/736x/89/0e/2b/890e2b02bb051a8e8db4c1328af12d8b.jpg", // K
+      "https://i.pinimg.com/736x/69/b1/df/69b1dfaafff1793d85d0cbf99c167385.jpg", // L
+      "https://i.pinimg.com/736x/b4/fd/87/b4fd87b35dff5f48606aa800509f9457.jpg", // M
+    ];
+
+    function displayImage() {
+      const input = document.getElementById("charInput").value.toUpperCase();
+      const imgElement = document.getElementById("displayedImage");
+      
+      // Ensure the user entered a letter
+      if (!input) {
+        alert("Please enter a letter to see a cartoon character! (A–M).");
+        imgElement.style.display = "none";
+        return;
+      }
+
+      const index = input.charCodeAt(0) - 65; // 'A' is 65 in ASCII
+      if (index >= 0 && index < images.length) {
+        // If valid letter, set the correct image
+        imgElement.src = images[index];
+        imgElement.style.display = "block";
+      } else {
+        // If invalid input, display alternate image
+        imgElement.src = "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmtkdnJhMXY4Njd1cXR3MTM3MW1nMzZ1NXNhNHlhOHA0MWF2dDUzdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/13dRJkj5wgKq9q/giphy.gif";
+        imgElement.style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>
