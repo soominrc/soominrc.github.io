@@ -104,7 +104,7 @@
       display: flex;
       flex-wrap: nowrap;
       align-items: baseline;
-      font: 500 12vw/1 "Helvetica Neue Thin", sans-serif;
+      font: 600 12vw/1 "Helvetica Neue Thin", sans-serif;
       position: relative;
       padding-top: 70px;
     }
@@ -112,15 +112,16 @@
     .ripple-text-r {
       font-family: 'Arial', sans-serif;
       font-size: 15vw;
-      padding-top: 200px;
+      padding-bottom: 200px;
       transform: translateX(-20px);
     }
 
     .effect-text {
-      font: 400 12vw/1 "Helvetica Neue Thin", sans-serif;
+      font: 700 12vw/1 "Helvetica Neue Thin", sans-serif;
       margin-left: 2vw;
       display: inline-block;
       vertical-align: baseline;
+      padding-bottom: 200px;
     }
 
     .parentheses, .inner-parentheses {
@@ -166,7 +167,6 @@
   </style>
 </head>
 <body class="show-bg">
-  
   <svg width="0" height="0">
     <filter id="water-ripple">
       <feTurbulence id="turbulence" type="fractalNoise" baseFrequency="0" numOctaves="6" seed="3" />
@@ -196,7 +196,7 @@
   </main>
 
   <script>
-    let rippleActive = true; 
+    let rippleActive = true;
     const turbulence = document.getElementById('turbulence');
     let t = 0;
 
@@ -208,7 +208,6 @@
       requestAnimationFrame(animateRipples);
     }
 
-    
     window.onload = () => {
       turbulence.setAttribute('baseFrequency', '0.02');
       animateRipples();
@@ -235,6 +234,8 @@
   </script>
 </body>
 </html>
+
+
 
 
 
