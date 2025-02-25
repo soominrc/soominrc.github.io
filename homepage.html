@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Homepage</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Beth+Ellen&display=swap');
@@ -10,11 +10,12 @@
     body {
       margin: 0;
       font-family: "Inter", sans-serif;
-      overflow-x: hidden; /* Allows vertical scrolling while preventing horizontal scrolling */
-      height: auto;
+      overflow-x: hidden;
       min-height: 100vh;
       width: 100vw;
-      position: relative;
+      background: white;
+      color: black;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
     .ripple-wrapper {
@@ -27,6 +28,7 @@
       will-change: filter;
       transition: filter 0.3s ease;
       overflow: hidden;
+      filter: none; 
     }
 
     .background-overlay {
@@ -35,19 +37,11 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('https://i.pinimg.com/736x/cd/83/be/cd83bed3de445243c913af8700da8d8a.jpg');
+      background-image: url('https://i.pinimg.com/736x/00/64/a8/0064a8396d6ae5eec7ba391093e566ae.jpg');
       background-size: cover;
       background-position: center;
-      transform: scale(1.05); /* Expands slightly to remove white edges */
-    }
-
-    .dark-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
+      transform: scale(1.05);
+      display: none;
     }
 
     .navbar {
@@ -55,12 +49,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.05);
       padding: 15px 20px;
       z-index: 100;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       backdrop-filter: blur(8px);
-      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      border-bottom: 2px solid rgba(0, 0, 0, 0.1);
       font-family: 'Helvetica Neue', sans-serif;
       position: fixed;
       top: 0;
@@ -69,11 +63,11 @@
     }
 
     .navbar .logo, .navbar .toggle-button {
-      color: white;
+      color: black;
       font-size: 20px;
       font-weight: 300;
       text-decoration: none;
-      border: 1.5px solid white;
+      border: 1.5px solid black;
       padding: 10px 40px;
       border-radius: 25px;
       transition: all 0.4s ease;
@@ -84,8 +78,7 @@
     }
 
     .navbar .logo:hover, .navbar .toggle-button:hover {
-      background-color: white;
-      color: #222;
+      color: #555;
       transform: scale(1.05);
     }
 
@@ -97,83 +90,83 @@
       width: 100%;
       max-width: 1484px;
       margin: 0 auto;
-      padding: 120px 20px 120px; /* Adds bottom padding to allow scrolling */
+      padding: 120px 20px;
       font-family: 'Helvetica Neue', sans-serif;
       text-align: center;
       position: relative;
       z-index: 10;
       will-change: filter;
       transition: filter 0.3s ease;
+      filter: none; 
     }
 
     .ripple-text {
-      color: white;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      font: 600 360px/1 "Helvetica Neue Thin", sans-serif;
+      flex-wrap: nowrap;
+      align-items: baseline;
+      font: 500 12vw/1 "Helvetica Neue Thin", sans-serif;
       position: relative;
-      text-shadow: 5px 5px 20px rgba(0, 0, 0, 0.6);
+      padding-top: 70px;
     }
 
     .ripple-text-r {
-      font-family: 'Zapfino', cursive;
-      font-size: 380px;
-      color: white;
-      padding-top: 40px;
-      transform: translateX(-80px);
-      text-shadow: 5px 5px 20px rgba(0, 0, 0, 0.6);
+      font-family: 'Arial', sans-serif;
+      font-size: 15vw;
+      padding-top: 200px;
+      transform: translateX(-20px);
     }
 
     .effect-text {
-      color: white;
-      margin-top: -10px;
-      font: 600 380px/1 "Helvetica Neue Thin", sans-serif;
-      text-shadow: 5px 5px 20px rgba(0, 0, 0, 0.6);
+      font: 400 12vw/1 "Helvetica Neue Thin", sans-serif;
+      margin-left: 2vw;
+      display: inline-block;
+      vertical-align: baseline;
     }
 
     .parentheses, .inner-parentheses {
       font-family: 'Beth Ellen', cursive;
-      padding-top: 80px;
-      color: white;
     }
 
     .parentheses {
-      font-size: 290px;
+      font-size: 262px;
     }
 
     .inner-parentheses {
-      font-size: 200px;
+      font-size: 115px;
       font-weight: 600;
       margin-top: 0px;
-      padding-top: 110px;
+    }
+
+    .parentheses:first-of-type {
+      transform: translateY(-20px) rotate(-15deg);
+      display: inline-block;
+    }
+
+    .inner-parentheses {
+      transform: translateY(0px) rotate(0deg);
+      display: inline-block;
+    }
+
+    .parentheses:last-of-type {
+      transform: translateY(20px) rotate(15deg);
+      display: inline-block;
+    }
+
+    .show-bg .background-overlay {
+      display: block;
+    }
+
+    .show-bg .ripple-wrapper {
+      filter: url(#water-ripple);
+    }
+
+    .show-bg .ripple-container {
+      filter: url(#water-ripple);
     }
   </style>
 </head>
-<body>
-
-  <div class="ripple-wrapper">
-    <div class="background-overlay"></div>
-    <div class="dark-overlay"></div>
-  </div>
-
-  <nav class="navbar">
-    <a href="entries.html" class="logo">Learn More</a>
-    <button class="toggle-button" onclick="toggleRipple()">Off</button>
-  </nav>
-
-  <main class="ripple-container">
-    <div class="ripple-text" role="text">
-      <span class="ripple-text-r">r</span>
-      <span>ip</span>
-      <span class="parentheses">(</span>
-      <span class="inner-parentheses">()</span>
-      <span class="parentheses">)</span>
-      <span>le</span>
-    </div>
-    <div class="effect-text" role="text">effect</div>
-  </main>
-
+<body class="show-bg">
+  
   <svg width="0" height="0">
     <filter id="water-ripple">
       <feTurbulence id="turbulence" type="fractalNoise" baseFrequency="0" numOctaves="6" seed="3" />
@@ -181,10 +174,31 @@
     </filter>
   </svg>
 
+  <div class="ripple-wrapper">
+    <div class="background-overlay"></div>
+  </div>
+
+  <nav class="navbar">
+    <a href="entries.html" class="logo">Learn More</a>
+    <button class="toggle-button" onclick="toggleRipple()">ON</button>
+  </nav>
+
+  <main class="ripple-container">
+    <div class="ripple-text" role="text">
+      <span class="ripple-text-r">&reg;</span>
+      <span>ip</span>
+      <span class="parentheses">(</span>
+      <span class="inner-parentheses">()</span>
+      <span class="parentheses">)</span>
+      <span>le</span>
+      <span class="effect-text">EFFECT</span>
+    </div>
+  </main>
+
   <script>
+    let rippleActive = true; 
     const turbulence = document.getElementById('turbulence');
     let t = 0;
-    let rippleActive = false;
 
     function animateRipples() {
       if (!rippleActive) return;
@@ -194,29 +208,36 @@
       requestAnimationFrame(animateRipples);
     }
 
+    
+    window.onload = () => {
+      turbulence.setAttribute('baseFrequency', '0.02');
+      animateRipples();
+    };
+
     function toggleRipple() {
       rippleActive = !rippleActive;
-      const rippleWrapper = document.querySelector('.ripple-wrapper');
-      const rippleContainer = document.querySelector('.ripple-container');
-
-      rippleWrapper.style.filter = rippleActive ? 'url(#water-ripple)' : 'none';
-      rippleContainer.style.filter = rippleActive ? 'url(#water-ripple)' : 'none';
-
-      document.querySelector('.toggle-button').textContent = rippleActive ? 'On' : 'Off';
+      const body = document.body;
+      const button = document.querySelector('.toggle-button');
 
       if (rippleActive) {
+        body.classList.add('show-bg');
+        button.textContent = 'ON';
         setTimeout(() => {
           turbulence.setAttribute('baseFrequency', '0.02');
           animateRipples();
         }, 100);
       } else {
+        body.classList.remove('show-bg');
+        button.textContent = 'OFF';
         turbulence.setAttribute('baseFrequency', '0');
       }
     }
   </script>
-
 </body>
 </html>
+
+
+
 
 
 
