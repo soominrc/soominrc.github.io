@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mad Libs </title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #add8e6; }
+        form { margin-bottom: 20px; }
+        .story { font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Stories   *ੈ✩‧₊˚  </h1>
+    <form id="madLibsForm">
+        <label>Enter your name!: <input type="text" id="name" required></label><br><br>
+        <label>Enter an adjective!: <input type="text" id="adjective" required></label><br><br>
+        <label>Choose a place:
+            <select id="place">
+                <option value="forest">Mall</option>
+                <option value="beach">Beach</option>
+                <option value="castle">Castle</option>
+            </select>
+        </label><br><br>
+        <label>Select a mood:
+            <input type="radio" name="mood" value="happy" checked> Happy
+            <input type="radio" name="mood" value="mysterious"> Mysterious
+            <input type="radio" name="mood" value="scary"> Scary
+        </label><br><br>
+        <button type="button" onclick="generateStory()">Generate Story</button>
+    </form>
+    <div class="story" id="storyOutput"></div>
+    
+    <script>
+        function generateStory() {
+            let name = document.getElementById('name').value;
+            let adjective = document.getElementById('adjective').value;
+            let place = document.getElementById('place').value;
+            let mood = document.querySelector('input[name="mood"]:checked').value;
+            
+            if (name && adjective) {
+                let story = `${name} went to a ${adjective} ${place}. It was a ${mood} day, and something unexpected happened!`;
+                document.getElementById('storyOutput').innerText = story;
+            } else {
+                alert("Please fill in all fields!");
+            }
+        }
+    </script>
+</body>
+</html>
