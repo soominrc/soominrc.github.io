@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> assignment pt.2</title>
+    <style>
+        body { 
+            font-family: 'Arial', sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+            background-color: #fce4ec; 
+            color: #333; 
+        }
+      
+        h1 {
+            font-size: 50px;
+            margin-bottom: 30px;
+        }
+        form { 
+            background: #fff; 
+            padding: 20px; 
+            border-radius: 30px; 
+            display: inline-block; 
+            text-align: left;
+        }
+        label { font-weight: bold; }
+        input, select { 
+            padding: 8px; 
+            width: 90%; 
+            margin-top: 7px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+        }
+        button { 
+            background-color: #ff4081; 
+            color: white; 
+            padding: 10px 20px; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 20px; 
+            font-size: 16px;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #d81b60;
+        }
+        .story { 
+            font-weight: bold; 
+            font-size: 18px; 
+            margin-top: 20px; 
+            opacity: 0; 
+            transition: opacity 3s ease-in;
+        }
+        .error {
+            color: red;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>What Story? 𓂃₊ ⊹</h1>
+    <form id="madLibsForm">
+        <label>Enter your name: <input type="text" id="name"></label><br><br>
+        <label>Enter an adjective: <input type="text" id="adjective"></label><br><br>
+        <label>Choose a place:
+            <select id="place">
+                <option value="mall">Mall</option>
+                <option value="beach">Beach</option>
+                <option value="castle">Castle</option>
+                <option value="forest">Forest</option>
+                <option value="moon">Moon</option>
+            </select>
+        </label><br><br>
+        <label>Select a mood:
+            <input type="radio" name="mood" value="happy" checked> Happy
+            <input type="radio" name="mood" value="mysterious"> Mysterious
+            <input type="radio" name="mood" value="scary"> Scary
+            <input type="radio" name="mood" value="exciting"> Exciting
+        </label><br><br>
+      
+        <button type="button" onclick="generateStory()">Generate Story</button>
+        <p class="error" id="errorMsg"></p>
+    </form>
+    
+    <div class="story" id="storyOutput"></div>
+    
+    <script>
+        function generateStory() {
+            let name = document.getElementById('name').value.trim();
+            let adjective = document.getElementById('adjective').value.trim();
+            let place = document.getElementById('place').value;
+            let mood = document.querySelector('input[name="mood"]:checked').value;
+            let errorMsg = document.getElementById('errorMsg');
+            let storyOutput = document.getElementById('storyOutput');
+            
+            if (!name || !adjective) {
+                errorMsg.innerText = "Please fill in everything!";
+                return;
+            }
+
+            errorMsg.innerText = ""; // Clear error message if inputs are valid
+
+            let moodDescriptions = {
+                "happy": "a wonderful adventure filled with laughter.",
+                "mysterious": "an odd event that no one could really explain.",
+                "scary": "BAAAM...a chilling encounter with chucky",
+                "exciting": "an unexpected thrilling journey ."
+            };
+
+            let story = `${name} arrived at the ${adjective} ${place}. It was ${moodDescriptions[mood]} What happened next was unforgettable!`;
+
+            storyOutput.innerText = story;
+            storyOutput.style.opacity = "1"; // Smooth fade-in effect
+        }
+    </script>
+</body>
+</html>
