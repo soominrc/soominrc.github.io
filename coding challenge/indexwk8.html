@@ -3,21 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NYC Picks challenge wk8</title>
+  <title>NYC Picks</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       font-size: 40px;
       margin: 20px;
-      height: 200vh;
       background-color: #fffbe6;
     }
 
     .fixed-label {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
       background: #ffcc00;
       padding: 10px;
       color: #003366;
@@ -68,10 +64,11 @@
       text-decoration: none;
     }
 
-
-    .static-example {
-      position: static;
+    .static-example h2 {
+      position: sticky;
+      top: 80px;
       background-color: #fff176;
+      color: #003366;
     }
 
     .relative-example {
@@ -84,7 +81,7 @@
     .absolute-box {
       position: absolute;
       top: 450px;
-      left: 50%;
+      left: 90%;
       width: 300px;
       transform: translateX(-50%);
       background-color: #64b5f6;
@@ -104,13 +101,6 @@
       color: black;
       z-index: 5;
     }
-
-    .sticky-example h2 {
-      position: sticky;
-      top: 80px;
-      background-color: #fff176;
-      color: #003366;
-    }
   </style>
 </head>
 <body>
@@ -125,7 +115,7 @@
     </header>
 
     <div class="category static-example">
-      <h2>Pizza Spots</h2>
+      <h2>Pizza Spots!</h2>
       <ul>
         <li><a href="#">Joe's Pizza</a></li>
         <li><a href="#">Rubirosa</a></li>
@@ -134,7 +124,7 @@
     </div>
 
     <div class="category relative-example">
-      <h2> Museums</h2>
+      <h2>Museums!</h2>
       <ul>
         <li><a href="#">The Met</a></li>
         <li><a href="#">MoMA</a></li>
@@ -142,10 +132,11 @@
       </ul>
     </div>
 
-    
+    <div class="absolute-box">
+i love pizza    </div>
 
-    <div class="category sticky-example">
-      <h2>Parks</h2>
+    <div class="category">
+      <h2>Parks!</h2>
       <ul>
         <li><a href="#">Central Park</a></li>
         <li><a href="#">Bryant Park</a></li>
@@ -154,7 +145,7 @@
     </div>
 
     <div class="category">
-      <h2>Coffee</h2>
+      <h2>Coffee Spots!</h2>
       <ul>
         <li><a href="#">Blank Street</a></li>
         <li><a href="#">Fellini</a></li>
@@ -164,8 +155,9 @@
   </div>
 
   <div class="fixed-example">
-    🍩 
+    hi 🍩
   </div>
 
 </body>
 </html>
+
