@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NYC Picks</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      font-size: 40px;
       margin: 20px;
+      height: 200vh;
+      background-color: #fffbe6; 
     }
 
     .fixed-label {
@@ -15,11 +18,12 @@
       top: 0;
       left: 0;
       right: 0;
-      background: #FDDA0D;
+      background: #ffcc00;
       padding: 10px;
-      color: white;
+      color: #003366;
       text-align: center;
       font-weight: bold;
+      z-index: 10;
     }
 
     .page-content {
@@ -32,19 +36,22 @@
     }
 
     h1 {
-      font-size: 32px;
+      font-size: 60px;
+      color: #003366; 
     }
 
     .category {
-      margin-bottom: 50px;
+      margin-bottom: 60px;
+      padding: 10px;
+      background-color: #fefae0; 
     }
 
     .category h2 {
-      position: sticky;
-      top: 40px;
-      background: white;
+      background: #e0f0ff; 
       padding: 10px;
-      font-size: 20px;
+      font-size: 45px;
+      margin-bottom: 10px;
+      color: #003366;
     }
 
     ul {
@@ -53,12 +60,53 @@
     }
 
     li {
-      margin: 10px 0;
+      margin: 8px 0;
     }
 
     a {
       color: black;
       text-decoration: none;
+    }
+
+
+    .static-example {
+      position: static;
+      background-color: #fff176; 
+    }
+
+    .relative-example {
+      position: relative;
+      top: 10px;
+      left: 10px;
+      background-color: #aed581; 
+    }
+
+    .absolute-example {
+      position: absolute;
+      top: 250px;
+      left: 50%;
+      width: 200px;
+      background-color: #64b5f6; 
+      padding: 10px;
+      color: white;
+      z-index: -1;
+    }
+
+    .fixed-example {
+      position: fixed;
+      bottom: 30px;
+      right: 20px;
+      background-color: #fff176;
+      padding: 10px;
+      color: white;
+      z-index: 5;
+    }
+
+    .sticky-example h2 {
+      position: sticky;
+      top: 60px;
+       background-color: #fff176;
+      color: #003366;
     }
   </style>
 </head>
@@ -73,8 +121,8 @@
       <h1>New York City</h1>
     </header>
 
-    <div class="category">
-      <h2>Pizza Spots</h2>
+    <div class="category static-example">
+      <h2>Static: Pizza Spots</h2>
       <ul>
         <li><a href="#">Joe's Pizza</a></li>
         <li><a href="#">Rubirosa</a></li>
@@ -82,8 +130,8 @@
       </ul>
     </div>
 
-    <div class="category">
-      <h2>Museums</h2>
+    <div class="category relative-example">
+      <h2>Relative: Museums</h2>
       <ul>
         <li><a href="#">The Met</a></li>
         <li><a href="#">MoMA</a></li>
@@ -91,7 +139,12 @@
       </ul>
     </div>
 
-    <div class="category">
+    <div class="absolute-example">
+      <strong>Absolute Box</strong><br>
+      Positioned outside flow
+    </div>
+
+    <div class="category sticky-example">
       <h2>Parks</h2>
       <ul>
         <li><a href="#">Central Park</a></li>
@@ -108,7 +161,13 @@
         <li><a href="#">Joe's Coffee</a></li>
       </ul>
     </div>
+
+  </div>
+
+  <div class="fixed-example">
+    🍩 
   </div>
 
 </body>
 </html>
+
