@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NYC Picks</title>
+  <title>NYC Picks challenge wk8</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       font-size: 40px;
       margin: 20px;
       height: 200vh;
-      background-color: #fffbe6; 
+      background-color: #fffbe6;
     }
 
     .fixed-label {
@@ -27,7 +27,7 @@
     }
 
     .page-content {
-      padding-top: 60px;
+      padding-top: 80px;
     }
 
     header {
@@ -37,17 +37,17 @@
 
     h1 {
       font-size: 60px;
-      color: #003366; 
+      color: #003366;
     }
 
     .category {
       margin-bottom: 60px;
       padding: 10px;
-      background-color: #fefae0; 
+      background-color: #fefae0;
     }
 
     .category h2 {
-      background: #e0f0ff; 
+      background: #e0f0ff;
       padding: 10px;
       font-size: 45px;
       margin-bottom: 10px;
@@ -71,25 +71,28 @@
 
     .static-example {
       position: static;
-      background-color: #fff176; 
+      background-color: #fff176;
     }
 
     .relative-example {
       position: relative;
       top: 10px;
       left: 10px;
-      background-color: #aed581; 
+      background-color: #aed581;
     }
 
-    .absolute-example {
+    .absolute-box {
       position: absolute;
-      top: 250px;
+      top: 450px;
       left: 50%;
-      width: 200px;
-      background-color: #64b5f6; 
-      padding: 10px;
+      width: 300px;
+      transform: translateX(-50%);
+      background-color: #64b5f6;
+      padding: 20px;
       color: white;
-      z-index: -1;
+      z-index: 0;
+      text-align: center;
+      font-size: 30px;
     }
 
     .fixed-example {
@@ -98,14 +101,14 @@
       right: 20px;
       background-color: #fff176;
       padding: 10px;
-      color: white;
+      color: black;
       z-index: 5;
     }
 
     .sticky-example h2 {
       position: sticky;
-      top: 60px;
-       background-color: #fff176;
+      top: 80px;
+      background-color: #fff176;
       color: #003366;
     }
   </style>
@@ -122,7 +125,7 @@
     </header>
 
     <div class="category static-example">
-      <h2>Static: Pizza Spots</h2>
+      <h2>Pizza Spots</h2>
       <ul>
         <li><a href="#">Joe's Pizza</a></li>
         <li><a href="#">Rubirosa</a></li>
@@ -131,7 +134,7 @@
     </div>
 
     <div class="category relative-example">
-      <h2>Relative: Museums</h2>
+      <h2> Museums</h2>
       <ul>
         <li><a href="#">The Met</a></li>
         <li><a href="#">MoMA</a></li>
@@ -139,10 +142,7 @@
       </ul>
     </div>
 
-    <div class="absolute-example">
-      <strong>Absolute Box</strong><br>
-      Positioned outside flow
-    </div>
+    
 
     <div class="category sticky-example">
       <h2>Parks</h2>
@@ -161,7 +161,6 @@
         <li><a href="#">Joe's Coffee</a></li>
       </ul>
     </div>
-
   </div>
 
   <div class="fixed-example">
@@ -170,4 +169,3 @@
 
 </body>
 </html>
-
