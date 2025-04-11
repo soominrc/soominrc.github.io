@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Weekly Challenge</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    .title {
+      text-align: center;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin: 20px;
+    }
+
+    .controls-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    #container {
+      transition: 0.5s;
+      margin: 20px;
+    }
+
+    .clean {
+      font-family: sans-serif;
+      color: #333;
+      font-size: 24px;
+      max-width: 700px;
+      line-height: 1.5;
+      margin: auto;
+    }
+
+    .pretty {
+      font-family: 'Comic Sans MS', cursive;
+      background-color: pink;
+      color: purple;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 20px;
+    }
+
+    .ugly {
+      font-family: monospace;
+      background-color: yellow;
+      color: red;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="controls">
+    <h1 class="title">WEEKLY CHALLENGE</h1>
+
+    <h2>Finished examples</h2>
+    <div class="controls-buttons">
+      <button id="reset">Reset all styles</button>
+      <button id="buttonClean">Clean (class)</button>
+      <button id="buttonPoetic">Poetic (inline)</button>
+    </div>
+
+    <h2>Use .classList</h2>
+    <div class="controls-buttons">
+      <button id="buttonPretty">Pretty</button>
+      <button id="buttonUgly">Ugly</button>
+    </div>
+
+    <h2>Use .style</h2>
+    <div class="controls-buttons">
+      <button id="buttonScary">Scary</button>
+      <button id="buttonFriendly">Friendly</button>
+    </div>
+  </div>
+
+  <div id="container">
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Style Switcher</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .title {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 28px;
+    }
+
+    .controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      margin: 30px;
+    }
+
+    .controls-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 6px;
+      background-color: #eee;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #ddd;
+    }
+
+    #container {
+      transition: 0.5s;
+      max-width: 700px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .clean {
+      font-family: sans-serif;
+      color: #333;
+      font-size: 20px;
+      line-height: 1.6;
+    }
+
+    .pretty {
+      font-family: 'Georgia', serif;
+      background-color: #f0e8ff;
+      color: #4a2d80;
+      font-size: 20px;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .ugly {
+      font-family: monospace;
+      background-color: #eee;
+      color: #444;
+      font-size: 16px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="title">Style Switcher</h1>
+
+  <div class="controls">
+    <div class="controls-buttons">
+      <button id="reset">Reset</button>
+      <button id="buttonClean">Clean</button>
+      <button id="buttonPoetic">Poetic</button>
+    </div>
+
+    <div class="controls-buttons">
+      <button id="buttonPretty">Pretty</button>
+      <button id="buttonUgly">Ugly</button>
+    </div>
+
+    <div class="controls-buttons">
+      <button id="buttonScary">Scary</button>
+      <button id="buttonFriendly">Friendly</button>
+    </div>
+  </div>
+
+  <div id="container">
+    <p>JavaScript can change how a webpage looks and feels without reloading. It can update styles, content, and layout dynamically.</p>
+    <p>This challenge lets you explore that by clicking buttons to change how this text looks!</p>
+  </div>
+
+  <script>
+    let container = document.querySelector("#container");
+
+    function resetAllStyles() {
+      container.removeAttribute("class");
+      container.removeAttribute("style");
+    }
+
+    document.querySelector("#reset").addEventListener("click", resetAllStyles);
+
+    document.querySelector("#buttonClean").addEventListener("click", function() {
+      resetAllStyles();
+      container.classList.add("clean");
+    });
+
+    document.querySelector("#buttonPoetic").addEventListener("click", function() {
+      resetAllStyles();
+      container.style.fontFamily = "Georgia";
+      container.style.textAlign = "center";
+      container.style.fontSize = "24px";
+      container.style.lineHeight = "2em";
+      container.style.letterSpacing = "-0.03em";
+    });
+
+    document.querySelector("#buttonPretty").addEventListener("click", function() {
+      resetAllStyles();
+      container.classList.add("pretty");
+    });
+
+    document.querySelector("#buttonUgly").addEventListener("click", function() {
+      resetAllStyles();
+      container.classList.add("ugly");
+    });
+
+    document.querySelector("#buttonScary").addEventListener("click", function() {
+      resetAllStyles();
+      container.style.backgroundColor = "#1e1e1e";
+      container.style.color = "#ff4d4d";
+      container.style.fontFamily = "Impact, sans-serif";
+      container.style.fontSize = "22px";
+      container.style.textShadow = "1px 1px 3px #900";
+    });
+
+    document.querySelector("#buttonFriendly").addEventListener("click", function() {
+      resetAllStyles();
+      container.style.backgroundColor = "#e6f7f1";
+      container.style.color = "#2c3e50";
+      container.style.fontFamily = "Verdana, sans-serif";
+      container.style.fontSize = "18px";
+      container.style.padding = "20px";
+      container.style.borderRadius = "8px";
+    });
+  </script>
+
+</body>
+</html>
+
+  </div>
+
+  <script>
+    let container = document.querySelector("#container");
+
+    function resetAllStyles() {
+      container.removeAttribute("class");
+      container.removeAttribute("style");
+    }
+
+    let buttonReset = document.querySelector("#reset");
+    buttonReset.addEventListener("click", resetAllStyles);
+
+    let buttonClean = document.querySelector("#buttonClean");
+    buttonClean.addEventListener("click", function() {
+      resetAllStyles();
+      container.classList.add("clean");
+    });
+
+    let buttonPoetic = document.querySelector("#buttonPoetic");
+    buttonPoetic.addEventListener("click", function() {
+      resetAllStyles();
+      container.style.fontFamily = "Georgia";
+      container.style.textAlign = "center";
+      container.style.fontSize = "36px";
+      container.style.lineHeight = "2.5em";
+      container.style.letterSpacing = "-0.05em";
+    });
+
+    let buttonPretty = document.querySelector("#buttonPretty");
+    buttonPretty.addEventListener("click", function() {
+      resetAllStyles();
+      container.classList.add("pretty");
+    });
+
+    let buttonUgly = document.querySelector("#buttonUgly");
+    buttonUgly.addEventListener("click", function() {
+      resetAllStyles();
+      container.classList.add("ugly");
+    });
+
+    let buttonScary = document.querySelector("#buttonScary");
+    buttonScary.addEventListener("click", function() {
+      resetAllStyles();
+      container.style.backgroundColor = "black";
+      container.style.color = "red";
+      container.style.fontSize = "28px";
+      container.style.fontFamily = "Impact";
+      container.style.textShadow = "2px 2px 6px red";
+    });
+
+    let buttonFriendly = document.querySelector("#buttonFriendly");
+    buttonFriendly.addEventListener("click", function() {
+      resetAllStyles();
+      container.style.backgroundColor = "#d0f0c0";
+      container.style.color = "#004d40";
+      container.style.fontFamily = "Arial";
+      container.style.fontSize = "18px";
+      container.style.padding = "15px";
+      container.style.borderRadius = "8px";
+    });
+  </script>
+
+</body>
+</html>
