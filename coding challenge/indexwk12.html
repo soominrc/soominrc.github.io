@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Weekly Challenge</title>
+</head>
+<body>
+
+	<button id="buttonPrev">Previous fortune</button>
+	<button id="buttonNext">Next fortune</button>
+	<button id="buttonRandom">Random fortune</button>
+	<div id="output">You will have a <span style='font-size: 40px; color: blue;'>GLORIOUS</span> day.</div>
+
+	<script>
+		
+		// Array of all the fortunes
+		let fortunes = [
+			"You will have a <span style='font-size: 40px; color: blue;'>GLORIOUS</span> day.",
+			"You will consume much <span style='letter-spacing: 1em; color: orange;'>cheese</span>.",
+			"You will meet a dog that changes your life.",
+			"A surprise package will arrive at your door.",
+			"You’ll find a coin and feel oddly lucky.",
+			"A mysterious stranger will compliment your shoes.",
+			"Someone will laugh at your joke. Cherish it.",
+			"An idea will pop into your head. Follow it!",
+			"You’ll learn something really cool today.",
+			"Something small will make your whole day better.",
+			"Your next snack will be <span style='color: green;'>delicious</span>.",
+			"The stars are cheering you on right now."
+		];
+
+
+		let currentFortuneIndex = 0;
+
+		let output = document.querySelector('#output');
+
+	
+
+		function nextFortune() {
+			currentFortuneIndex = currentFortuneIndex + 1;
+
+			if (currentFortuneIndex == fortunes.length) {
+				currentFortuneIndex = 0;
+			}
+
+			output.innerHTML = fortunes[currentFortuneIndex];
+		}
+
+		let buttonNext = document.querySelector("#buttonNext");
+		buttonNext.addEventListener('click', nextFortune);
+
+
+
+		function prevFortune() {
+			currentFortuneIndex = currentFortuneIndex - 1;
+
+			
+			if (currentFortuneIndex < 0) {
+				currentFortuneIndex = fortunes.length - 1;
+			}
+
+			output.innerHTML = fortunes[currentFortuneIndex];
+		}
+
+		let buttonPrev = document.querySelector("#buttonPrev");
+		buttonPrev.addEventListener('click', prevFortune);
+
+		
+		function randomFortune() {
+			let randomIndex = Math.floor(Math.random() * fortunes.length);
+			currentFortuneIndex = randomIndex;
+			output.innerHTML = fortunes[randomIndex];
+		}
+
+		let buttonRandom = document.querySelector("#buttonRandom");
+		buttonRandom.addEventListener('click', randomFortune);
+
+	</script>
+	
+</body>
+</html>
