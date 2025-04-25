@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>dynamic</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    #container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+    }
+    #container div {
+      flex-grow: 1;
+      transition: background-color 0.3s;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/tone@latest/build/Tone.js"></script>
+</head>
+<body>
+
+  <div id="container"></div>
+
+  <script>
+    const container = document.querySelector("#container");
+    const synth = new Tone.Synth().toDestination();
+
+    function playNote() {
+      Tone.start();
+      const notes = ["C", "D", "E", "F", "G", "A", "B"];
+      const note = notes[Math.floor(Math.random() * notes.length)] + (Math.floor(Math.random() * 5) + 2);
+      synth.triggerAttackRelease(note, "64n");
+    }
+
+    function generateDivs() {
+      container.innerHTML = "";
+      const count = Math.floor(Math.random() * 101);
+      for (let i = 0; i < count; i++) {
+        const div = document.createElement("div");
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        div.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+        div.addEventListener("mouseenter", () => {
+          playNote();
+          const r2 = Math.floor(Math.random() * 256);
+          const g2 = Math.floor(Math.random() * 256);
+          const b2 = Math.floor(Math.random() * 256);
+          div.style.backgroundColor = `rgb(${r2}, ${g2}, ${b2})`;
+        });
+
+        container.appendChild(div);
+      }
+    }
+
+    generateDivs();
+    setInterval(generateDivs, 1000);
+  </script>
+
+</body>
+</html>
