@@ -73,7 +73,6 @@
     position: absolute; top: 70px; left: 20px; right: 20px; z-index: 10;
     color: white; font-size: 12px; font-weight: 300; line-height: 1.4; opacity: 0.9;
   }
-  /* play button */
   #audio-btn {
     position: absolute; top: 20px; right: 20px; z-index: 20;
     background: rgba(0,0,0,0.4); color: white; border: none;
@@ -106,7 +105,6 @@
   </div>
 </div>
 
-<!-- audio files -->
 <audio id="sc_audio_dawn" loop preload="auto"
   src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_7b9a6e8d79.mp3?filename=birds-in-forest-ambient-110624.mp3"></audio>
 <audio id="sc_audio_midday" loop preload="auto"
@@ -131,7 +129,6 @@ const stars = document.getElementById('stars');
 let dayProgress = 0;
 let isDragging = false;
 
-// stars
 const STAR_COUNT = 100;
 const starEls = [];
 for(let i=0;i<STAR_COUNT;i++){
@@ -161,7 +158,6 @@ function drawLine(x1,y1,x2,y2){
   stage.appendChild(line);
 }
 
-// orb color
 function getOrbColorAt(p){
   if(p<0.65) return "radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 70%)";
   else if(p<0.85) return "radial-gradient(circle, rgba(255,220,200,0.85) 0%, rgba(255,220,200,0) 70%)";
@@ -169,7 +165,6 @@ function getOrbColorAt(p){
 }
 function triWeight(p,c,span){ const d=Math.abs(p-c); return clamp(1-(d/span),0,1); }
 
-// visuals
 function updateVisuals(p){
   layers.dawn.style.opacity=triWeight(p,0.125,0.25);
   layers.midday.style.opacity=triWeight(p,0.375,0.25);
@@ -196,7 +191,6 @@ function updateVisuals(p){
   updateAudio(p);
 }
 
-// audio fade
 const tracks = {
   dawn: document.getElementById('sc_audio_dawn'),
   midday: document.getElementById('sc_audio_midday'),
@@ -224,7 +218,6 @@ function updateAudio(p){
   });
 }
 
-// scroll
 let ticking=false;
 window.addEventListener('scroll',()=>{
   if(!isDragging && !ticking){
@@ -237,7 +230,6 @@ window.addEventListener('scroll',()=>{
   }
 });
 
-// drag
 stage.addEventListener('pointerdown',()=>{isDragging=true;});
 stage.addEventListener('pointerup',()=>{isDragging=false;});
 stage.addEventListener('pointermove',e=>{
@@ -262,7 +254,6 @@ stage.addEventListener('click',()=>{
 });
 updateVisuals(dayProgress);
 
-// play button
 const btn=document.getElementById('audio-btn');
 btn.addEventListener('click',()=>{
   Object.values(tracks).forEach(t=>{ if(t.paused) t.play(); });
