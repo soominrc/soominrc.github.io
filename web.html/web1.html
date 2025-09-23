@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<title>Suns Choreography — Mobile Interactive</title>
+<style>
+  body {
+    margin: 0;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    touch-action: none;
+  }
+  .app {
+    width: 100%;
+    max-width: 430px;
+    height: 100%;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: white;
+  }
+  .scroll-area { height: 400vh; width: 100%; position: relative; }
+  #stage {
+    position: fixed; top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%; max-width: 430px; height: 100%; overflow: hidden;
+  }
+  .layer { position: absolute; inset: 0; opacity: 0; transition: opacity 300ms linear; }
+  .layer.dawn    { background: linear-gradient(to top, #ffd89b, #ffb47a, #ffdca8, #fff7e6); }
+  .layer.midday  { background: linear-gradient(to top, #9ad0ff, #bfe8ff, #eaf6ff, #ffffff); }
+  .layer.sunset  { background: linear-gradient(to top, #0b2341, #2f2c66, #ff7a5a, #ffc87c, #ffd9b3); }
+  .layer.night   { background: linear-gradient(to top, #020220, #07102a, #0b2a3a, #0b1b2d); }
+  .haze {
+    position: absolute; inset: 0;
+    mix-blend-mode: overlay;
+    opacity: 0;
+    transition: opacity 400ms linear, transform 600ms ease;
+    background: radial-gradient(60% 40% at 50% 60%, rgba(255,230,180,0.12), transparent 30%),
+                radial-gradient(30% 20% at 20% 20%, rgba(255,200,150,0.06), transparent 20%);
+    filter: blur(12px) saturate(110%);
+  }
+  #orb {
+    position: absolute; width: 140px; height: 140px; border-radius: 50%;
+    transform: translate(-50%,-50%); left: 50%; top: 12%;
+    background: radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 70%);
+    box-shadow: 0 0 120px rgba(255,255,255,0.35), 0 0 200px rgba(255,255,255,0.2);
+    opacity: 0.9;
+    transition: background 400ms linear, box-shadow 400ms linear, transform 300ms ease;
+  }
+  #stars { position: absolute; inset: 0; opacity: 0; transition: opacity 700ms ease; }
+  .star {
+    position: absolute; width: 2px; height: 2px; border-radius: 50%; background: white;
+    opacity: 0; box-shadow: 0 0 6px rgba(255,255,255,0.25);
+  }
+  @keyframes twinkle {
+    0% { opacity: 0.15; transform: scale(.7); }
+    50% { opacity: 1; transform: scale(1.35); }
+    100% { opacity: 0.15; transform: scale(.8); }
+  }
+  .hint {
+    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: rgba(0,0,0,0.35); color: rgba(255,255,255,0.9);
+    padding: 6px 10px; border-radius: 999px; font-size: 12px;
+    backdrop-filter: blur(6px); opacity: 0.7;
+  }
+  .title-block { position: absolute; top: 20px; left: 20px; z-index: 10; text-align: left; }
+  .title-block h1 { margin: 0; font-size: 20px; font-weight: 600; color: #FFC857; }
+  .title-block p { margin: 4px 0 0; font-size: 12px; font-weight: 300; color: white; opacity: 0.9; }
+  .caption-block {
+    position: absolute; top: 70px; left: 20px; right: 20px; z-index: 10;
+    color: white; font-size: 12px; font-weight: 300; line-height: 1.4; opacity: 0.9;
+  }
+  /* play button */
+  #audio-btn {
+    position: absolute; top: 20px; right: 20px; z-index: 20;
+    background: rgba(0,0,0,0.4); color: white; border: none;
+    padding: 6px 12px; border-radius: 999px; font-size: 12px;
+    cursor: pointer; backdrop-filter: blur(4px);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="scroll-area">
+    <div id="stage">
+      <div class="layer dawn"></div>
+      <div class="layer midday"></div>
+      <div class="layer sunset"></div>
+      <div class="layer night"></div>
+      <div class="haze"></div>
+      <div id="orb"></div>
+      <div id="stars"></div>
+      <div class="title-block">
+        <h1>Suns Choreography</h1>
+        <p>The rhythm of light across a day</p>
+      </div>
+      <div class="caption-block">
+        <p>Every day, light performs a silent, invisible dance across your world! Constantly shifting, stretching, revealing, and hiding — but we rarely notice it. A way to show time without showing people, to record motion without movement, and to spot beauty in repetition.</p>
+      </div>
+      <button id="audio-btn">🔊 Play Sound</button>
+    </div>
+    <div class="hint">scroll to see! ☀️→🌙</div>
+  </div>
+</div>
+
+<!-- audio files -->
+<audio id="sc_audio_dawn" loop preload="auto"
+  src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_7b9a6e8d79.mp3?filename=birds-in-forest-ambient-110624.mp3"></audio>
+<audio id="sc_audio_midday" loop preload="auto"
+  src="https://cdn.pixabay.com/download/audio/2023/01/19/audio_43dc8a44fc.mp3?filename=cicadas-and-birds-13548.mp3"></audio>
+<audio id="sc_audio_sunset" loop preload="auto"
+  src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2a6f7d03f2.mp3?filename=forest-crickets-chirping-ambient-112842.mp3"></audio>
+<audio id="sc_audio_night" loop preload="auto"
+  src="https://cdn.pixabay.com/download/audio/2021/09/30/audio_b85ac64a1c.mp3?filename=night-crickets-loop-ambient-12489.mp3"></audio>
+
+<script>
+const clamp = (v,a=0,b=1) => Math.max(a,Math.min(b,v));
+const stage = document.getElementById('stage');
+const layers = {
+  dawn: stage.querySelector('.layer.dawn'),
+  midday: stage.querySelector('.layer.midday'),
+  sunset: stage.querySelector('.layer.sunset'),
+  night: stage.querySelector('.layer.night'),
+};
+const haze = stage.querySelector('.haze');
+const orb = document.getElementById('orb');
+const stars = document.getElementById('stars');
+let dayProgress = 0;
+let isDragging = false;
+
+// stars
+const STAR_COUNT = 100;
+const starEls = [];
+for(let i=0;i<STAR_COUNT;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  s.style.left=(Math.random()*100)+'%';
+  s.style.top=(Math.random()*70)+'%';
+  s.dataset.base=0.1+Math.random()*0.5;
+  stars.appendChild(s);
+  starEls.push(s);
+}
+
+// constellations
+const constellations = [[2,15,23],[5,8,12,30],[40,42,47]];
+function drawLine(x1,y1,x2,y2){
+  const line=document.createElement('div');
+  line.style.position='absolute';
+  line.style.left=x1+'px';
+  line.style.top=y1+'px';
+  const dx=x2-x1, dy=y2-y1;
+  const length=Math.sqrt(dx*dx+dy*dy);
+  line.style.width=length+'px'; line.style.height='1px';
+  line.style.background='rgba(255,255,255,0.6)';
+  line.style.transformOrigin='0 0';
+  const angle=Math.atan2(dy,dx)*180/Math.PI;
+  line.style.transform=`rotate(${angle}deg)`;
+  stage.appendChild(line);
+}
+
+// orb color
+function getOrbColorAt(p){
+  if(p<0.65) return "radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 70%)";
+  else if(p<0.85) return "radial-gradient(circle, rgba(255,220,200,0.85) 0%, rgba(255,220,200,0) 70%)";
+  else return "radial-gradient(circle, rgba(220,235,255,0.8) 0%, rgba(220,235,255,0) 70%)";
+}
+function triWeight(p,c,span){ const d=Math.abs(p-c); return clamp(1-(d/span),0,1); }
+
+// visuals
+function updateVisuals(p){
+  layers.dawn.style.opacity=triWeight(p,0.125,0.25);
+  layers.midday.style.opacity=triWeight(p,0.375,0.25);
+  layers.sunset.style.opacity=triWeight(p,0.625,0.25);
+  layers.night.style.opacity=triWeight(p,0.875,0.25);
+  haze.style.opacity=clamp((Math.sin((p*Math.PI*2)-0.6)*0.12)+0.22,0,0.6);
+  haze.style.transform=`translateY(${20*(p-0.5)}px) scale(${1+p*0.06})`;
+  orb.style.top=(10+p*68)+'%';
+  orb.style.left=(50+30*Math.sin(p*Math.PI))+'%';
+  orb.style.background=getOrbColorAt(p);
+  const starAlpha=clamp((p-0.7)/0.25,0,1);
+  stars.style.opacity=starAlpha;
+  if(starAlpha>0){
+    starEls.forEach(s=>{
+      s.style.opacity=s.dataset.base*starAlpha;
+      if(starAlpha>0.3 && !s._twinkle){
+        s._twinkle=true;
+        const dur=(1+Math.random()*2).toFixed(2)+'s';
+        const delay=(Math.random()*1.5).toFixed(2)+'s';
+        s.style.animation=`twinkle ${dur} ${delay} infinite ease-in-out`;
+      }
+    });
+  }
+  updateAudio(p);
+}
+
+// audio fade
+const tracks = {
+  dawn: document.getElementById('sc_audio_dawn'),
+  midday: document.getElementById('sc_audio_midday'),
+  sunset: document.getElementById('sc_audio_sunset'),
+  night: document.getElementById('sc_audio_night')
+};
+const state={dawn:0,midday:0,sunset:0,night:0};
+function updateAudio(p){
+  const w={
+    dawn:triWeight(p,0.125,0.25),
+    midday:triWeight(p,0.375,0.25),
+    sunset:triWeight(p,0.625,0.25),
+    night:triWeight(p,0.875,0.25)
+  };
+  const targets={
+    dawn:Math.min(1,w.dawn*0.8),
+    midday:Math.min(1,w.midday*0.8),
+    sunset:Math.min(1,w.sunset*0.8),
+    night:Math.min(1,w.night*0.8)
+  };
+  const smooth=0.12;
+  Object.keys(targets).forEach(k=>{
+    state[k]+=(targets[k]-state[k])*smooth;
+    if(tracks[k]) tracks[k].volume=Math.max(0,Math.min(1,state[k]));
+  });
+}
+
+// scroll
+let ticking=false;
+window.addEventListener('scroll',()=>{
+  if(!isDragging && !ticking){
+    requestAnimationFrame(()=>{
+      dayProgress=clamp(window.scrollY/(document.body.scrollHeight-window.innerHeight),0,1);
+      updateVisuals(dayProgress);
+      ticking=false;
+    });
+    ticking=true;
+  }
+});
+
+// drag
+stage.addEventListener('pointerdown',()=>{isDragging=true;});
+stage.addEventListener('pointerup',()=>{isDragging=false;});
+stage.addEventListener('pointermove',e=>{
+  if(isDragging){
+    const delta=-e.movementY/window.innerHeight;
+    dayProgress=clamp(dayProgress+delta,0,1);
+    updateVisuals(dayProgress);
+  }
+});
+stage.addEventListener('click',()=>{
+  dayProgress=clamp(dayProgress+0.05,0,1);
+  updateVisuals(dayProgress);
+  if(dayProgress>0.7){
+    constellations.forEach(group=>{
+      for(let i=0;i<group.length-1;i++){
+        const s1=starEls[group[i]], s2=starEls[group[i+1]];
+        const r1=s1.getBoundingClientRect(), r2=s2.getBoundingClientRect();
+        drawLine(r1.left+r1.width/2,r1.top+r1.height/2,r2.left+r2.width/2,r2.top+r2.height/2);
+      }
+    });
+  }
+});
+updateVisuals(dayProgress);
+
+// play button
+const btn=document.getElementById('audio-btn');
+btn.addEventListener('click',()=>{
+  Object.values(tracks).forEach(t=>{ if(t.paused) t.play(); });
+  btn.textContent="🔇 Mute";
+  btn.onclick=()=>{
+    const muted=!tracks.dawn.muted;
+    Object.values(tracks).forEach(t=>t.muted=muted);
+    btn.textContent=muted?"🔊 Play Sound":"🔇 Mute";
+  };
+});
+</script>
+</body>
+</html>
