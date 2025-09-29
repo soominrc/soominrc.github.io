@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday 아빠 🎂</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #ececec;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Phone frame */
+    .phone {
+      width: 380px;
+      height: 680px;
+      background: linear-gradient(135deg, #ffdee9, #b5fffc);
+      border: 12px solid #222;
+      border-radius: 40px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 60px;
+    }
+
+    /* Phone notch */
+    .notch {
+      width: 120px;
+      height: 20px;
+      background: #222;
+      border-radius: 10px;
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    /* Envelope */
+    .envelope {
+      position: relative;
+      width: 260px;
+      height: 170px;
+      background: #fff;
+      border: 2px solid #ff69b4;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      perspective: 1000px;
+      z-index: 10;
+      overflow: hidden;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50%;
+      background: linear-gradient(135deg, #ff8cde, #ff69b4);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top;
+      transition: transform 0.6s;
+      z-index: 2;
+    }
+
+    .letter {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      padding: 20px;
+      box-sizing: border-box;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      transition: top 0.6s;
+      color: #444;
+      z-index: 1;
+      text-align: left;
+      overflow-y: auto;
+    }
+
+    .open .flap {
+      transform: rotateX(-180deg);
+    }
+    .open .letter {
+      top: 0;
+    }
+
+    /* Balloons */
+    .balloon {
+      position: absolute;
+      bottom: -150px;
+      width: 40px;
+      height: 60px;
+      border-radius: 50%;
+      animation: floatUp 10s linear infinite;
+      z-index: 1;
+      opacity: 0.8;
+    }
+
+    .balloon::after {
+      content: "";
+      position: absolute;
+      bottom: -20px;
+      left: 50%;
+      width: 2px;
+      height: 30px;
+      background: #555;
+      transform: translateX(-50%);
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(0) rotate(0); }
+      to { transform: translateY(-120vh) rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="notch"></div>
+    <h1>🎉 Happy Birthday 아빠 🎂</h1>
+
+    <div class="envelope" onclick="toggleEnvelope()">
+      <div class="flap"></div>
+      <div class="letter">
+        💌 Dear 아빠,<br><br>
+        Happy Birthday!! 🎂  
+        On this special day, I just want to say thank you for being the best dad anyone could ask for.  
+        You’ve always supported me, cheered me on, and taught me so much about life, love, and kindness.  
+        <br><br>
+        I feel so lucky to have a father like you, and I hope today brings you as much happiness as you’ve brought me.  
+        May your year ahead be filled with health, laughter, and all the little things that make life amazing.  
+  
+        <br><br>
+        — With love, Rachel 💕
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleEnvelope(){
+      document.querySelector(".envelope").classList.toggle("open");
+    }
+
+    // Balloons floating
+    function createBalloons(){
+      for(let i=0; i<12; i++){
+        let balloon = document.createElement("div");
+        balloon.classList.add("balloon");
+        document.querySelector(".phone").appendChild(balloon);
+        balloon.style.left = Math.random()*100 + "%";
+        balloon.style.background = randomColor();
+        balloon.style.animationDuration = (6+Math.random()*6) + "s";
+      }
+    }
+
+    function randomColor(){
+      const colors = ["#ff6b6b", "#feca57", "#48dbfb", "#1dd1a1", "#ff9ff3"];
+      return colors[Math.floor(Math.random()*colors.length)];
+    }
+
+    createBalloons();
+  </script>
+</body>
+</html>
