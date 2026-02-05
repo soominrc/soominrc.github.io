@@ -24,17 +24,18 @@
     .wrap {
       min-height: 100vh;
       position: relative;
-      padding: 40px;
+      padding: 64px;
     }
 
+    /* LEFT-ALIGNED STICKERS */
     .stickers {
       position: absolute;
-      left: 40px;
+      left: 64px;
       top: 50%;
       transform: translateY(-50%);
       display: flex;
       flex-direction: column;
-      gap: 28px;
+      gap: 40px;
     }
 
     .stickers a {
@@ -44,8 +45,8 @@
     }
 
     .sticker {
-      width: 190px;
-      height: 190px;
+      width: 220px;
+      height: 220px;
       border-radius: 50%;
       background-color: transparent;
       background-image: url("https://i.pinimg.com/1200x/d0/c5/92/d0c592089baba63eb7f2d450f07b497a.jpg");
@@ -57,15 +58,15 @@
     }
 
     .sticker:hover {
-      transform: translateY(-4px);
+      transform: translateY(-6px);
     }
 
     .sticker-label {
       text-align: center;
-      margin-top: 6px;
-      font-size: 13px;
+      margin-top: 10px;
+      font-size: 14px;
       background: rgba(255,255,255,.75);
-      padding: 4px 13px;
+      padding: 6px 16px;
       border-radius: 999px;
       border: 1.5px solid rgba(0,0,0,.4);
       width: max-content;
@@ -73,34 +74,35 @@
       margin-right: auto;
     }
 
+    /* WINDOW — larger, better proportioned */
     .window {
       position: absolute;
-      right: 190px;
-      top: 18%;
-      width: min(520px, 90vw);
+      right: 220px;
+      top: 14%;
+      width: min(680px, 92vw);
       background: #fff6d8;
       border: 2px solid rgba(0,0,0,.65);
-      border-radius: 16px;
-      overflow: hidden; /* shadow removed */
+      border-radius: 20px;
+      overflow: hidden;
     }
 
     .titlebar {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
+      gap: 12px;
+      padding: 14px 18px;
       background: rgba(255,255,255,.65);
       border-bottom: 2px solid rgba(0,0,0,.65);
     }
 
     .dots {
       display: flex;
-      gap: 6px;
+      gap: 8px;
     }
 
     .dot {
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
       border: 1.5px solid rgba(0,0,0,.65);
       background: rgba(0,0,0,.12);
@@ -108,8 +110,8 @@
 
     .address {
       flex: 1;
-      font-size: 12px;
-      padding: 6px 10px;
+      font-size: 13px;
+      padding: 8px 12px;
       border: 2px solid rgba(0,0,0,.35);
       border-radius: 999px;
       background: rgba(255,255,255,.75);
@@ -119,18 +121,21 @@
     }
 
     .content {
-      padding: 18px 20px 22px;
+      padding: 32px 36px 38px;
     }
 
     h1 {
-      margin: 0 0 6px;
-      font-size: 28px;
+      margin: 0 0 12px;
+      font-size: 34px;
+      letter-spacing: -0.02em;
     }
 
     p {
       margin: 0;
-      line-height: 1.35;
-      opacity: .88;
+      max-width: 520px;
+      line-height: 1.5;
+      font-size: 17px;
+      opacity: .9;
     }
   </style>
 </head>
@@ -138,6 +143,7 @@
 <body>
   <div class="wrap">
 
+    <!-- LEFT STICKERS -->
     <div class="stickers">
       <a href="interests.html" aria-label="Interests">
         <div class="sticker"></div>
@@ -150,6 +156,7 @@
       </a>
     </div>
 
+    <!-- RIGHT / HIGHER WINDOW -->
     <div class="window">
       <div class="titlebar">
         <div class="dots">
@@ -162,7 +169,9 @@
 
       <div class="content">
         <h1>Hi, i’m Rachel</h1>
-        <p>I’m a communication design student, born and raised on Long Island, NY.</p>
+        <p>
+          I’m a communication design student, born and raised on Long Island, NY.
+        </p>
       </div>
     </div>
 
