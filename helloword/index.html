@@ -28,7 +28,7 @@
       display: grid;
       grid-template-columns: 320px 1fr;
       column-gap: 80px;
-      align-items: center;
+      align-items: center; /* key: aligns stickers + window */
     }
 
     /* LEFT STICKERS */
@@ -74,18 +74,16 @@
       margin-right: auto;
     }
 
-    /* RIGHT WINDOW — TALLER */
+    /* RIGHT WINDOW — aligned + slightly shorter */
     .window {
-      width: min(720px, 100%);
-      min-height: 420px;   /* ← this makes it longer */
+      width: min(700px, 100%);
+      min-height: 360px; /* shorter than before */
       background: #fff6d8;
       border: 2px solid rgba(0,0,0,.65);
       border-radius: 20px;
       overflow: hidden;
 
       justify-self: center;
-      align-self: start;
-      margin-top: 20px;
     }
 
     .titlebar {
@@ -123,11 +121,11 @@
     }
 
     .content {
-      padding: 48px 40px 56px; /* more vertical space */
+      padding: 40px 38px 44px; /* balanced vertical padding */
     }
 
     h1 {
-      margin: 0 0 18px;
+      margin: 0 0 16px;
       font-size: 34px;
       letter-spacing: -0.02em;
     }
@@ -146,6 +144,7 @@
         grid-template-columns: 1fr;
         row-gap: 32px;
         padding: 32px;
+        align-items: start;
       }
 
       .stickers {
@@ -159,8 +158,7 @@
       }
 
       .window {
-        min-height: 360px;
-        margin-top: 0;
+        min-height: 320px;
       }
     }
   </style>
@@ -202,4 +200,3 @@
   </div>
 </body>
 </html>
-
