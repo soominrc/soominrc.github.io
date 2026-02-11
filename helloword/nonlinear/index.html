@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Access Under Conditions</title>
+
+  <style>
+    :root{
+      --bg:#0b0b0b;
+      --ink:#f2f2f2;
+      --muted:rgba(242,242,242,.62);
+      --line:rgba(242,242,242,.18);
+      --blue:#4f86ff;
+      --window:#101010;
+
+      --paper: rgba(255,255,255,.98);
+      --folder:#bfe3ff;
+      --folder2:#a8d9ff;
+      --folderStroke:rgba(0,0,0,.16);
+
+      --blk:#0b0b0b;
+      --txt: rgba(0,0,0,.88);
+    }
+
+    *{box-sizing:border-box;}
+    html,body{height:100%;}
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+      letter-spacing:-0.01em;
+      overflow:auto;
+    }
+
+    .stage{
+      min-height:100%;
+      display:grid;
+      grid-template-rows:auto 1fr auto;
+      padding: 26px clamp(18px, 3vw, 44px);
+      gap: 18px;
+    }
+
+    .topline{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding-top: 6px;
+    }
+    .topline .title{
+      font-size:12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      opacity:.9;
+      user-select:none;
+    }
+
+    .center{
+      display:grid;
+      place-items:center;
+      padding: 10px 0 10px;
+    }
+
+    .window{
+      width:min(980px, 100%);
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:var(--window);
+      box-shadow: 0 30px 80px rgba(0,0,0,.55);
+      overflow:hidden;
+      display:grid;
+      grid-template-rows:auto minmax(0, 1fr);
+    }
+
+    .chrome{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding: 14px 16px;
+      border-bottom:1px solid rgba(242,242,242,.12);
+      background: rgba(255,255,255,.02);
+    }
+    .dots{ display:flex; gap:8px; align-items:center; }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      border:1px solid rgba(242,242,242,.22);
+      background: rgba(242,242,242,.06);
+    }
+    .url{
+      flex:1;
+      text-align:center;
+      font-size:12px;
+      color:var(--muted);
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      user-select:none;
+    }
+    .chip{
+      font-size:12px;
+      color:var(--muted);
+      border:1px solid rgba(242,242,242,.16);
+      padding:8px 10px;
+      border-radius:999px;
+      background: rgba(255,255,255,.02);
+      white-space:nowrap;
+      user-select:none;
+    }
+
+    .content{
+      min-height:0;
+      overflow:auto;
+      scrollbar-gutter: stable;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* ===== LANDING ===== */
+    .panel{
+      position:relative;
+      background:var(--blue);
+      padding: clamp(18px, 2.2vw, 26px);
+      overflow:hidden;
+    }
+
+    .giant{
+      position:absolute;
+      inset: 14px;
+      display:grid;
+      place-items:center;
+      pointer-events:none;
+      mix-blend-mode: multiply;
+    }
+    .giant span{
+      font-size: clamp(64px, 9vw, 132px);
+      line-height: .88;
+      font-weight: 700;
+      letter-spacing: -0.06em;
+      color: rgba(255,255,255,.38);
+      text-transform: lowercase;
+      -webkit-text-stroke: 2px rgba(255,255,255,.35);
+      text-shadow: 0 1px 0 rgba(0,0,0,.10), 0 8px 24px rgba(0,0,0,.10);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: clamp(14px, 2vw, 22px);
+      align-items:start;
+      position:relative;
+      z-index:2;
+    }
+
+    .copy{
+      max-width: 46ch;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(0,0,0,.78);
+    }
+
+    .meta{
+      margin-top: 12px;
+      font-size: 11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(0,0,0,.62);
+    }
+
+    /* image slot → file field */
+    .photo{
+      background: rgba(255,255,255,.68);
+      border-radius: 10px;
+      overflow:hidden;
+      border: 1px solid rgba(0,0,0,.12);
+      aspect-ratio: 3 / 4;
+      position:relative;
+      display:grid;
+      grid-template-rows:auto 1fr auto;
+    }
+    .photoTop{
+      padding: 10px 10px 8px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 10px;
+      border-bottom: 1px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.40);
+    }
+    .photoTop .label{
+      font-size: 11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(0,0,0,.62);
+      user-select:none;
+      white-space:nowrap;
+    }
+    .photoTop .hint{
+      font-size: 11px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      color: rgba(0,0,0,.52);
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .fileField{
+      position:relative;
+      background:
+        radial-gradient(240px 220px at 50% 42%, rgba(0,0,0,.86), rgba(0,0,0,1) 72%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,0));
+      overflow:hidden;
+    }
+    .files{
+      position:absolute;
+      inset: 0;
+      padding: 10px;
+      display:grid;
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+      grid-auto-rows: 26px;
+      pointer-events:none;
+    }
+
+    .file{
+      pointer-events:auto;
+      width: 40px;
+      height: 32px;
+      position:relative;
+      cursor:pointer;
+      justify-self:center;
+      align-self:center;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.32));
+      transition: transform .12s ease, filter .12s ease;
+      touch-action: manipulation;
+    }
+    .file:hover{
+      transform: translateY(-2px) scale(1.02);
+      filter: drop-shadow(0 14px 26px rgba(0,0,0,.42));
+    }
+    .file:active{ transform: translateY(0px) scale(.99); }
+    .file::before{
+      content:"";
+      position:absolute;
+      left:0; right:0;
+      top:7px; bottom:0;
+      border-radius: 7px;
+      background: linear-gradient(180deg, var(--folder), var(--folder2));
+      border: 1px solid var(--folderStroke);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.55), 0 1px 0 rgba(0,0,0,.10);
+    }
+    .file::after{
+      content:"";
+      position:absolute;
+      left:5px;
+      top:2px;
+      width: 18px;
+      height: 10px;
+      border-radius: 6px 6px 4px 4px;
+      background: linear-gradient(180deg, rgba(255,255,255,.74), rgba(255,255,255,.38));
+      border: 1px solid rgba(0,0,0,.10);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.55);
+    }
+
+    .photoBottom{
+      padding: 10px;
+      border-top: 1px solid rgba(0,0,0,.10);
+      background: rgba(255,255,255,.40);
+      font-size: 11px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      color: rgba(0,0,0,.62);
+      user-select:none;
+    }
+
+    /* ===== RECORD PAGE ===== */
+    .redactedPage{
+      background: var(--blue);
+      padding: 22px clamp(18px, 2.2vw, 26px) 26px;
+    }
+
+    .navRow{
+      width:min(980px, 100%);
+      margin: 0 auto 14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap: 12px;
+    }
+    .navBtn{
+      border:1px solid rgba(242,242,242,.22);
+      background: transparent;
+      color: var(--ink);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      letter-spacing:.06em;
+      cursor:pointer;
+      text-transform:uppercase;
+      user-select:none;
+      touch-action: manipulation;
+    }
+    .navBtn:hover{ background: rgba(242,242,242,.10); }
+    .navHint{
+      font-size:12px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      color: rgba(242,242,242,.62);
+      user-select:none;
+      text-align:right;
+      flex:1;
+    }
+
+    .paper{
+      width:min(980px, 100%);
+      margin: 0 auto;
+      background: var(--paper);
+      border: 1px solid rgba(0,0,0,.12);
+      border-radius: 14px;
+      overflow:hidden;
+      padding: 22px;
+      box-shadow: 0 28px 70px rgba(0,0,0,.22);
+    }
+
+    .kicker{
+      font-size: 11px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color: rgba(0,0,0,.58);
+      margin-bottom: 10px;
+    }
+    .docTitle{
+      margin: 10px 0 10px;
+      font-size: clamp(24px, 2.4vw, 34px);
+      line-height: 1.06;
+      letter-spacing:-0.04em;
+      font-weight: 700;
+      color: var(--txt);
+    }
+    .docMeta{
+      margin: 0 0 18px;
+      font-size: 12px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      color: rgba(0,0,0,.58);
+    }
+
+    .doc{
+      color: var(--txt);
+      font-size: 16px;
+      line-height: 1.65;
+      max-width: 78ch;
+      font-weight: 400;
+    }
+    .doc p{ margin: 0 0 14px; }
+
+    /* ===== REDACTIONS: no disconnect, normal reading ===== */
+    .rx{
+      display:inline;
+      white-space:normal;
+      border-radius: 999px;
+      padding: 0 .08em;
+      cursor:pointer;
+      user-select:none;
+      position:relative;
+      touch-action: manipulation;
+    }
+
+    .rx .word{
+      font: inherit;
+      letter-spacing: inherit;
+      color: var(--txt);
+      transition: opacity .18s ease;
+    }
+
+    .rx[data-state="censor"]{ background: var(--blk); }
+    .rx[data-state="censor"] .word{ opacity: 0; }
+
+    .rx[data-state="glimpse"]{ background: transparent; }
+    .rx[data-state="glimpse"] .word{ opacity: .35; }
+
+    .rx[data-state="full"]{ background: transparent; }
+    .rx[data-state="full"] .word{ opacity: 1; }
+
+    .rx.pulse{ animation: pulse .22s ease; }
+    @keyframes pulse{
+      from{ filter:none; }
+      45% { filter: blur(.15px); }
+      to  { filter:none; }
+    }
+
+    /* =========================
+       MOBILE VIEW (true layout)
+       ========================= */
+    @media (max-width: 760px){
+      .stage{
+        padding: 0;
+        gap: 0;
+        grid-template-rows:auto 1fr;
+      }
+
+      .topline{
+        padding: 14px 12px;
+      }
+      .topline .title{
+        font-size: 11px;
+        letter-spacing: .16em;
+      }
+
+      .center{ padding: 0; }
+
+      /* edge-to-edge "app" */
+      .window{
+        width: 100%;
+        border-radius: 0;
+        border-left: 0;
+        border-right: 0;
+      }
+
+      /* keep chrome but make it tighter */
+      .chrome{
+        padding: 12px 12px;
+        gap: 10px;
+      }
+      .url{
+        font-size: 10px;
+        letter-spacing: .10em;
+      }
+      .chip{
+        font-size: 10px;
+        padding: 7px 9px;
+      }
+      .dot{ width:9px; height:9px; }
+
+      .panel{
+        padding: 18px 14px 16px;
+        min-height: calc(100vh - 56px);
+      }
+
+      .grid{
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .copy{
+        max-width: none;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .meta{ margin-top: 8px; }
+
+      /* file area becomes wider + shorter (like a drawer) */
+      .photo{
+        aspect-ratio: auto;
+        height: 300px;
+        border-radius: 14px;
+      }
+
+      .photoTop{ padding: 10px 12px 8px; }
+      .photoBottom{ padding: 10px 12px; }
+
+      /* make the file field actually tappable + readable */
+      .fileField{ border-radius: 0; }
+
+      .files{
+        padding: 12px;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        grid-auto-rows: 34px;
+      }
+
+      .file{
+        width: 44px;
+        height: 36px;
+      }
+
+      .giant{ inset: 10px; }
+      .giant span{
+        font-size: 64px;
+        line-height: .9;
+        -webkit-text-stroke: 1.5px rgba(255,255,255,.35);
+      }
+
+      /* record page */
+      .redactedPage{
+        padding: 16px 12px 18px;
+        min-height: calc(100vh - 56px);
+      }
+
+      .navRow{
+        margin: 0 auto 12px;
+      }
+
+      .navBtn{
+        padding: 10px 12px;
+        font-size: 12px;
+      }
+
+      .navHint{
+        font-size: 10px;
+        letter-spacing: .10em;
+      }
+
+      .paper{
+        width: 100%;
+        padding: 18px 14px;
+        border-radius: 16px;
+      }
+
+      .docTitle{
+        font-size: 26px;
+      }
+
+      .doc{
+        font-size: 17px; /* bigger for phone reading */
+        line-height: 1.7;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stage">
+    <div class="topline">
+      <div class="title">ACCESS UNDER CONDITIONS</div>
+    </div>
+
+    <div class="center">
+      <div class="window" aria-label="Window">
+        <div class="chrome">
+          <div class="dots" aria-hidden="true">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+          </div>
+          <div class="url" id="urlText">record / entry / limited</div>
+          <div class="chip" id="chipText">internal file</div>
+        </div>
+
+        <div class="content">
+          <!-- LANDING -->
+          <section class="panel" id="landing">
+            <div class="giant" aria-hidden="true">
+              <span>access<br>under<br>conditions</span>
+            </div>
+
+            <div class="grid">
+              <div>
+                <div class="copy">
+                  Viewing condition: this record may revise after access.
+                  <br><br>
+                  Click a file. Redactions unlock in linked threads.
+                </div>
+                <div class="meta">entry status: pending</div>
+              </div>
+
+              <div class="photo" aria-label="File field">
+                <div class="photoTop">
+                  <div class="label">file field</div>
+                  <div class="hint">tap any</div>
+                </div>
+
+                <div class="fileField">
+                  <div class="files" id="filesGrid"></div>
+                </div>
+
+                <div class="photoBottom">each file opens the record</div>
+              </div>
+            </div>
+          </section>
+
+          <!-- RECORD PAGE -->
+          <section class="redactedPage" id="record" hidden>
+            <div class="navRow">
+              <button class="navBtn" id="backBtn" type="button">Back</button>
+              <div class="navHint">tap a blackout · the thread advances</div>
+            </div>
+
+            <div class="paper">
+              <div class="kicker">Terms and Conditions · excerpt</div>
+              <h2 class="docTitle">Terms and Conditions / Terms of Use</h2>
+              <div class="docMeta">record state: accessible · legibility: conditional</div>
+
+              <article class="doc">
+                <div id="docBody"></div>
+              </article>
+            </div>
+          </section>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bottom">—</div>
+  </div>
+
+<script>
+  /* ========= NAV ========= */
+  const filesGrid = document.getElementById("filesGrid");
+  const landing = document.getElementById("landing");
+  const record = document.getElementById("record");
+  const backBtn = document.getElementById("backBtn");
+  const urlText = document.getElementById("urlText");
+  const chipText = document.getElementById("chipText");
+
+  function goToRecord(){
+    landing.hidden = true;
+    record.hidden = false;
+    urlText.textContent = "record / terms / excerpt";
+    chipText.textContent = "redacted";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  function goToLanding(){
+    record.hidden = true;
+    landing.hidden = false;
+    urlText.textContent = "record / entry / limited";
+    chipText.textContent = "internal file";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  backBtn.addEventListener("click", goToLanding);
+
+  /* ========= FILE FIELD ========= */
+  const FILE_COUNT = 110, COLS = 10, ROWS = 14;
+
+  function offsetForIndex(i){
+    const a = (i * 37) % 17;
+    const b = (i * 19) % 11;
+    const rot = ((i * 11) % 7) - 3;
+    return { a, b, rot };
+  }
+
+  function buildFiles(){
+    filesGrid.innerHTML = "";
+
+    for (let i=0;i<FILE_COUNT;i++){
+      const f = document.createElement("div");
+      f.className = "file";
+      f.setAttribute("role","button");
+      f.setAttribute("tabindex","0");
+      f.setAttribute("aria-label","Open file");
+
+      /* keep your existing pseudo-random placement for desktop */
+      const col = ((i * 7 + 2) % COLS) + 1;
+      const row = ((i * 5 + 1) % ROWS) + 1;
+      f.style.gridColumn = String(col);
+      f.style.gridRow = String(row);
+
+      const {a,b,rot} = offsetForIndex(i);
+      f.style.transform = `translate(${(a-8) * 0.7}px, ${(b-5) * 0.7}px) rotate(${rot}deg)`;
+
+      const open = () => openRecord(i);
+      f.addEventListener("click", open);
+      f.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " "){
+          e.preventDefault();
+          open();
+        }
+      });
+
+      filesGrid.appendChild(f);
+    }
+  }
+  buildFiles();
+
+  /* ========= TEXT (swap in your NYPL excerpt) ========= */
+  const TERMS_TEXT = [
+    `The Metropolitan Museum of Art (the "Museum") provides www.metmuseum.org and its subdomains (including websites accessed through mobile devices as well as downloadable mobile applications) and application program interfaces ("APIs") (collectively, the "Websites") in support of the Museum's mission to collect, preserve, study, exhibit, and encourage appreciation for and advance knowledge of works of art.`,
+    `By accessing the Websites, users agree to be bound by the following terms and conditions, which the Museum may revise at any time. Users are encouraged to visit this page from time to time to review current terms and conditions.`,
+    `Copyright and Proprietary Rights. The text, images, trademarks, data, audio files, video files and clips, software, documentation or other information contained in these files, and other content on the Websites (collectively, the "Materials") are proprietary to the Museum or its licensors unless identified by an Open Access (OA) icon.`,
+    `Materials identified as OA are either those that the Museum believes to be in the public domain, or those to which the Museum waives any copyright it might have. Open Access works are made available under a Creative Commons Zero (CC0) license.`,
+    `Security. Users agree to use the Websites for lawful purposes only and will not participate in any action that will compromise the security of the Websites or damage the Websites and their content.`
+  ];
+  const docBody = document.getElementById("docBody");
+
+  /* ========= UTIL ========= */
+  function hashString(str){
+    let h = 2166136261;
+    for (let i=0;i<str.length;i++){
+      h ^= str.charCodeAt(i);
+      h = Math.imul(h, 16777619);
+    }
+    return h >>> 0;
+  }
+  function mulberry32(seed){
+    return function(){
+      let t = seed += 0x6D2B79F5;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function escapeHtml(s){
+    return s
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  /* ========= CORRELATED THREADS ========= */
+  const THREADS = ["A","B","C","D","E","F","G"];
+
+  function redactParagraph(text, seed, density=0.18){
+    const tokens = text.match(/\w+['-]?\w*|[^\w\s]+|\s+/g) || [text];
+    const rnd = mulberry32(seed);
+
+    const wordIndices = [];
+    for (let i=0;i<tokens.length;i++){
+      if (/^\w/.test(tokens[i])) wordIndices.push(i);
+    }
+
+    const target = Math.min(14, Math.max(6, Math.floor(wordIndices.length * density)));
+    const chosen = new Set();
+
+    let cursor = Math.floor(rnd() * Math.max(1, wordIndices.length));
+    const stride = 3 + Math.floor(rnd()*4);
+    while (chosen.size < target && wordIndices.length){
+      chosen.add(wordIndices[cursor % wordIndices.length]);
+      cursor += stride;
+    }
+
+    let out = "";
+    let tCursor = Math.floor(rnd()*THREADS.length);
+
+    tokens.forEach((t, i) => {
+      if (chosen.has(i)){
+        const thread = THREADS[tCursor % THREADS.length];
+        tCursor++;
+
+        out += `
+          <span class="rx" data-thread="${thread}" data-state="censor">
+            <span class="word">${escapeHtml(t)}</span>
+          </span>`;
+      } else {
+        out += escapeHtml(t);
+      }
+    });
+
+    return out;
+  }
+
+  function nextState(st){
+    if (st === "censor") return "glimpse";
+    if (st === "glimpse") return "full";
+    return "censor";
+  }
+
+  function initRedactions(){
+    const all = Array.from(document.querySelectorAll(".rx"));
+
+    function pulseGroup(group){
+      group.forEach(el=>{
+        el.classList.remove("pulse");
+        void el.offsetWidth;
+        el.classList.add("pulse");
+      });
+      setTimeout(()=>group.forEach(el=>el.classList.remove("pulse")), 220);
+    }
+
+    all.forEach((el)=>{
+      el.setAttribute("tabindex","0");
+      el.setAttribute("role","button");
+
+      const activate = () => {
+        const thread = el.getAttribute("data-thread");
+        const group = all.filter(x => x.getAttribute("data-thread") === thread);
+
+        const current = el.getAttribute("data-state") || "censor";
+        const to = nextState(current);
+
+        group.forEach(x => x.setAttribute("data-state", to));
+        pulseGroup(group);
+      };
+
+      el.addEventListener("click", activate);
+      el.addEventListener("keydown",(e)=>{
+        if (e.key === "Enter" || e.key === " "){
+          e.preventDefault();
+          activate();
+        }
+      });
+    });
+  }
+
+  function renderTerms(seed){
+    const density = 0.17 + ((seed % 7) * 0.01);
+    const html = TERMS_TEXT.map((p, idx) => {
+      const s = (seed * 99991) ^ hashString(p) ^ (idx * 101);
+      return `<p>${redactParagraph(p, s, density)}</p>`;
+    }).join("");
+    docBody.innerHTML = html;
+    initRedactions();
+  }
+
+  function openRecord(fileIndex){
+    renderTerms(fileIndex + 1);
+    goToRecord();
+  }
+
+  /* ============================================================
+     EASTER EGG (tiny): press + hold a redaction (~1.1s)
+     → temporarily unlocks that entire THREAD for 2 seconds,
+     then restores the previous states. No new UI, no layout change.
+     ============================================================ */
+
+  let eggHoldTimer = null;
+  let eggActive = false;
+
+  function isOnRecord(){
+    return record && !record.hidden;
+  }
+
+  function beginEggHold(targetRx){
+    if (!isOnRecord()) return;
+    if (!targetRx) return;
+
+    const thread = targetRx.getAttribute("data-thread");
+    if (!thread) return;
+
+    const all = Array.from(document.querySelectorAll(".rx"));
+    const group = all.filter(x => x.getAttribute("data-thread") === thread);
+    const prev = group.map(x => x.getAttribute("data-state") || "censor");
+
+    eggActive = true;
+    eggHoldTimer = setTimeout(() => {
+      if (!eggActive) return;
+
+      group.forEach(x => x.setAttribute("data-state", "full"));
+
+      setTimeout(() => {
+        const groupAgain = Array.from(document.querySelectorAll(".rx"))
+          .filter(x => x.getAttribute("data-thread") === thread);
+        groupAgain.forEach((x, i) => x.setAttribute("data-state", prev[i] || "censor"));
+      }, 2000);
+    }, 1100);
+  }
+
+  function cancelEggHold(){
+    eggActive = false;
+    if (eggHoldTimer) clearTimeout(eggHoldTimer);
+    eggHoldTimer = null;
+  }
+
+  document.addEventListener("mousedown", (e) => {
+    const rx = e.target.closest?.(".rx");
+    if (rx) beginEggHold(rx);
+  });
+  document.addEventListener("mouseup", cancelEggHold);
+  document.addEventListener("mouseleave", cancelEggHold);
+
+  document.addEventListener("touchstart", (e) => {
+    const rx = e.target.closest?.(".rx");
+    if (rx) beginEggHold(rx);
+  }, { passive: true });
+  document.addEventListener("touchend", cancelEggHold);
+  document.addEventListener("touchcancel", cancelEggHold);
+</script>
+</body>
+</html>

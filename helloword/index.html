@@ -20,7 +20,6 @@
       background-position: top left;
     }
 
-    /* MAIN LAYOUT */
     .wrap {
       min-height: 100vh;
       padding: 56px 64px;
@@ -31,7 +30,6 @@
       box-sizing: border-box;
     }
 
-    /* LEFT STICKERS */
     .stickers {
       display: flex;
       flex-direction: column;
@@ -39,10 +37,10 @@
     }
 
     .sticker-group {
-      width: 220px;              /* shared alignment width */
+      width: 220px;             
       display: flex;
       flex-direction: column;
-      align-items: center;       /* TRUE centering */
+      align-items: center;     
     }
 
     .stickers a {
@@ -76,7 +74,6 @@
       white-space: nowrap;
     }
 
-    /* RIGHT WINDOW — slightly bigger, still aligned */
     .window {
       max-width: 720px;          /* was 680 */
       background: #fff6d8;
@@ -120,7 +117,7 @@
     }
 
     .content {
-      padding: 40px 44px 44px;   /* slightly more breathing room */
+      padding: 40px 44px 44px;   
     }
 
     h1 {
@@ -137,7 +134,6 @@
       opacity: .9;
     }
 
-    /* RESPONSIVE */
     @media (max-width: 1024px) {
       .wrap {
         grid-template-columns: 260px 1fr;
