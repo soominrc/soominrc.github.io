@@ -115,13 +115,11 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* ========= PAGE SWITCHING (NO JS) ========= */
     #record{ display:none; }
     #record:target{ display:block; }
     .content:has(#record:target) #landing{ display:none; }
     .content:has(#record:target) #record{ display:block; }
 
-    /* ===== LANDING ===== */
     .panel{
       position:relative;
       background:var(--blue);
@@ -332,7 +330,7 @@
       position:relative;
     }
 
-    /* ===== REDACTIONS (NO JS) ===== */
+
     .rxcb, .pxcb, .masterAccess{
       position:absolute;
       left:-9999px;
@@ -376,7 +374,7 @@
       color: var(--txt);
     }
 
-    /* ===== PAGE FOLD = MASTER TOGGLE ===== */
+
     .foldToggle{
       position:absolute;
       top:0;
@@ -414,7 +412,6 @@
       filter: drop-shadow(-1px 2px 2px rgba(0,0,0,.16));
     }
 
-    /* global reveal when fold is ON */
     .masterAccess:checked ~ .doc .rxcb + .rx{ background: transparent; }
     .masterAccess:checked ~ .doc .rxcb + .rx .word{ opacity: 1; }
     .masterAccess:checked ~ .doc .pxcb + .px{ background: transparent; color: var(--txt); }
@@ -468,7 +465,7 @@
       .panel{ padding: 28px; }
     }
 
-    /* Laptop / small desktop */
+   
     @media (max-width: 1024px){
       .stage{ padding: 22px clamp(16px, 3vw, 34px); }
       .window{ border-radius: 20px; }
@@ -476,7 +473,7 @@
       .paper{ padding: 20px; }
     }
 
-    /* Tablet landscape / tight widths */
+
     @media (max-width: 840px){
       .grid{ grid-template-columns: 1fr; }
       .photo{ max-width: 520px; }
@@ -486,7 +483,7 @@
       .navHint{ text-align:left; }
     }
 
-    /* Tablet portrait / big phones */
+
     @media (max-width: 600px){
       .chrome{
         padding: 12px 12px;
@@ -517,7 +514,6 @@
       .foldToggle::before{ border-top-width: 58px; border-left-width: 58px; }
     }
 
-    /* Small phones */
     @media (max-width: 480px){
       .stage{ padding: 18px 14px; gap: 14px; }
       .topline .title{ font-size: 11px; letter-spacing: .16em; }
@@ -526,14 +522,12 @@
       .chrome .dots{ gap: 7px; }
       .dot{ width:9px; height:9px; }
 
-      /* Reduce chrome clutter on very small widths */
       .chip{ display:none; }
       .url{ text-align:right; }
 
       .copy{ font-size: 12.5px; }
       .meta{ font-size: 10.5px; }
 
-      /* Keep the files layout, just scale icons + rows */
       .files{ grid-auto-rows: 22px; }
       .file{ width: 34px; height: 28px; }
       .file::after{ width: 16px; height: 9px; }
@@ -550,7 +544,6 @@
       .foldToggle::before{ border-top-width: 52px; border-left-width: 52px; }
     }
 
-    /* Ultra small (older phones / split view) */
     @media (max-width: 360px){
       .files{ grid-auto-rows: 20px; }
       .file{ width: 32px; height: 26px; }
@@ -577,7 +570,6 @@
         </div>
 
         <div class="content">
-          <!-- LANDING -->
           <section class="panel" id="landing">
             <div class="giant" aria-hidden="true">
               <span>access<br>under<br>conditions</span>
@@ -601,7 +593,6 @@
 
                 <div class="fileField">
                   <div class="files" aria-label="Files grid">
-                    <!-- FILES: kept exactly as you had them -->
             <a class="file" href="#record" aria-label="Open file" style="grid-column:3;grid-row:2;transform:translate(-5.6px,-3.5px) rotate(-3deg);"></a>
             <a class="file" href="#record" aria-label="Open file" style="grid-column:10;grid-row:7;transform:translate(-3.5px,2.1px) rotate(1deg);"></a>
             <a class="file" href="#record" aria-label="Open file" style="grid-column:7;grid-row:12;transform:translate(-1.4px,0.0px) rotate(-2deg);"></a>
