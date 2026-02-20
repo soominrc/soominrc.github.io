@@ -6,6 +6,8 @@
   <title>Public Archive</title>
   <meta name="description" content="A non-linear archive about access, redaction, and what systems choose to show." />
 
+  <link rel="icon" type="image/png" href="https://i.pinimg.com/736x/29/d8/b9/29d8b962848d537d34c18563c006b1ba.jpg" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Karla:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -915,13 +917,13 @@
                   <div class="landing-overline">Archive Interface · Public Record</div>
                   <div class="landing-title">Public<br/>Archive</div>
                   <p class="landing-body">
-                    Three legal texts staged as a permission system. Access is procedural. The page behaves like the thing it cites.
+                    Three legal texts staged as a permission system. Access is procedural.
                   </p>
                 </div>
                 <div class="landing-meta">
                   <div class="landing-meta-row"><span>Records</span><span>—</span><span>3 texts</span></div>
                   <div class="landing-meta-row"><span>Access</span><span>—</span><span>Request-gated</span></div>
-                  <div class="landing-meta-row"><span>Reading</span><span>—</span><span>Non-linear</span></div>
+                  <div class="landing-meta-row"><span></span><span>—</span><span></span></div>
                 </div>
               </div>
 
@@ -957,7 +959,7 @@
             <div class="file-panel">
               <div class="file-panel-bar">
                 <span>File Field</span>
-                <span>72 items</span>
+                
               </div>
               <div class="file-field">
                 <div class="files" id="filesGrid" aria-label="File grid"></div>
@@ -1054,7 +1056,6 @@
           </div>
         </section>
 
-        <!-- ABOUT -->
         <section id="about">
           <div class="about-wrap">
             <div class="top-bar" style="max-width:700px;">
@@ -1065,11 +1066,9 @@
               <div class="about-section">
                 <div class="about-overline">About</div>
                 <div class="about-title">Public Archive</div>
+
                 <p class="about-body">
-                  Three official legal texts presented as an interface. The black bars are the reading logic.
-                </p>
-                <p class="about-body">
-                  Submitting the request enables interaction. Each reveal forces other parts to re-close, so the page never holds the full text at once.
+                  There are three public records of law  posted on this site as interfaces. They can each be fully read, but are not immediately available to everyone. The redacted blocks of information serve as guides which you can unlock pieces by completing a request process, or you can bypass the process and access the entire record immediately. The idea is not to keep information secret, but rather to show the systems by which people obtain, evade, or format legal documents.
                 </p>
               </div>
 
@@ -1261,7 +1260,6 @@
     try{ localStorage.setItem('auc_v6', JSON.stringify(arr)); } catch(_){}
   }
 
-  /* FIXED: exact 72 files, stable order, no random empties, no layout drift. */
   function buildFiles(){
     filesGrid.innerHTML = '';
     const v = getVisited();
