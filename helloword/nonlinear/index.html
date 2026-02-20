@@ -3,1130 +3,1542 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Access Under Conditions</title>
+  <title>Public Archive</title>
   <meta name="description" content="A non-linear archive about access, redaction, and what systems choose to show." />
-  <meta property="og:title" content="Access Under Conditions" />
-  <meta property="og:description" content="A non-linear archive about access, redaction, and what systems choose to show." />
-  <meta property="og:type" content="website" />
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect width='64' height='64' fill='%230b0b0b'/%3E%3Crect x='10' y='18' width='44' height='10' fill='%23ffffff' opacity='.9'/%3E%3Crect x='10' y='34' width='30' height='10' fill='%23ffffff' opacity='.7'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;1,300;1,400&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Karla:wght@300;400;500&display=swap" rel="stylesheet" />
 
   <style>
     :root{
-      --bg:#0b0b0b;
-      --ink:#f2f2f2;
-      --muted:rgba(242,242,242,.62);
-      --line:rgba(242,242,242,.18);
-      --window:#101010;
-      --shadow:0 30px 80px rgba(0,0,0,.55);
+      --bg:#0c0b09;
+      --surface:#111009;
+      --border:rgba(224,218,204,0.08);
+      --border-mid:rgba(224,218,204,0.13);
+      --border-strong:rgba(224,218,204,0.22);
+      --ink:#e0dac8;
+      --ink-mid:rgba(224,218,204,0.55);
+      --ink-dim:rgba(224,218,204,0.32);
+      --ink-ghost:rgba(224,218,204,0.18);
 
-      --paper:#ffffff;
-      --txt:rgba(0,0,0,.90);
-      --hair:rgba(0,0,0,.10);
+      --paper:#f4f1ea;
+      --doc-ink:#1a1814;
+      --doc-mid:rgba(26,24,20,0.58);
+      --doc-dim:rgba(26,24,20,0.36);
+      --redact:#1a1814;
 
-      --folder:#e9e9e9;
-      --folder2:#d7d7d7;
-      --folder-stroke:rgba(0,0,0,.20);
-
-      /* redaction ink */
-      --blk:#0b0b0b;
+      --amber:#c8a84a;
+      --green:#5a9e6a;
+      --shadow:0 32px 80px rgba(0,0,0,0.65), 0 4px 12px rgba(0,0,0,0.30);
     }
 
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
     body{
-      margin:0;
       background:var(--bg);
       color:var(--ink);
-      font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-      letter-spacing:-0.01em;
-      overflow:auto;
+      font-family:'Karla',sans-serif;
+      font-weight:400;
+      min-height:100vh;
+      overflow-x:hidden;
+      -webkit-font-smoothing:antialiased;
     }
 
-    /* ── Stage ─────────────────────────────────────── */
+    body::before{
+      content:'';
+      position:fixed;inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      background-repeat:repeat;
+      background-size:200px 200px;
+      pointer-events:none;
+      z-index:9999;
+      opacity:0.5;
+    }
+
     .stage{
-      min-height:100%;
+      min-height:100vh;
       display:grid;
-      grid-template-rows:auto 1fr;
-      padding:26px clamp(18px,3vw,44px);
-      gap:18px;
+      grid-template-rows:auto 1fr auto;
+      padding:16px clamp(12px,2.5vw,28px);
+      gap:10px;
     }
     .topline{
-      display:flex; justify-content:center; align-items:center; padding-top:6px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
     }
-    .topline .title{
-      font-size:12px; letter-spacing:.18em;
-      text-transform:uppercase; opacity:.9; user-select:none;
+    .topline-title{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9.5px;
+      font-weight:400;
+      letter-spacing:0.22em;
+      text-transform:uppercase;
+      color:var(--ink-dim);
     }
-    .center{ display:grid; place-items:center; padding:10px 0; }
+    .topline-right{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9px;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:var(--ink-ghost);
+    }
+    .center{display:grid;place-items:start center;}
 
-    /* ── Window ────────────────────────────────────── */
     .window{
-      width:min(1020px,100%);
-      border:1px solid var(--line);
-      border-radius:16px; /* strict, not cartoon */
-      background:var(--window);
+      width:min(1080px,100%);
+      border:1px solid var(--border);
+      border-radius:11px;
+      background:var(--surface);
       box-shadow:var(--shadow);
       overflow:hidden;
       display:grid;
       grid-template-rows:auto minmax(0,1fr);
     }
+    .window.is-minimized .content{display:none;}
+    .window.is-fullscreen{
+      position:fixed;inset:8px;
+      width:auto;height:auto;
+      z-index:200;border-radius:10px;
+    }
 
-    /* ── Chrome ────────────────────────────────────── */
     .chrome{
-      display:flex; align-items:center;
-      justify-content:space-between; gap:16px;
-      padding:14px 16px;
-      border-bottom:1px solid rgba(242,242,242,.12);
-      background:rgba(255,255,255,.02);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:10px 14px;
+      border-bottom:1px solid var(--border);
+      background:var(--bg);
       user-select:none;
     }
-    .dots{ display:flex; gap:8px; align-items:center; }
+    .dots{display:flex;gap:7px;align-items:center;}
     .dotbtn{
-      width:10px; height:10px; border-radius:50%;
-      border:1px solid rgba(242,242,242,.22);
-      background:rgba(242,242,242,.06);
-      padding:0; cursor:pointer; display:inline-block;
+      width:11px;height:11px;border-radius:50%;
+      border:none;cursor:pointer;padding:0;
+      transition:filter 0.12s,transform 0.10s;
     }
-    .dotbtn:focus-visible{ outline:2px solid rgba(255,255,255,.6); outline-offset:3px; }
-    .dotbtn.red    { background:rgba(255,95,86,.85);  border-color:rgba(255,95,86,.25); }
-    .dotbtn.yellow { background:rgba(255,189,46,.85); border-color:rgba(255,189,46,.25); }
-    .dotbtn.green  { background:rgba(39,201,63,.85);  border-color:rgba(39,201,63,.25); }
+    .dotbtn:hover{filter:brightness(1.18);transform:scale(1.08);}
+    .dotbtn.red{background:#ff5f56;}
+    .dotbtn.yellow{background:#ffbd2e;}
+    .dotbtn.green{background:#27c93f;}
 
-    .url{
-      flex:1; text-align:center; font-size:12px;
-      color:var(--muted); letter-spacing:.10em; text-transform:uppercase;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    .url-bar{
+      flex:1;
+      text-align:center;
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9.5px;
+      font-weight:300;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:var(--ink-ghost);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
-    .chromeRight{
-      display:flex; align-items:center; gap:10px;
-      min-width:92px; justify-content:flex-end;
-    }
-    .iconBtn{
-      width:28px; height:28px;
-      display:grid; place-items:center;
-      border:1px solid rgba(242,242,242,.18);
-      background:transparent; color:rgba(242,242,242,.75);
+    .chrome-right{display:flex;gap:5px;align-items:center;}
+    .icon-btn{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:11px;
+      width:26px;height:26px;
+      display:grid;place-items:center;
+      border:1px solid var(--border);
+      background:transparent;
+      color:var(--ink-dim);
       cursor:pointer;
-      border-radius:6px;
-      font-size:13px;
+      border-radius:5px;
+      text-decoration:none;
+      transition:background 0.14s,color 0.14s,border-color 0.14s;
     }
-    .iconBtn:hover{ background:rgba(242,242,242,.06); }
-    .iconBtn:focus-visible{ outline:2px solid rgba(255,255,255,.55); outline-offset:3px; }
+    .icon-btn:hover{background:rgba(224,218,204,0.05);color:var(--ink);border-color:var(--border-mid);}
 
-    /* ── Content area ──────────────────────────────── */
     .content{
-      min-height:0; overflow:auto;
-      scrollbar-gutter:stable;
-      -webkit-overflow-scrolling:touch;
-      background:var(--window);
+      min-height:0;
+      overflow-y:auto;
+      overflow-x:hidden;
+      scrollbar-width:thin;
+      scrollbar-color:rgba(224,218,204,0.09) transparent;
     }
 
-    /* window states */
-    .window.is-minimized .content{ display:none; }
-    .window.is-fullscreen{
-      position:fixed; inset:14px;
-      width:auto; height:auto;
-      z-index:999; border-radius:12px;
-    }
+    /* Routing */
+    #record,#about{display:none;}
+    .content:has(#record:target) #landing,
+    .content:has(#about:target)  #landing{display:none;}
+    #record:target,#about:target{display:block;}
 
-    /* ── Page switching (hash-based) ───────────────── */
-    #record, #about { display:none; }
-    #record:target{ display:block; }
-    #about:target{ display:block; }
-
-    .content:has(#record:target) #landing{ display:none; }
-    .content:has(#record:target) #record{ display:block; }
-
-    .content:has(#about:target) #landing{ display:none; }
-    .content:has(#about:target) #about{ display:block; }
-
-    /* ════════════════════════════════════════════════
-       LANDING (files on the side, no big text body)
-    ════════════════════════════════════════════════ */
-    .landingWrap{
+    /* LANDING */
+    .landing-wrap{
       padding:22px;
       display:grid;
-      grid-template-columns:1.08fr .92fr;
-      gap:18px;
+      grid-template-columns:1fr 1.6fr;
+      gap:14px;
       align-items:stretch;
     }
-    .landingLeft{
-      border:1px solid rgba(242,242,242,.10);
-      border-radius:12px;
-      background:rgba(255,255,255,.02);
-      padding:18px;
+    .landing-left{display:flex;flex-direction:column;gap:12px;}
+    .landing-hero{
+      border:1px solid var(--border);
+      border-radius:8px;
+      background:rgba(255,255,255,0.010);
+      padding:22px 24px;
+      flex:1;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      min-height:420px;
+      min-height:240px;
     }
-    .landingMark{
-      font-size:12px;
-      letter-spacing:.18em;
+    .landing-overline{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9px;
+      font-weight:300;
+      letter-spacing:0.22em;
       text-transform:uppercase;
-      color:rgba(242,242,242,.70);
-      line-height:1.4;
+      color:var(--ink-ghost);
+      margin-bottom:16px;
     }
-    .landingHint{
-      font-size:12px;
-      letter-spacing:.10em;
+    .landing-title{
+      font-family:'Spectral',serif;
+      font-size:clamp(30px,4vw,46px);
+      font-weight:300;
+      line-height:1.04;
+      letter-spacing:-0.02em;
+      color:var(--ink);
+      margin-bottom:18px;
+    }
+    .landing-body{
+      font-size:13px;
+      line-height:1.78;
+      color:var(--ink-mid);
+      max-width:44ch;
+      font-weight:300;
+    }
+    .landing-meta{
+      margin-top:20px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .landing-meta-row{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9px;
+      font-weight:300;
+      letter-spacing:0.12em;
       text-transform:uppercase;
-      color:rgba(242,242,242,.42);
-      line-height:1.5;
+      color:var(--ink-ghost);
+      display:flex;
+      gap:8px;
     }
+    .landing-meta-row span:first-child{color:var(--ink-dim);}
 
-    .photo{
-      border:1px solid rgba(242,242,242,.10);
-      border-radius:12px;
+    .index-list{
+      border:1px solid var(--border);
+      border-radius:8px;
       overflow:hidden;
-      background:rgba(255,255,255,.02);
-      min-height:420px;
+    }
+    .index-list-head{
+      padding:8px 14px;
+      border-bottom:1px solid var(--border);
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9px;
+      font-weight:300;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color:var(--ink-ghost);
+      background:rgba(255,255,255,0.006);
+    }
+    .index-row{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:13px 14px;
+      border-bottom:1px solid var(--border);
+      cursor:pointer;
+      text-decoration:none;
+      transition:background 0.14s;
+    }
+    .index-row:last-child{border-bottom:none;}
+    .index-row:hover{background:rgba(224,218,204,0.04);}
+    .index-row-id{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9.5px;
+      font-weight:400;
+      color:rgba(224,218,204,0.28);
+      width:14px;
+      flex-shrink:0;
+    }
+    .index-row-body{flex:1;}
+    .index-row-title{
+      font-size:12.5px;
+      font-weight:500;
+      color:var(--ink);
+      margin-bottom:2px;
+    }
+    .index-row-meta{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:8.5px;
+      font-weight:300;
+      letter-spacing:0.06em;
+      color:var(--ink-ghost);
+    }
+    .index-row-arrow{
+      font-size:11px;
+      color:var(--ink-ghost);
+      transition:transform 0.14s,color 0.14s;
+    }
+    .index-row:hover .index-row-arrow{transform:translateX(3px);color:var(--ink-dim);}
+
+    .file-panel{
+      border:1px solid var(--border);
+      border-radius:8px;
+      overflow:hidden;
       display:grid;
       grid-template-rows:auto 1fr auto;
+      background:rgba(255,255,255,0.010);
     }
-    .photoTop{
-      padding:12px 12px 10px;
-      display:flex; justify-content:space-between; align-items:center; gap:10px;
-      border-bottom:1px solid rgba(242,242,242,.10);
-      background:rgba(255,255,255,.02);
-    }
-    .photoTop .label{
-      font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-      color:rgba(242,242,242,.65); user-select:none; white-space:nowrap;
-    }
-    .photoTop .hint{
-      font-size:11px; letter-spacing:.12em; text-transform:uppercase;
-      color:rgba(242,242,242,.42); user-select:none; white-space:nowrap;
-    }
-    .fileField{
-      position:relative;
-      background:
-        radial-gradient(420px 340px at 50% 42%, rgba(255,255,255,.06), rgba(255,255,255,0) 70%),
-        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
-      overflow:hidden;
-    }
-    .files{
-      position:absolute; inset:0; padding:10px;
-      display:grid;
-      grid-template-columns:repeat(10, minmax(0,1fr));
-      grid-auto-rows:26px;
-      pointer-events:auto;
-    }
-    .file{
-      pointer-events:auto; width:40px; height:32px;
-      position:relative; cursor:pointer;
-      justify-self:center; align-self:center;
-      filter:drop-shadow(0 10px 18px rgba(0,0,0,.32));
-      transition:transform .12s ease, filter .12s ease, opacity .22s ease;
-      text-decoration:none; outline:none;
-    }
-    .file:hover{
-      filter:drop-shadow(0 14px 26px rgba(0,0,0,.42)) brightness(1.05);
-      transform:translateY(-1px);
-    }
-    .file:active{ transform:translateY(0) scale(.99); }
-    .file:focus-visible{ outline:2px solid rgba(255,255,255,.65); outline-offset:3px; }
-    .file::before{
-      content:""; position:absolute;
-      left:0; right:0; top:7px; bottom:0;
-      border-radius:8px;
-      background:linear-gradient(180deg, var(--folder), var(--folder2));
-      border:1px solid var(--folder-stroke);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.55), 0 1px 0 rgba(0,0,0,.10);
-    }
-    .file::after{
-      content:""; position:absolute;
-      left:5px; top:2px; width:18px; height:10px;
-      border-radius:7px 7px 5px 5px;
-      background:linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.42));
-      border:1px solid rgba(0,0,0,.12);
-      box-shadow:inset 0 1px 0 rgba(255,255,255,.55);
-    }
-    .photoBottom{
-      padding:12px;
-      border-top:1px solid rgba(242,242,242,.10);
-      background:rgba(255,255,255,.02);
-      font-size:11px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:rgba(242,242,242,.45);
-      user-select:none;
+    .file-panel-bar{
+      padding:9px 14px;
+      border-bottom:1px solid var(--border);
       display:flex;
       justify-content:space-between;
-      gap:12px;
+      align-items:center;
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9px;
+      font-weight:300;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:var(--ink-ghost);
+    }
+    .file-field{
+      position:relative;
+      min-height:300px;
+      background:radial-gradient(500px 300px at 50% 46%, rgba(224,218,204,0.022), transparent 70%);
+      overflow:hidden;
+      padding:14px;
     }
 
-    /* ════════════════════════════════════════════════
-       ABOUT PAGE (separate icon page)
-    ════════════════════════════════════════════════ */
-    .aboutWrap{
-      padding:22px;
+    .files{
+      height:100%;
       display:grid;
-      grid-template-columns:1fr;
-      gap:14px;
+      grid-template-columns:repeat(12,minmax(0,1fr));
+      grid-auto-rows:34px;
+      gap:10px 8px;
+      align-content:start;
+      justify-items:center;
     }
-    .aboutCard{
-      border:1px solid rgba(242,242,242,.12);
-      border-radius:12px;
-      background:rgba(255,255,255,.02);
-      padding:18px;
-      max-width:860px;
-    }
-    .aboutTitle{
-      margin:0 0 10px;
-      font-size:12px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:rgba(242,242,242,.80);
-    }
-    .aboutText{
-      margin:0;
-      font-size:14px;
-      line-height:1.7;
-      color:rgba(242,242,242,.70);
-      max-width:72ch;
-    }
-    .aboutRule{
-      margin-top:14px;
-      padding-top:14px;
-      border-top:1px solid rgba(242,242,242,.10);
-      font-size:12px;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-      color:rgba(242,242,242,.45);
-      line-height:1.6;
-    }
-    .aboutLinks{
-      margin-top:14px;
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-    }
-    .aboutLink{
-      font-size:12px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
-      color:rgba(242,242,242,.75);
-      text-decoration:none;
-      border-bottom:1px solid rgba(242,242,242,.25);
-      padding-bottom:2px;
-    }
-    .aboutLink:hover{ color:#fff; border-bottom-color:rgba(255,255,255,.55); }
 
-    /* ════════════════════════════════════════════════
-       RECORD PAGE (bureaucratic friction, no click-to-reveal)
-    ════════════════════════════════════════════════ */
-    .recordWrap{
-      padding:22px;
+    .file{
+      width:40px;height:32px;
+      position:relative;cursor:pointer;
+      filter:drop-shadow(0 7px 12px rgba(0,0,0,0.40));
+      transition:transform 0.14s ease,filter 0.14s ease,opacity 0.28s ease;
+      text-decoration:none;outline:none;
     }
-    .topBar{
-      width:min(980px,100%);
-      margin:0 auto 14px;
+    .file:hover{
+      transform:translateY(-2px);
+      filter:drop-shadow(0 12px 20px rgba(0,0,0,0.55)) brightness(1.06);
+    }
+    .file:active{transform:scale(0.97);}
+    .file::before{
+      content:'';
+      position:absolute;
+      left:0;right:0;top:6px;bottom:0;
+      border-radius:6px;
+      background:linear-gradient(180deg,#dcdad4,#c8c5be);
+      border:1px solid rgba(0,0,0,0.16);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,0.50);
+    }
+    .file::after{
+      content:'';
+      position:absolute;
+      left:4px;top:1px;width:16px;height:8px;
+      border-radius:5px 5px 3px 3px;
+      background:linear-gradient(180deg,rgba(255,255,255,0.62),rgba(255,255,255,0.28));
+      border:1px solid rgba(0,0,0,0.09);
+    }
+    .file.visited{
+      opacity:0.28;
+      filter:grayscale(1) drop-shadow(0 4px 7px rgba(0,0,0,0.28));
+    }
+
+    .file-panel-footer{
+      padding:9px 14px;
+      border-top:1px solid var(--border);
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9px;
+      font-weight:300;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:var(--ink-ghost);
+      display:flex;
+      justify-content:space-between;
+    }
+
+    .record-wrap{padding:18px 22px 40px;}
+    .top-bar{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
+      gap:10px;
+      margin-bottom:14px;
       flex-wrap:wrap;
     }
-    .navBtn{
-      border:1px solid rgba(242,242,242,.18);
-      background:transparent;
-      color:rgba(242,242,242,.80);
-      padding:9px 12px;
-      border-radius:10px;
-      font-size:12px;
-      letter-spacing:.10em;
+    .top-bar-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+    .nav-btn{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9.5px;
+      font-weight:300;
+      letter-spacing:0.12em;
       text-transform:uppercase;
+      color:var(--ink-dim);
+      border:1px solid var(--border);
+      background:transparent;
+      padding:7px 11px;
+      border-radius:6px;
       cursor:pointer;
-      user-select:none;
       text-decoration:none;
       display:inline-flex;
       align-items:center;
-      flex-shrink:0;
+      transition:background 0.14s,color 0.14s,border-color 0.14s;
     }
-    .navBtn:hover{ background:rgba(242,242,242,.06); }
+    .nav-btn:hover{background:rgba(224,218,204,0.05);color:var(--ink);border-color:var(--border-mid);}
 
-    .requestPanel{
+    .record-tabs{
+      display:flex;
+      gap:2px;
+      border:1px solid var(--border);
+      border-radius:6px;
+      padding:3px;
+    }
+    .record-tab{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9.5px;
+      font-weight:400;
+      letter-spacing:0.10em;
+      text-transform:uppercase;
+      color:var(--ink-ghost);
+      border:none;
+      background:transparent;
+      padding:5px 11px;
+      border-radius:4px;
+      cursor:pointer;
+      transition:background 0.14s,color 0.14s;
+    }
+    .record-tab:hover{color:var(--ink-mid);}
+    .record-tab.active{background:rgba(224,218,204,0.10);color:var(--ink);}
+
+    .request-section{margin-bottom:14px;}
+    .request-card{
+      border:1px solid var(--border);
+      border-radius:8px;
+      background:rgba(255,255,255,0.008);
+      overflow:hidden;
+    }
+    .request-card-head{
+      padding:10px 14px;
+      border-bottom:1px solid var(--border);
       display:flex;
       align-items:center;
-      justify-content:flex-end;
-      gap:10px;
-      flex:1;
-      min-width:280px;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
     }
-    .miniLabel{
-      font-size:10px;
-      letter-spacing:.18em;
+    .request-card-title{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9px;
+      font-weight:400;
+      letter-spacing:0.22em;
       text-transform:uppercase;
-      color:rgba(242,242,242,.40);
-      white-space:nowrap;
-      user-select:none;
+      color:var(--ink-dim);
     }
-    .select, .input{
-      font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
-      border:1px solid rgba(242,242,242,.14);
-      background:rgba(255,255,255,.02);
-      color:rgba(242,242,242,.82);
-      border-radius:10px;
-      padding:9px 10px;
-      font-size:12px;
-      letter-spacing:.06em;
-      outline:none;
+    .request-hint{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:8.5px;
+      font-weight:300;
+      letter-spacing:0.10em;
+      color:var(--ink-ghost);
+      font-style:italic;
     }
-    .select{ cursor:pointer; }
-    .select:focus-visible, .input:focus-visible{ outline:2px solid rgba(255,255,255,.40); outline-offset:2px; }
-    .input{ width:190px; }
-    .checkWrap{
-      display:flex; align-items:center; gap:8px;
-      border:1px solid rgba(242,242,242,.14);
-      background:rgba(255,255,255,.02);
-      padding:8px 10px;
-      border-radius:10px;
+    .request-card-body{
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
     }
-    .checkWrap input{ accent-color:#ffffff; }
-    .checkWrap span{
-      font-size:10px;
-      letter-spacing:.16em;
+    .req-step{display:flex;align-items:center;gap:9px;}
+    .req-step-num{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9px;
+      font-weight:300;
+      width:18px;height:18px;
+      border-radius:50%;
+      border:1px solid var(--border-mid);
+      display:grid;
+      place-items:center;
+      color:var(--ink-ghost);
+      flex-shrink:0;
+    }
+    .req-step-num.done{border-color:var(--green);color:var(--green);}
+    .req-divider{width:1px;height:24px;background:var(--border);flex-shrink:0;}
+    .req-check-wrap{display:flex;align-items:center;gap:8px;cursor:pointer;}
+    .req-check-wrap input[type="checkbox"]{width:14px;height:14px;accent-color:var(--green);cursor:pointer;flex-shrink:0;}
+    .req-check-label{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9px;
+      font-weight:300;
+      letter-spacing:0.14em;
       text-transform:uppercase;
-      color:rgba(242,242,242,.55);
-      white-space:nowrap;
-      user-select:none;
-    }
-    .submitBtn{
-      border:1px solid rgba(242,242,242,.20);
-      background:rgba(242,242,242,.08);
-      color:#fff;
-      padding:9px 12px;
-      border-radius:10px;
-      font-size:12px;
-      letter-spacing:.10em;
-      text-transform:uppercase;
+      color:var(--ink-dim);
       cursor:pointer;
+      white-space:nowrap;
       user-select:none;
     }
-    .submitBtn:hover{ background:rgba(242,242,242,.12); }
-    .submitBtn:disabled{
-      opacity:.45;
-      cursor:not-allowed;
+    .req-input-wrap{display:flex;align-items:center;gap:6px;flex:1;min-width:180px;}
+    .req-input{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:10px;
+      font-weight:300;
+      letter-spacing:0.08em;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,0.020);
+      color:var(--ink);
+      border-radius:5px;
+      padding:7px 10px;
+      outline:none;
+      flex:1;
+      transition:border-color 0.14s,background 0.14s;
     }
+    .req-input:focus{border-color:var(--border-strong);background:rgba(255,255,255,0.030);}
+    .req-input::placeholder{color:rgba(224,218,204,0.16);}
+    .req-input.valid{border-color:rgba(90,158,106,0.5);}
+    .req-submit{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9.5px;
+      font-weight:400;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:var(--ink);
+      border:1px solid rgba(224,218,204,0.18);
+      background:rgba(224,218,204,0.05);
+      padding:7px 13px;
+      border-radius:5px;
+      cursor:pointer;
+      white-space:nowrap;
+      transition:background 0.14s,border-color 0.14s,transform 0.10s;
+      flex-shrink:0;
+    }
+    .req-submit:hover:not(:disabled){background:rgba(224,218,204,0.10);border-color:rgba(224,218,204,0.32);}
+    .req-submit:active:not(:disabled){transform:scale(0.98);}
+    .req-submit:disabled{opacity:0.25;cursor:not-allowed;}
 
+    .status-line{
+      width:min(960px,100%);
+      margin:0 auto 12px;
+      height:24px;
+      display:flex;
+      align-items:center;
+      gap:9px;
+      padding:0 2px;
+    }
+    .status-dot{
+      width:6px;height:6px;border-radius:50%;
+      background:rgba(224,218,204,0.12);
+      flex-shrink:0;
+      transition:background 0.35s,box-shadow 0.35s;
+    }
+    .status-dot.processing{
+      background:var(--amber);
+      box-shadow:0 0 8px rgba(200,168,74,0.50);
+      animation:blink 1s ease infinite;
+    }
+    .status-dot.granted{
+      background:var(--green);
+      box-shadow:0 0 8px rgba(90,158,106,0.45);
+    }
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.30}}
+    .status-msg{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9px;
+      font-weight:300;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:var(--ink-ghost);
+      transition:color 0.35s;
+    }
+    .status-line.processing .status-msg{color:var(--amber);}
+    .status-line.granted .status-msg{color:var(--green);}
+
+    /* PAPER */
     .paper{
-      width:min(980px,100%);
+      width:min(960px,100%);
       margin:0 auto;
       background:var(--paper);
-      border:1px solid rgba(0,0,0,.12);
-      border-radius:12px;
+      border:1px solid rgba(0,0,0,0.08);
+      border-radius:9px;
       overflow:hidden;
-      box-shadow:0 24px 70px rgba(0,0,0,.30);
+      box-shadow:0 20px 60px rgba(0,0,0,0.28), 0 3px 9px rgba(0,0,0,0.10), inset 0 1px 0 rgba(255,255,255,0.55);
+      position:relative;
     }
-    .paperInner{ padding:22px 22px 28px; }
 
-    .docHeader{
-      padding-bottom:18px;
-      border-bottom:1px solid rgba(0,0,0,.10);
-      margin-bottom:18px;
+    .fold-toggle{
+      position:absolute;left:-9999px;
+      width:1px;height:1px;overflow:hidden;
     }
-    .kicker{
-      font-size:10px;
-      letter-spacing:.18em;
+    .page-fold{
+      position:absolute;top:0;right:0;
+      width:52px;height:52px;
+      cursor:pointer;z-index:20;
+    }
+    .page-fold::after{
+      content:'';
+      position:absolute;inset:0;
+      background:linear-gradient(225deg,transparent 0%,transparent 47%,rgba(220,216,208,0.95) 50%,rgba(240,236,228,0.55) 62%,transparent 100%);
+      filter:drop-shadow(-2px 2px 3px rgba(0,0,0,0.10));
+      transition:opacity 0.18s ease,transform 0.18s ease;
+      pointer-events:none;
+    }
+    .page-fold:hover::after{opacity:0.72;}
+    .fold-toggle:checked + .page-fold::after{opacity:0.62;transform:translate(-3px,3px);}
+
+    .paper-inner{padding:28px 30px 36px;position:relative;}
+
+    .paper-stamp{
+      position:absolute;
+      top:24px;right:28px;
+      font-family:'IBM Plex Mono',monospace;
+      font-size:8px;
+      font-weight:400;
+      letter-spacing:0.24em;
       text-transform:uppercase;
-      color:rgba(0,0,0,.45);
+      color:rgba(26,24,20,0.20);
+      border:1px solid rgba(26,24,20,0.15);
+      padding:3px 7px;
+      border-radius:2px;
+      transform:rotate(1.8deg);
+      user-select:none;
+      pointer-events:none;
+      transition:color 0.5s,border-color 0.5s;
+    }
+    .paper-stamp.released{color:rgba(55,105,55,0.44);border-color:rgba(55,105,55,0.26);}
+    .paper-stamp.override{color:rgba(140,80,40,0.40);border-color:rgba(140,80,40,0.22);}
+
+    .doc-header{
+      padding-bottom:18px;
+      border-bottom:1px solid rgba(26,24,20,0.09);
+      margin-bottom:22px;
+      padding-right:100px;
+    }
+    .doc-kicker{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:8.5px;
+      font-weight:300;
+      letter-spacing:0.20em;
+      text-transform:uppercase;
+      color:var(--doc-dim);
       margin-bottom:10px;
     }
-    .docTitle{
-      margin:0 0 8px;
-      font-size:28px;
-      line-height:1.1;
-      letter-spacing:-0.03em;
-      font-weight:700;
-      color:var(--txt);
+    .doc-title{
+      font-family:'Spectral',serif;
+      font-size:clamp(21px,2.8vw,28px);
+      font-weight:300;
+      line-height:1.12;
+      letter-spacing:-0.02em;
+      color:var(--doc-ink);
+      margin-bottom:8px;
     }
-    .docSubtitle{
-      margin:0;
+    .doc-subtitle{
       font-size:12px;
-      letter-spacing:.04em;
-      color:rgba(0,0,0,.52);
-      line-height:1.55;
-      max-width:80ch;
+      line-height:1.6;
+      color:var(--doc-mid);
+      font-family:'Spectral',serif;
+      font-style:italic;
+      font-weight:300;
     }
 
     .doc{
-      color:var(--txt);
-      font-size:16px;
-      line-height:1.82;
-      max-width:82ch;
+      color:var(--doc-ink);
+      font-family:'Karla',sans-serif;
+      font-size:14px;
+      line-height:1.90;
       font-weight:400;
+      max-width:78ch;
+      overflow-wrap:anywhere;
+      word-break:normal;
     }
-    .doc p{ margin:0 0 16px; }
-    .sectionHead{
-      margin:26px 0 10px;
-      padding-bottom:8px;
-      border-bottom:1px solid rgba(0,0,0,.10);
-      font-size:10px;
-      letter-spacing:.18em;
+    .doc p{margin:0 0 14px;}
+    .section-head{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:8px;
+      font-weight:400;
+      letter-spacing:0.22em;
       text-transform:uppercase;
-      color:rgba(0,0,0,.45);
+      color:var(--doc-dim);
+      padding-bottom:7px;
+      border-bottom:1px solid rgba(26,24,20,0.07);
+      margin:26px 0 13px;
     }
-    .hanging{
-      padding-left:1.2em;
-      text-indent:-1.2em;
-    }
+    .hanging{padding-left:1.5em;text-indent:-1.5em;}
 
-    /* Cross-links between records (non-linear, but not gimmicky) */
     .xref{
-      color:rgba(0,0,0,.82);
+      font-family:'IBM Plex Mono',monospace;
+      font-size:10.5px;
+      font-weight:300;
+      letter-spacing:0.04em;
+      color:var(--doc-mid);
       text-decoration:none;
-      border-bottom:1px solid rgba(0,0,0,.35);
+      border-bottom:1px solid rgba(26,24,20,0.20);
       padding-bottom:1px;
+      transition:color 0.14s,border-color 0.14s;
       white-space:nowrap;
     }
-    .xref:hover{ border-bottom-color:rgba(0,0,0,.70); }
-
-    /* Sources (simple, no count) */
-    .sourceRow{
+    .xref:hover{color:var(--doc-ink);border-bottom-color:rgba(26,24,20,0.50);}
+    .xref-row{
       margin-top:22px;
-      padding-top:14px;
-      border-top:1px solid rgba(0,0,0,.10);
+      padding-top:13px;
+      border-top:1px solid rgba(26,24,20,0.07);
       display:flex;
-      gap:12px;
+      gap:10px;
       align-items:center;
       flex-wrap:wrap;
     }
-    .sourceLabel{
-      font-size:11px;
-      letter-spacing:.12em;
+    .xref-row-label{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:8px;
+      font-weight:300;
+      letter-spacing:0.18em;
       text-transform:uppercase;
-      color:rgba(0,0,0,.52);
+      color:var(--doc-dim);
     }
-    .sourceLink{
-      font-size:12px;
-      color:rgba(0,0,0,.85);
+
+    .source-row{
+      margin-top:20px;
+      padding-top:14px;
+      border-top:1px solid rgba(26,24,20,0.08);
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .source-label{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:8.5px;
+      font-weight:300;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      color:var(--doc-dim);
+    }
+    .source-link{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:10.5px;
+      font-weight:300;
+      color:var(--doc-mid);
       text-decoration:underline;
       text-underline-offset:3px;
     }
+    .source-link:hover{color:var(--doc-ink);}
 
-    /* ── Redaction system (NOT clickable) ───────────── */
+
     .redact{
-      position:relative;
       display:inline;
-      --show:0; /* 0 = hidden, 1 = visible */
+      background:var(--redact);
+      border-radius:2px;
+      padding:0 0.10em;
+      -webkit-box-decoration-break:clone;
+      box-decoration-break:clone;
+      cursor:default;
     }
-    .redactText{
-      color:rgba(0,0,0,calc(var(--show) * .90));
-      transition:color .25s ease;
-      position:relative;
-      z-index:1;
-    }
-    .redact::after{
-      content:"";
-      position:absolute;
-      left:-.05em; right:-.05em;
-      top:.14em;
-      height:1.08em;
-      background:rgba(11,11,11,.92);
-      opacity:calc(1 - var(--show));
-      transition:opacity .25s ease;
-      border-radius:1px;
-      pointer-events:none;
-    }
-    /* weight is just density (still grayscale) */
-    .redact[data-w="1"]::after{ background:rgba(11,11,11,.70); }
-    .redact[data-w="2"]::after{ background:rgba(11,11,11,.84); }
-    .redact[data-w="3"]::after{ background:rgba(11,11,11,.95); }
-
-    /* full-line redaction blocks */
-    .blockRedact{
-      display:block;
-      margin:0 0 16px;
-      padding:.30em .36em;
-      background:rgba(11,11,11,.92);
+    .redact .redact-text{
       color:transparent;
-      border-left:3px solid rgba(0,0,0,.25);
+      transition:color 0.30s ease;
+    }
+    .paper.is-granted .redact{cursor:pointer;}
+    .paper.is-granted .redact:hover{filter:brightness(1.03);}
+
+    .redact.revealed{
+      background:transparent;
+      padding:0;
+    }
+    .redact.revealed .redact-text{
+      color:rgba(26,24,20,0.92);
+    }
+
+    .block-redact{
+      display:block;
+      margin:0 0 14px;
+      padding:0.34em 0.50em;
+      background:var(--redact);
+      border-left:3px solid rgba(0,0,0,0.22);
       border-radius:0 2px 2px 0;
-      position:relative;
-      --show:0;
+      cursor:default;
+      transition:background 0.22s ease, border-color 0.22s ease;
     }
-    .blockRedact span{
-      color:rgba(0,0,0,calc(var(--show) * .90));
-      transition:color .25s ease;
+    .block-redact span{
+      color:transparent;
+      transition:color 0.30s ease;
+      display:block;
     }
-    .blockRedact::after{
-      content:"";
+    .paper.is-granted .block-redact{cursor:pointer;}
+    .paper.is-granted .block-redact:hover{filter:brightness(1.03);}
+
+    .block-redact.revealed{
+      background:transparent;
+      border-left-color:rgba(0,0,0,0.10);
+    }
+    .block-redact.revealed span{color:rgba(26,24,20,0.92);}
+
+    .paper-redact-hint{
+      display:none;
       position:absolute;
-      inset:0;
-      background:rgba(11,11,11,.92);
-      opacity:calc(1 - var(--show));
-      transition:opacity .25s ease;
-      pointer-events:none;
-    }
-    .blockRedact[data-w="1"]::after{ background:rgba(11,11,11,.70); }
-    .blockRedact[data-w="2"]::after{ background:rgba(11,11,11,.84); }
-    .blockRedact[data-w="3"]::after{ background:rgba(11,11,11,.95); }
-
-    /* status text (no colored boxes) */
-    .statusLine{
-      width:min(980px,100%);
-      margin:10px auto 0;
-      font-size:11px;
-      letter-spacing:.12em;
+      bottom:12px;left:30px;
+      font-family:'IBM Plex Mono',monospace;
+      font-size:8.5px;
+      font-weight:300;
+      letter-spacing:0.16em;
       text-transform:uppercase;
-      color:rgba(242,242,242,.40);
+      color:rgba(26,24,20,0.30);
+      pointer-events:none;
       user-select:none;
-      min-height:16px;
+    }
+    .paper:not(.is-granted) .paper-redact-hint{display:block;}
+
+    /* ABOUT */
+    .about-wrap{padding:22px 22px 40px;}
+    .about-content{max-width:660px;margin-top:18px;}
+    .about-section{margin-bottom:38px;}
+    .about-overline{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9px;
+      font-weight:300;
+      letter-spacing:0.22em;
+      text-transform:uppercase;
+      color:var(--ink-ghost);
+      margin-bottom:14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .about-overline::after{content:'';flex:1;height:1px;background:var(--border);}
+    .about-title{
+      font-family:'Spectral',serif;
+      font-size:22px;
+      font-weight:300;
+      letter-spacing:-0.02em;
+      color:var(--ink);
+      margin-bottom:14px;
+      line-height:1.18;
+    }
+    .about-body{
+      font-size:14px;
+      line-height:1.82;
+      color:var(--ink-mid);
+      font-weight:300;
+      max-width:60ch;
+    }
+    .about-body + .about-body{margin-top:12px;}
+    .about-rule{height:1px;background:var(--border);margin:30px 0;}
+    .about-step{display:flex;align-items:flex-start;gap:13px;margin-bottom:13px;}
+    .about-step-num{
+      font-family:'IBM Plex Mono',monospace;
+      font-size:10px;
+      font-weight:400;
+      color:var(--ink-dim);
+      width:20px;height:20px;
+      border-radius:50%;
+      border:1px solid var(--border-mid);
+      display:grid;
+      place-items:center;
+      flex-shrink:0;
+      margin-top:1px;
+    }
+    .about-step-text{
+      font-size:13.5px;
+      line-height:1.72;
+      color:var(--ink-mid);
+      font-weight:300;
     }
 
-    /* ── Responsive ─────────────────────────────────── */
-    @media(max-width:900px){
-      .landingWrap{ grid-template-columns:1fr; }
-      .landingLeft{ min-height:180px; }
-      .photo{ min-height:360px; }
-      .requestPanel{ justify-content:flex-start; }
+    .footer{
+      display:flex;
+      justify-content:space-between;
+      padding:3px 2px;
+      font-family:'IBM Plex Mono',monospace;
+      font-size:9px;
+      font-weight:300;
+      letter-spacing:0.12em;
+      text-transform:uppercase;
+      color:var(--ink-ghost);
     }
-    @media(max-width:560px){
-      .requestPanel{ flex-wrap:wrap; gap:8px; }
-      .input{ width:100%; }
-      .select{ width:100%; }
-      .checkWrap{ width:100%; justify-content:flex-start; }
-      .submitBtn{ width:100%; }
-      .docTitle{ font-size:22px; }
+
+    @media (max-width:860px){
+      .landing-wrap{grid-template-columns:1fr;}
+      .files{grid-template-columns:repeat(10,minmax(0,1fr));}
+    }
+    @media (max-width:580px){
+      .top-bar{flex-direction:column;align-items:flex-start;}
+      .request-card-body{flex-direction:column;align-items:flex-start;gap:12px;}
+      .req-divider{width:36px;height:1px;}
+      .req-input-wrap{width:100%;}
+      .req-input{width:100%;}
+      .paper-inner{padding:20px 18px 28px;}
+      .doc-header{padding-right:60px;}
+      .files{grid-template-columns:repeat(8,minmax(0,1fr));grid-auto-rows:34px;}
     }
   </style>
 </head>
 
 <body>
-  <div class="stage">
-    <div class="topline">
-      <div class="title">ACCESS UNDER CONDITIONS</div>
-    </div>
-
-    <div class="center">
-      <div class="window" id="window" aria-label="Window">
-        <div class="chrome">
-          <div class="dots" aria-label="Window controls">
-            <button class="dotbtn red"    id="btnClose" aria-label="Close (return to landing)"></button>
-            <button class="dotbtn yellow" id="btnMin"   aria-label="Minimize"></button>
-            <button class="dotbtn green"  id="btnFull"  aria-label="Toggle fullscreen"></button>
-          </div>
-          <div class="url" id="chromeTitle">ARCHIVE — PUBLIC RECORD</div>
-          <div class="chromeRight">
-            <button class="iconBtn" id="btnAbout" aria-label="About">i</button>
-          </div>
-        </div>
-
-        <div class="content" id="content">
-
-          <!-- ══════════ LANDING ══════════ -->
-          <section id="landing">
-            <div class="landingWrap">
-              <div class="landingLeft">
-                <div class="landingMark">
-                  ARCHIVE INTERFACE<br/>
-                
-                </div>
-                <div class="landingHint">
-                  open a file
-                </div>
-              </div>
-
-              <div class="photo" aria-label="File field">
-                <div class="photoTop">
-                  <div class="label">file field</div>
-                  <div class="hint">click any</div>
-                </div>
-                <div class="fileField">
-                  <div class="files" id="filesGrid" aria-label="Files"></div>
-                </div>
-                <div class="photoBottom">
-                  <span>3 records — public text</span>
-                  <span>about: top-right</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- ══════════ ABOUT ══════════ -->
-          <section id="about">
-            <div class="aboutWrap">
-              <div class="topBar" style="margin-bottom:0;">
-                <a class="navBtn" href="#landing">← Back</a>
-              </div>
-
-              <div class="aboutCard">
-                <h3 class="aboutTitle">About</h3>
-                <p class="aboutText">
-                  
-                  You submit a request, accept conditions, choose a format, and wait.
-                  The interface mirrors how institutions turn rights into procedures.
-                </p>
-
-                <div class="aboutRule">
-                 
-                </div>
-
-                <div class="aboutLinks">
-                  <a class="aboutLink" href="#record" id="aboutOpenRecord">open last record</a>
-                  <a class="aboutLink" href="#landing">back to files</a>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- ══════════ RECORD ══════════ -->
-          <section id="record">
-            <div class="recordWrap">
-              <div class="topBar">
-                <a class="navBtn" href="#landing">← Back</a>
-
-                <div class="requestPanel" aria-label="Request controls">
-                  <span class="miniLabel">format</span>
-                  <select class="select" id="formatSel" aria-label="Format">
-                    <option value="screen">screen view</option>
-                    <option value="pdf">pdf copy</option>
-                    <option value="csv">csv export</option>
-                  </select>
-
-                  <label class="checkWrap" aria-label="Acknowledge delays and fees">
-                    <input type="checkbox" id="ackBox" />
-                    <span>check here</span>
-                  </label>
-
-                  <input class="input" id="phraseInput" type="text" inputmode="text" autocomplete="off"
-                    placeholder='type: REQUEST ACCESS' aria-label="Type request phrase" />
-
-                  <button class="submitBtn" id="submitBtn" type="button">submit</button>
-                </div>
-              </div>
-
-              <div class="statusLine" id="statusLine"></div>
-
-              <div class="paper" id="paper">
-                <div class="paperInner">
-                  <div class="docHeader">
-                    <div class="kicker" id="docKicker">Record · excerpt</div>
-                    <h2 class="docTitle" id="docTitle">—</h2>
-                    <p class="docSubtitle" id="docSubtitle"></p>
-                  </div>
-
-                  <article class="doc" id="docBody">
-                    <p>Select a file on the landing page.</p>
-                  </article>
-
-                  <div class="sourceRow" id="sourceRow" style="display:none">
-                    <div class="sourceLabel">Primary source</div>
-                    <a class="sourceLink" id="sourceLink" href="#" target="_blank" rel="noopener noreferrer">—</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-        </div><!-- /content -->
-      </div><!-- /window -->
-    </div>
+<div class="stage">
+  <div class="topline">
+    <span class="topline-title">Public Archive</span>
+    <span class="topline-right" id="globalStatus">Archive</span>
   </div>
+
+  <div class="center">
+    <div class="window" id="window">
+      <div class="chrome">
+        <div class="dots">
+          <button class="dotbtn red" id="btnClose" title="Close"></button>
+          <button class="dotbtn yellow" id="btnMin" title="Minimize"></button>
+          <button class="dotbtn green" id="btnFull" title="Fullscreen"></button>
+        </div>
+        <div class="url-bar" id="urlBar">archive</div>
+        <div class="chrome-right">
+          <a class="icon-btn" href="#about" title="About">i</a>
+        </div>
+      </div>
+
+      <div class="content" id="content">
+
+        <section id="landing">
+          <div class="landing-wrap">
+            <div class="landing-left">
+              <div class="landing-hero">
+                <div>
+                  <div class="landing-overline">Archive Interface · Public Record</div>
+                  <div class="landing-title">Public<br/>Archive</div>
+                  <p class="landing-body">
+                    Three legal texts staged as a permission system. Access is procedural. The page behaves like the thing it cites.
+                  </p>
+                </div>
+                <div class="landing-meta">
+                  <div class="landing-meta-row"><span>Records</span><span>—</span><span>3 texts</span></div>
+                  <div class="landing-meta-row"><span>Access</span><span>—</span><span>Request-gated</span></div>
+                  <div class="landing-meta-row"><span>Reading</span><span>—</span><span>Non-linear</span></div>
+                </div>
+              </div>
+
+              <div class="index-list">
+                <div class="index-list-head">Records — select to open</div>
+                <a class="index-row" href="#record" data-idx="0">
+                  <span class="index-row-id">A</span>
+                  <span class="index-row-body">
+                    <span class="index-row-title">Right of access by the data subject</span>
+                    <span class="index-row-meta">Regulation (EU) 2016/679 · Article 15</span>
+                  </span>
+                  <span class="index-row-arrow">→</span>
+                </a>
+                <a class="index-row" href="#record" data-idx="1">
+                  <span class="index-row-id">B</span>
+                  <span class="index-row-body">
+                    <span class="index-row-title">Freedom of Information Act</span>
+                    <span class="index-row-meta">5 U.S.C. § 552</span>
+                  </span>
+                  <span class="index-row-arrow">→</span>
+                </a>
+                <a class="index-row" href="#record" data-idx="2">
+                  <span class="index-row-id">C</span>
+                  <span class="index-row-body">
+                    <span class="index-row-title">Consumer right to know and access</span>
+                    <span class="index-row-meta">Cal. Civ. Code § 1798.100</span>
+                  </span>
+                  <span class="index-row-arrow">→</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="file-panel">
+              <div class="file-panel-bar">
+                <span>File Field</span>
+                <span>72 items</span>
+              </div>
+              <div class="file-field">
+                <div class="files" id="filesGrid" aria-label="File grid"></div>
+              </div>
+              <div class="file-panel-footer">
+                <span>Click any file to open a record</span>
+                <span id="visitedCount">0 opened</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="record">
+          <div class="record-wrap">
+            <div class="top-bar">
+              <div class="top-bar-left">
+                <a class="nav-btn" href="#landing">← Back</a>
+                <div class="record-tabs">
+                  <button class="record-tab active" data-idx="0">A</button>
+                  <button class="record-tab" data-idx="1">B</button>
+                  <button class="record-tab" data-idx="2">C</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="request-section" id="requestSection">
+              <div class="request-card">
+                <div class="request-card-head">
+                  <span class="request-card-title">Access Request</span>
+                  <span class="request-hint">Submit to enable reveal interactions</span>
+                </div>
+                <div class="request-card-body">
+                  <div class="req-step">
+                    <div class="req-step-num" id="step1Num">1</div>
+                    <div class="req-check-wrap">
+                      <input type="checkbox" id="ackBox" />
+                      <label class="req-check-label" for="ackBox">Acknowledge</label>
+                    </div>
+                  </div>
+
+                  <div class="req-divider"></div>
+
+                  <div class="req-step">
+                    <div class="req-step-num" id="step2Num">2</div>
+                    <div class="req-input-wrap">
+                      <input class="req-input" id="phraseInput" type="text"
+                             autocomplete="off" spellcheck="false"
+                             placeholder="type: REQUEST ACCESS" />
+                    </div>
+                  </div>
+
+                  <div class="req-divider"></div>
+
+                  <div class="req-step">
+                    <div class="req-step-num" id="step3Num">3</div>
+                    <button class="req-submit" id="submitBtn" disabled>Submit →</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="status-line" id="statusLine">
+              <div class="status-dot" id="statusDot"></div>
+              <span class="status-msg" id="statusMsg">Complete the request form above</span>
+            </div>
+
+            <div class="paper" id="paper">
+              <input class="fold-toggle" type="checkbox" id="fullAccess" />
+              <label class="page-fold" for="fullAccess" title="Fold corner to override all redactions"></label>
+
+              <div class="paper-inner">
+                <div class="paper-stamp" id="paperStamp">Pending</div>
+
+                <div class="doc-header">
+                  <div class="doc-kicker" id="docKicker">Record</div>
+                  <h2 class="doc-title" id="docTitle">—</h2>
+                  <p class="doc-subtitle" id="docSubtitle"></p>
+                </div>
+
+                <article class="doc" id="docBody">
+                  <p>Select a record.</p>
+                </article>
+
+                <div class="source-row" id="sourceRow" style="display:none">
+                  <div class="source-label">Source</div>
+                  <a class="source-link" id="sourceLink" href="#" target="_blank" rel="noopener noreferrer">—</a>
+                </div>
+
+                <div class="paper-redact-hint" id="redactHint">
+                  ▓ click-to-reveal (submit first) · fold corner overrides
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about">
+          <div class="about-wrap">
+            <div class="top-bar" style="max-width:700px;">
+              <a class="nav-btn" href="#landing">← Back</a>
+            </div>
+
+            <div class="about-content">
+              <div class="about-section">
+                <div class="about-overline">About</div>
+                <div class="about-title">Public Archive</div>
+                <p class="about-body">
+                  Three official legal texts presented as an interface. The black bars are the reading logic.
+                </p>
+                <p class="about-body">
+                  Submitting the request enables interaction. Each reveal forces other parts to re-close, so the page never holds the full text at once.
+                </p>
+              </div>
+
+              <div class="about-rule"></div>
+
+              <div class="about-section">
+                <div class="about-overline">How to Read</div>
+                <div class="about-step">
+                  <div class="about-step-num">1</div>
+                  <div class="about-step-text">Submit the request to enable reveal interactions.</div>
+                </div>
+                <div class="about-step">
+                  <div class="about-step-num">2</div>
+                  <div class="about-step-text">Click any black bar to reveal it. Other revealed parts will re-close.</div>
+                </div>
+                <div class="about-step">
+                  <div class="about-step-num">3</div>
+                  <div class="about-step-text">Fold the top-right corner to override and reveal everything at once.</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div><!-- /content -->
+    </div><!-- /window -->
+  </div><!-- /center -->
+
+  <div class="footer">
+    <span>Public Archive</span>
+    <span>3 Records</span>
+  </div>
+</div>
 
 <script>
 (function(){
-  /* ── DOM ──────────────────────────────────────────── */
-  const win        = document.getElementById('window');
-  const chromeTitle= document.getElementById('chromeTitle');
+  'use strict';
 
-  const btnClose   = document.getElementById('btnClose');
-  const btnMin     = document.getElementById('btnMin');
-  const btnFull    = document.getElementById('btnFull');
-  const btnAbout   = document.getElementById('btnAbout');
-  const aboutOpenRecord = document.getElementById('aboutOpenRecord');
+  const win           = document.getElementById('window');
+  const urlBar        = document.getElementById('urlBar');
+  const globalStatus  = document.getElementById('globalStatus');
+  const btnClose      = document.getElementById('btnClose');
+  const btnMin        = document.getElementById('btnMin');
+  const btnFull       = document.getElementById('btnFull');
+  const filesGrid     = document.getElementById('filesGrid');
+  const visitedCount  = document.getElementById('visitedCount');
 
-  const filesGrid  = document.getElementById('filesGrid');
+  const docKicker     = document.getElementById('docKicker');
+  const docTitle      = document.getElementById('docTitle');
+  const docSubtitle   = document.getElementById('docSubtitle');
+  const docBody       = document.getElementById('docBody');
+  const sourceRow     = document.getElementById('sourceRow');
+  const sourceLink    = document.getElementById('sourceLink');
 
-  const docKicker  = document.getElementById('docKicker');
-  const docTitle   = document.getElementById('docTitle');
-  const docSubtitle= document.getElementById('docSubtitle');
-  const docBody    = document.getElementById('docBody');
+  const ackBox        = document.getElementById('ackBox');
+  const phraseInput   = document.getElementById('phraseInput');
+  const submitBtn     = document.getElementById('submitBtn');
 
-  const sourceRow  = document.getElementById('sourceRow');
-  const sourceLink = document.getElementById('sourceLink');
+  const statusDot     = document.getElementById('statusDot');
+  const statusMsg     = document.getElementById('statusMsg');
+  const statusLine    = document.getElementById('statusLine');
 
-  const formatSel  = document.getElementById('formatSel');
-  const ackBox     = document.getElementById('ackBox');
-  const phraseInput= document.getElementById('phraseInput');
-  const submitBtn  = document.getElementById('submitBtn');
-  const statusLine = document.getElementById('statusLine');
+  const paperStamp    = document.getElementById('paperStamp');
+  const paper         = document.getElementById('paper');
+  const foldToggle    = document.getElementById('fullAccess');
 
-  /* ── State ────────────────────────────────────────── */
-  let currentIdx = 0;
-  let granted = false;
-  let processing = false;
+  const step1Num      = document.getElementById('step1Num');
+  const step2Num      = document.getElementById('step2Num');
+  const step3Num      = document.getElementById('step3Num');
+  const tabs          = document.querySelectorAll('.record-tab');
 
-  const REQUEST_PHRASE = "REQUEST ACCESS";
+  let currentIdx  = 0;
+  let granted     = false;
+  let processing  = false;
+  const PHRASE    = 'REQUEST ACCESS';
 
-  /* ── Mac controls ─────────────────────────────────── */
+  const revealedSet = new Set();
+  const REVEAL_BUDGET = 7;
+  let ridCounter = 0;
+
+  function esc(s){
+    return String(s)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;');
+  }
+
+  function mulberry32(seed){
+    let t = seed >>> 0;
+    return function(){
+      t += 0x6D2B79F5;
+      let r = Math.imul(t ^ (t >>> 15), 1 | t);
+      r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+      return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function nextRid(){
+    ridCounter += 1;
+    return 'r' + ridCounter;
+  }
+
+  function R(text){
+    const rid = nextRid();
+    return `<span class="redact" data-rid="${rid}"><span class="redact-text">${esc(text)}</span></span>`;
+  }
+
+  function BR(text){
+    const rid = nextRid();
+    return `<span class="block-redact" data-rid="${rid}"><span>${esc(text)}</span></span>`;
+  }
+
+  const records = [
+    {
+      kicker:'Record A · Regulation (EU) 2016/679',
+      title:'Right of access by the data subject',
+      subtitle:'Article 15',
+      sourceText:'EUR-Lex (Official Journal) — Regulation (EU) 2016/679',
+      sourceUrl:'https://eur-lex.europa.eu/eli/reg/2016/679/oj',
+      body:()=>`
+        <div class="section-head">Article 15(1)</div>
+        <p>The data subject shall have the right to obtain from the controller ${R('confirmation as to whether or not personal data concerning him or her are being processed')}, and, where that is the case, access to the personal data and the following information:</p>
+        <p class="hanging">(a) the ${R('purposes of the processing')};</p>
+        <p class="hanging">(b) the ${R('categories of personal data concerned')};</p>
+        <p class="hanging">(c) the ${R('recipients or categories of recipient')} to whom the personal data have been or will be disclosed, in particular recipients in third countries or ${R('international organisations')};</p>
+        <p class="hanging">(d) where possible, the ${R('envisaged period for which the personal data will be stored')}, or, if not possible, the ${R('criteria used to determine that period')}.</p>
+
+        <div class="section-head">Article 15(3)–(4)</div>
+        <p>The controller shall provide a copy of the personal data undergoing processing. For any further copies requested by the data subject, the controller may charge a ${R('reasonable fee based on administrative costs')}.</p>
+        <p>${BR('Where the data subject makes the request by electronic means, and unless otherwise requested by the data subject, the information shall be provided in a commonly used electronic form.')}</p>
+        <p>The right to obtain a copy referred to in paragraph 3 shall not ${R('adversely affect the rights and freedoms of others')}.</p>
+
+        <div class="xref-row">
+          <span class="xref-row-label">Cross-ref:</span>
+          <a class="xref" href="#record" data-jump="1">B →</a>
+          <a class="xref" href="#record" data-jump="2">C →</a>
+        </div>`
+    },
+    {
+      kicker:'Record B · United States Code',
+      title:'Freedom of Information Act',
+      subtitle:'5 U.S.C. § 552 (selected clauses)',
+      sourceText:'U.S. DOJ (OIP) — The Freedom of Information Act, 5 U.S.C. § 552',
+      sourceUrl:'https://www.justice.gov/oip/freedom-information-act-5-usc-552',
+      body:()=>`
+        <div class="section-head">§ 552(a)(3)(A)</div>
+        <p>Except with respect to the records made available under paragraphs (1) and (2) of this subsection, ${R('each agency, upon any request for records which (i) reasonably describes such records and (ii) is made in accordance with published rules stating the time, place, fees (if any), and procedures to be followed, shall make the records promptly available to any person')}.</p>
+        <p>In making any record available to a person under this paragraph, an agency shall provide the record in any form or format requested by the person if the record is ${R('readily reproducible by the agency in that form or format')}.</p>
+
+        <div class="section-head">§ 552(b) (selected exemptions)</div>
+        <p class="hanging">(1) ${R('specifically authorized under criteria established by an Executive order to be kept secret in the interest of national defense or foreign policy')};</p>
+        <p class="hanging">(3) specifically exempted from disclosure by statute ${R('(other than section 552b of this title)')} … that statute … ${R('establishes particular criteria for withholding or refers to particular types of matters to be withheld')};</p>
+        <p class="hanging">(5) ${R('inter-agency or intra-agency memorandums or letters that would not be available by law to a party other than an agency in litigation with the agency')};</p>
+        <p class="hanging">(6) … disclosure of which would constitute a ${R('clearly unwarranted invasion of personal privacy')};</p>
+        <p>${BR('(8) contained in or related to examination, operating, or condition reports prepared by, on behalf of, or for the use of an agency responsible for the regulation or supervision of financial institutions; or (9) geological and geophysical information and data, including maps, concerning wells.')}</p>
+
+        <div class="xref-row">
+          <span class="xref-row-label">Cross-ref:</span>
+          <a class="xref" href="#record" data-jump="0">A →</a>
+          <a class="xref" href="#record" data-jump="2">C →</a>
+        </div>`
+    },
+    {
+      kicker:'Record C · California Civil Code',
+      title:'Consumer right to know and access',
+      subtitle:'Cal. Civ. Code § 1798.100 (selected clauses)',
+      sourceText:'California Legislative Information — Civ. Code § 1798.100',
+      sourceUrl:'https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CIV&sectionNum=1798.100.',
+      body:()=>`
+        <div class="section-head">§ 1798.100</div>
+        <p>A consumer shall have the right to request that a business that ${R("collects a consumer’s personal information")} disclose to that consumer the categories and specific pieces of personal information the business has collected.</p>
+        <p class="hanging">(1) The ${R('categories of personal information to be collected')} … and whether that information is ${R('sold or shared')}.</p>
+        <p class="hanging">(2) If the business collects ${R('sensitive personal information')} … whether that information is sold or shared.</p>
+        <p class="hanging">(3) The ${R('length of time the business intends to retain each category of personal information')}, or … the ${R('criteria used to determine such period')}.</p>
+
+        <div class="xref-row">
+          <span class="xref-row-label">Cross-ref:</span>
+          <a class="xref" href="#record" data-jump="0">A →</a>
+          <a class="xref" href="#record" data-jump="1">B →</a>
+        </div>`
+    }
+  ];
+
+  function getVisited(){
+    try{ return JSON.parse(localStorage.getItem('auc_v6')||'[]'); } catch(_){ return []; }
+  }
+  function saveVisited(arr){
+    try{ localStorage.setItem('auc_v6', JSON.stringify(arr)); } catch(_){}
+  }
+
+  /* FIXED: exact 72 files, stable order, no random empties, no layout drift. */
+  function buildFiles(){
+    filesGrid.innerHTML = '';
+    const v = getVisited();
+    const total = 72;
+
+    for(let i=0;i<total;i++){
+      const a = document.createElement('a');
+      a.className = 'file' + (v.includes(i) ? ' visited' : '');
+      a.href = '#record';
+      a.setAttribute('aria-label','Open file ' + (i + 1));
+      filesGrid.appendChild(a);
+    }
+
+    visitedCount.textContent = getVisited().length + ' opened';
+  }
+
+  function markVisited(i){
+    const arr = getVisited();
+    if(!arr.includes(i)) arr.push(i);
+    saveVisited(arr);
+    const el = filesGrid.children[i];
+    if(el) el.classList.add('visited');
+    visitedCount.textContent = getVisited().length + ' opened';
+  }
+
+  function applyReveal(){
+    const folded = foldToggle.checked;
+
+    if(folded){
+      document.querySelectorAll('#docBody .redact, #docBody .block-redact')
+        .forEach(n => n.classList.add('revealed'));
+      paper.classList.add('is-granted');
+      paperStamp.textContent = granted ? 'Released' : 'Override';
+      paperStamp.className = 'paper-stamp ' + (granted ? 'released' : 'override');
+      return;
+    }
+
+    if(!granted){
+      document.querySelectorAll('#docBody .redact, #docBody .block-redact')
+        .forEach(n => n.classList.remove('revealed'));
+      paper.classList.remove('is-granted');
+      paperStamp.textContent = 'Pending';
+      paperStamp.className = 'paper-stamp';
+      return;
+    }
+
+    const nodes = document.querySelectorAll('#docBody .redact, #docBody .block-redact');
+    nodes.forEach(n => {
+      const rid = n.getAttribute('data-rid');
+      if(rid && revealedSet.has(rid)) n.classList.add('revealed');
+      else n.classList.remove('revealed');
+    });
+
+    paper.classList.add('is-granted');
+    paperStamp.textContent = 'Released';
+    paperStamp.className = 'paper-stamp released';
+  }
+
+  function clampReveals(keepRid){
+    const rng = mulberry32(((Date.now() & 0xffffffff) ^ (currentIdx * 99991)) >>> 0);
+
+    const extras = Array.from(revealedSet).filter(x => x !== keepRid);
+
+    if(revealedSet.size <= REVEAL_BUDGET && extras.length > 0){
+      const snap = 2 + Math.floor(rng() * 3); // 2..4
+      for(let i=0; i<snap && extras.length; i++){
+        const j = Math.floor(rng() * extras.length);
+        const pick = extras.splice(j,1)[0];
+        revealedSet.delete(pick);
+      }
+      return;
+    }
+
+    while(revealedSet.size > REVEAL_BUDGET){
+      const pool = Array.from(revealedSet).filter(x => x !== keepRid);
+      if(!pool.length) break;
+      const pick = pool[Math.floor(rng() * pool.length)];
+      revealedSet.delete(pick);
+    }
+  }
+
+  function pokeRedaction(node){
+    if(foldToggle.checked) return;
+    if(!granted) return;
+
+    const rid = node.getAttribute('data-rid');
+    if(!rid) return;
+
+    revealedSet.add(rid);
+    clampReveals(rid);
+    applyReveal();
+  }
+
+  function resetRequest(){
+    granted = false;
+    processing = false;
+
+    revealedSet.clear();
+    ridCounter = 0;
+
+    ackBox.checked = false;
+    phraseInput.value = '';
+    phraseInput.classList.remove('valid');
+    submitBtn.disabled = true;
+    foldToggle.checked = false;
+
+    step1Num.classList.remove('done');
+    step2Num.classList.remove('done');
+    step3Num.classList.remove('done');
+
+    statusDot.className = 'status-dot';
+    statusLine.className = 'status-line';
+    statusMsg.textContent = 'Complete the request form above';
+  }
+
+  function loadRecord(idx){
+    currentIdx = ((idx % records.length) + records.length) % records.length;
+    const r = records[currentIdx];
+
+    resetRequest();
+
+    docKicker.textContent   = r.kicker;
+    docTitle.textContent    = r.title;
+    docSubtitle.textContent = r.subtitle;
+
+    docBody.innerHTML       = r.body();
+
+    sourceLink.textContent  = r.sourceText;
+    sourceLink.href         = r.sourceUrl;
+    sourceRow.style.display = '';
+
+    urlBar.textContent       = 'archive / record-' + 'abc'[currentIdx];
+    globalStatus.textContent = 'Record ' + 'ABC'[currentIdx];
+
+    tabs.forEach((t,i) => t.classList.toggle('active', i === currentIdx));
+    applyReveal();
+
+    location.hash = '#record';
+  }
+
+  function refreshSubmit(){
+    const phrase = phraseInput.value.trim().toUpperCase().replace(/\s+/g,' ');
+    const ackOk  = ackBox.checked;
+    const phraseOk = phrase === PHRASE;
+
+    step1Num.classList.toggle('done', ackOk);
+    step2Num.classList.toggle('done', phraseOk);
+    phraseInput.classList.toggle('valid', phraseOk);
+
+    submitBtn.disabled = !(ackOk && phraseOk && !processing);
+    step3Num.classList.toggle('done', ackOk && phraseOk && !processing);
+  }
+
+  ackBox.addEventListener('change', refreshSubmit);
+  phraseInput.addEventListener('input', refreshSubmit);
+
+  submitBtn.addEventListener('click', () => {
+    if(submitBtn.disabled) return;
+
+    processing = true;
+    submitBtn.disabled = true;
+
+    statusDot.className = 'status-dot processing';
+    statusLine.className = 'status-line processing';
+    statusMsg.textContent = 'Request received — processing';
+
+    setTimeout(() => {
+      granted = true;
+      processing = false;
+
+      statusDot.className  = 'status-dot granted';
+      statusLine.className = 'status-line granted';
+      statusMsg.textContent = 'Access granted — click bars to reveal';
+
+      step3Num.classList.add('done');
+
+      revealedSet.clear();
+      applyReveal();
+      refreshSubmit();
+    }, 1200);
+  });
+
+  foldToggle.addEventListener('change', applyReveal);
+
+  docBody.addEventListener('click', (e) => {
+    const target = e.target.closest('.redact, .block-redact');
+    if(!target) return;
+    e.preventDefault();
+    pokeRedaction(target);
+  });
+
   function goLanding(){
     location.hash = '#landing';
     win.classList.remove('is-minimized','is-fullscreen');
-    chromeTitle.textContent = 'ARCHIVE — PUBLIC RECORD';
-    statusLine.textContent = '';
+    urlBar.textContent = 'archive';
+    globalStatus.textContent = 'Archive';
   }
-
   btnClose.addEventListener('click', goLanding);
-
-  btnMin.addEventListener('click', () => {
-    win.classList.toggle('is-minimized');
-  });
-
+  btnMin.addEventListener('click', () => win.classList.toggle('is-minimized'));
   btnFull.addEventListener('click', () => {
     win.classList.toggle('is-fullscreen');
     win.classList.remove('is-minimized');
   });
 
-  btnAbout.addEventListener('click', () => {
-    location.hash = '#about';
-    chromeTitle.textContent = 'ABOUT';
+  filesGrid.addEventListener('click', e => {
+    const a = e.target.closest('a.file');
+    if(!a) return;
+    const i = [...filesGrid.children].indexOf(a);
+    if(i < 0) return;
+
+    markVisited(i);
+    sessionStorage.setItem('auc_cur', String(i % records.length));
+    loadRecord(i % records.length);
   });
 
-  aboutOpenRecord.addEventListener('click', () => {
-    location.hash = '#record';
-    chromeTitle.textContent = 'RECORD';
+  document.addEventListener('click', e => {
+    const idxEl = e.target.closest('[data-idx]:not(.record-tab)');
+    if(idxEl){
+      const idx = parseInt(idxEl.dataset.idx, 10);
+      if(Number.isFinite(idx)){
+        e.preventDefault();
+        sessionStorage.setItem('auc_cur', String(idx));
+        loadRecord(idx);
+      }
+    }
+    if(e.target.classList.contains('record-tab')){
+      const idx = parseInt(e.target.dataset.idx, 10);
+      if(Number.isFinite(idx)){
+        sessionStorage.setItem('auc_cur', String(idx));
+        loadRecord(idx);
+      }
+    }
+    const xref = e.target.closest('.xref[data-jump]');
+    if(xref){
+      e.preventDefault();
+      const n = parseInt(xref.dataset.jump, 10);
+      if(Number.isFinite(n)){
+        sessionStorage.setItem('auc_cur', String(n));
+        loadRecord(n);
+      }
+    }
+  });
+
+  window.addEventListener('hashchange', () => {
+    const h = location.hash;
+    if(h === '#record'){
+      const s = sessionStorage.getItem('auc_cur');
+      loadRecord(s != null ? +s : currentIdx);
+      win.classList.remove('is-minimized');
+    } else if(h === '#about'){
+      urlBar.textContent = 'archive / about';
+      globalStatus.textContent = 'About';
+    } else {
+      goLanding();
+    }
   });
 
   window.addEventListener('keydown', e => {
     if(e.key === 'Escape'){
       if(win.classList.contains('is-fullscreen')) win.classList.remove('is-fullscreen');
-      else if(location.hash === '#record' || location.hash === '#about') goLanding();
+      else if(location.hash && location.hash !== '#landing') goLanding();
     }
   });
 
-  /* ── Landing file positions (UNCHANGED) ───────────── */
-  const FILE_POSITIONS = [
-    {col:3,row:2,tx:-5.6,ty:-3.5,rot:-3},{col:10,row:7,tx:-3.5,ty:2.1,rot:1},
-    {col:7,row:12,tx:-1.4,ty:0,rot:-2},{col:4,row:3,tx:.7,ty:2.8,rot:2},
-    {col:1,row:8,tx:2.8,ty:-.7,rot:-1},{col:8,row:13,tx:4.9,ty:2.1,rot:3},
-    {col:5,row:4,tx:-4.9,ty:0,rot:0},{col:2,row:9,tx:-2.8,ty:2.8,rot:-3},
-    {col:9,row:14,tx:-.7,ty:-.7,rot:1},{col:6,row:5,tx:1.4,ty:2.1,rot:-2},
-    {col:3,row:10,tx:3.5,ty:0,rot:2},{col:10,row:1,tx:5.6,ty:2.8,rot:-1},
-    {col:7,row:6,tx:-4.2,ty:-.7,rot:3},{col:4,row:11,tx:-2.1,ty:2.1,rot:0},
-    {col:1,row:2,tx:0,ty:0,rot:-3},{col:8,row:7,tx:2.1,ty:2.8,rot:1},
-    {col:5,row:12,tx:4.2,ty:-.7,rot:-2},{col:2,row:3,tx:-5.6,ty:2.1,rot:2},
-    {col:9,row:8,tx:-3.5,ty:0,rot:-1},{col:6,row:13,tx:-1.4,ty:2.8,rot:3},
-    {col:3,row:4,tx:.7,ty:-.7,rot:0},{col:10,row:9,tx:2.8,ty:2.1,rot:-3},
-    {col:7,row:14,tx:4.9,ty:0,rot:1},{col:4,row:5,tx:-4.9,ty:2.8,rot:-2},
-    {col:1,row:10,tx:-2.8,ty:-.7,rot:2},{col:8,row:1,tx:-.7,ty:2.1,rot:-1},
-    {col:5,row:6,tx:1.4,ty:0,rot:3},{col:2,row:11,tx:3.5,ty:2.8,rot:0},
-    {col:9,row:2,tx:5.6,ty:-.7,rot:-3},{col:6,row:7,tx:-4.2,ty:2.1,rot:1},
-    {col:3,row:12,tx:-2.1,ty:0,rot:-2},{col:10,row:3,tx:0,ty:2.8,rot:2},
-    {col:7,row:8,tx:2.1,ty:-.7,rot:-1},{col:4,row:13,tx:4.2,ty:2.1,rot:3},
-    {col:1,row:4,tx:-5.6,ty:0,rot:0},{col:8,row:9,tx:-3.5,ty:2.8,rot:-3},
-    {col:5,row:14,tx:-1.4,ty:-.7,rot:1},{col:2,row:5,tx:.7,ty:2.1,rot:-2},
-    {col:9,row:10,tx:2.8,ty:0,rot:2},{col:6,row:1,tx:4.9,ty:2.8,rot:-1},
-    {col:3,row:6,tx:-4.9,ty:-.7,rot:3},{col:10,row:11,tx:-2.8,ty:2.1,rot:0},
-    {col:7,row:2,tx:-.7,ty:0,rot:-3},{col:4,row:7,tx:1.4,ty:2.8,rot:1},
-    {col:1,row:12,tx:3.5,ty:-.7,rot:-2},{col:8,row:3,tx:5.6,ty:2.1,rot:2},
-    {col:5,row:8,tx:-4.2,ty:0,rot:-1},{col:2,row:13,tx:-2.1,ty:2.8,rot:3},
-    {col:9,row:4,tx:0,ty:-.7,rot:0},{col:6,row:9,tx:2.1,ty:2.1,rot:-3},
-    {col:3,row:14,tx:4.2,ty:0,rot:1},{col:10,row:5,tx:-5.6,ty:2.8,rot:-2},
-    {col:7,row:10,tx:-3.5,ty:-.7,rot:2},{col:4,row:1,tx:-1.4,ty:2.1,rot:-1},
-    {col:1,row:6,tx:.7,ty:0,rot:3},{col:8,row:11,tx:2.8,ty:2.8,rot:0},
-    {col:5,row:2,tx:4.9,ty:-.7,rot:-3},{col:2,row:7,tx:-4.9,ty:2.1,rot:1},
-    {col:9,row:12,tx:-2.8,ty:0,rot:-2},{col:6,row:3,tx:-.7,ty:2.8,rot:2},
-    {col:3,row:8,tx:1.4,ty:-.7,rot:-1},{col:10,row:13,tx:3.5,ty:2.1,rot:3},
-    {col:7,row:4,tx:5.6,ty:0,rot:0},{col:4,row:9,tx:-4.2,ty:2.8,rot:-3},
-    {col:1,row:14,tx:-2.1,ty:-.7,rot:1},{col:8,row:5,tx:0,ty:2.1,rot:-2},
-    {col:5,row:10,tx:2.1,ty:0,rot:2},{col:2,row:1,tx:4.2,ty:2.8,rot:-1},
-  ];
-
-  function buildFiles(){
-    filesGrid.innerHTML = '';
-    FILE_POSITIONS.forEach((p, i) => {
-      const a = document.createElement('a');
-      a.className = 'file';
-      a.href = '#record';
-      a.setAttribute('aria-label', 'Open file ' + (i+1));
-      a.style.cssText =
-        `grid-column:${p.col};grid-row:${p.row};transform:translate(${p.tx}px,${p.ty}px) rotate(${p.rot}deg)`;
-      filesGrid.appendChild(a);
-    });
-    restoreVisited();
-  }
-
-  /* visited dim */
-  function markVisited(i){
-    try{
-      const key = 'visitedFiles_v1';
-      const arr = JSON.parse(localStorage.getItem(key)||'[]');
-      if(!arr.includes(i)) arr.push(i);
-      localStorage.setItem(key, JSON.stringify(arr));
-      const a = filesGrid.children[i];
-      if(a){
-        a.style.opacity='0.55';
-        a.style.filter='grayscale(1) drop-shadow(0 10px 18px rgba(0,0,0,.32))';
-      }
-    }catch(_){}
-  }
-
-  function restoreVisited(){
-    try{
-      const arr = JSON.parse(localStorage.getItem('visitedFiles_v1')||'[]');
-      arr.forEach(i => {
-        const a = filesGrid.children[i];
-        if(a){
-          a.style.opacity='0.55';
-          a.style.filter='grayscale(1) drop-shadow(0 10px 18px rgba(0,0,0,.32))';
-        }
-      });
-    }catch(_){}
-  }
-
- 
-  function esc(s){
-    return String(s)
-      .replace(/&/g,'&amp;')
-      .replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;')
-      .replace(/"/g,'&quot;');
-  }
-
-  function R(text, w){
-    return `<span class="redact" data-w="${w}"><span class="redactText">${esc(text)}</span></span>`;
-  }
-
-  function BR(text, w){
-    return `<span class="blockRedact" data-w="${w}"><span>${esc(text)}</span></span>`;
-  }
-
-  function applyGrant(){
-    const fmt = formatSel.value;
-
-   
-    let allowW = 1;
-    if(fmt === 'pdf') allowW = 2;
-    if(fmt === 'csv') allowW = 1;
-
-    docBody.querySelectorAll('.redact').forEach(n => {
-      const w = +n.dataset.w;
-      const show = granted && (w <= allowW);
-      n.style.setProperty('--show', show ? 1 : 0);
-    });
-
-    docBody.querySelectorAll('.blockRedact').forEach(n => {
-      const w = +n.dataset.w;
-      const show = granted && (w <= allowW);
-      n.style.setProperty('--show', show ? 1 : 0);
-    });
-  }
-
-  
-  const records = [
-    {
-      kicker:'Record A · EU Regulation 2016/679',
-      title:'Right of Access by the Data Subject',
-      subtitle:'GDPR, Article 15 — Official Journal of the European Union, 4 May 2016',
-      sourceText:'EUR-Lex — Regulation (EU) 2016/679, Article 15',
-      sourceUrl:'https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32016R0679',
-      body: () => `
-        <div class="sectionHead">Article 15(1)</div>
-
-        <p>The data subject shall have the right to obtain from the controller ${R('confirmation as to whether or not personal data concerning him or her are being processed',1)}, and, where that is the case, access to the personal data and the following information:</p>
-
-        <p class="hanging">(a) the ${R('purposes of the processing',1)};</p>
-        <p class="hanging">(b) the ${R('categories of personal data concerned',1)};</p>
-        <p class="hanging">(c) the ${R('recipients or categories of recipient',2)} to whom the personal data have been or will be disclosed, in particular recipients in third countries or ${R('international organisations',2)};</p>
-        <p class="hanging">(d) where possible, the ${R('envisaged period for which the personal data will be stored',2)}, or, if not possible, the ${R('criteria used to determine that period',3)};</p>
-
-        <div class="sectionHead">Article 15(3)–(4)</div>
-
-        <p>The controller shall provide a copy of the personal data undergoing processing. For any further copies requested by the data subject, the controller may charge a ${R('reasonable fee based on administrative costs',2)}.</p>
-
-        <p>${BR('Where the data subject makes the request by electronic means, and unless otherwise requested by the data subject, the information shall be provided in a commonly used electronic form.',2)}</p>
-
-        <p>The right to obtain a copy referred to in paragraph 3 shall not ${R('adversely affect the rights and freedoms of others',3)}.</p>
-
-        <p style="margin-top:18px;">
-          <a class="xref" href="#record" data-jump="1">Jump: FOIA exemptions</a>
-          &nbsp;·&nbsp;
-          <a class="xref" href="#record" data-jump="2">Jump: CPRA “trade secrets”</a>
-        </p>
-      `
-    },
-
-    {
-      kicker:'Record B · United States Code',
-      title:'Freedom of Information Act',
-      subtitle:'5 U.S.C. § 552 — Administrative Procedure Act, as amended',
-      sourceText:'GovInfo — 5 U.S.C. § 552',
-      sourceUrl:'https://www.govinfo.gov/content/pkg/USCODE-2018-title5/pdf/USCODE-2018-title5-partI-chap5-subchapII-sec552.pdf',
-      body: () => `
-        <div class="sectionHead">§ 552(a)(3)(A)</div>
-
-        <p>Except with respect to the records made available under paragraphs (1) and (2) of this subsection, ${R('each agency, upon any request for records which (i) reasonably describes such records and (ii) is made in accordance with published rules stating the time, place, fees (if any), and procedures to be followed, shall make the records promptly available to any person',1)}.</p>
-
-        <p>In making any record available to a person under this paragraph, an agency shall provide the record in any form or format requested by the person if the record is ${R('readily reproducible by the agency in that form or format',2)}.</p>
-
-        <div class="sectionHead">§ 552(b) (selected)</div>
-
-        <p class="hanging">(1) ${R('specifically authorized under criteria established by an Executive order to be kept secret in the interest of national defense or foreign policy',2)};</p>
-        <p class="hanging">(3) specifically exempted from disclosure by statute ${R('(other than section 552b of this title)',3)} … that statute … ${R('establishes particular criteria for withholding or refers to particular types of matters to be withheld',3)};</p>
-        <p class="hanging">(5) ${R('inter-agency or intra-agency memorandums or letters that would not be available by law to a party other than an agency in litigation with the agency',3)};</p>
-        <p class="hanging">(6) … disclosure of which would constitute a ${R('clearly unwarranted invasion of personal privacy',2)};</p>
-
-        <p>${BR('(8) contained in or related to examination, operating, or condition reports prepared by, on behalf of, or for the use of an agency responsible for the regulation or supervision of financial institutions; or (9) geological and geophysical information and data, including maps, concerning wells.',3)}</p>
-
-        <p style="margin-top:18px;">
-          <a class="xref" href="#record" data-jump="0">Jump: GDPR “rights of others”</a>
-          &nbsp;·&nbsp;
-          <a class="xref" href="#record" data-jump="2">Jump: CPRA “trade secrets”</a>
-        </p>
-      `
-    },
-
-    {
-      kicker:'Record C · California Civil Code',
-      title:'Consumer Right to Know and Access',
-      subtitle:'Cal. Civ. Code §§ 1798.100, 1798.110 — California Privacy Rights Act (effective Jan. 1, 2023)',
-      sourceText:'California Legislative Information — § 1798.100',
-      sourceUrl:'https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CIV&sectionNum=1798.100.',
-      body: () => `
-        <div class="sectionHead">§ 1798.100</div>
-
-        <p>A consumer shall have the right to request that a business that ${R("collects a consumer's personal information",1)} disclose to that consumer the categories and specific pieces of personal information the business has collected.</p>
-
-        <p class="hanging">(1) The ${R('categories of personal information to be collected',1)} … and whether that information is ${R('sold or shared',2)}.</p>
-        <p class="hanging">(2) If the business collects ${R('sensitive personal information',2)} … whether that information is sold or shared.</p>
-        <p class="hanging">(3) The ${R('length of time the business intends to retain each category of personal information',2)}, or … the ${R('criteria used to determine such period',3)}.</p>
-
-        <div class="sectionHead">§ 1798.185 (selected)</div>
-
-        <p>… adopt regulations … including, but not limited to, those relating to ${R('trade secrets and intellectual property rights',2)} …</p>
-
-        <p>${BR('(C) For the development and use of a recognizable and uniform opt-out logo or button by all businesses to promote consumer awareness of the opportunity to opt out of the sale of personal information.',2)}</p>
-
-        <p style="margin-top:18px;">
-          <a class="xref" href="#record" data-jump="0">Jump: GDPR access list</a>
-          &nbsp;·&nbsp;
-          <a class="xref" href="#record" data-jump="1">Jump: FOIA format clause</a>
-        </p>
-      `
-    }
-  ];
-
-  /* ── Load record ──────────────────────────────────── */
-  function resetRequestUI(){
-    granted = false;
-    processing = false;
-    ackBox.checked = false;
-    phraseInput.value = '';
-    formatSel.value = 'screen';
-    submitBtn.disabled = false;
-    statusLine.textContent = '';
-  }
-
-  function loadRecord(idx){
-    currentIdx = (idx + records.length) % records.length;
-    const r = records[currentIdx];
-
-    resetRequestUI();
-
-    docKicker.textContent = r.kicker;
-    docTitle.textContent = r.title;
-    docSubtitle.textContent = r.subtitle;
-
-    docBody.innerHTML = r.body();
-
-    sourceLink.textContent = r.sourceText;
-    sourceLink.href = r.sourceUrl;
-    sourceRow.style.display = '';
-
-    chromeTitle.textContent = 'RECORD';
-
-    // start fully redacted (until request is granted)
-    applyGrant();
-  }
-
-  /* ── Request ritual (Option 7) ────────────────────── */
-  function normalized(s){ return String(s || '').trim().toUpperCase().replace(/\s+/g,' '); }
-
-  function canSubmit(){
-    return ackBox.checked && normalized(phraseInput.value) === REQUEST_PHRASE && !processing;
-  }
-
-  function setSubmitState(){
-    submitBtn.disabled = !canSubmit();
-  }
-
-  ackBox.addEventListener('change', setSubmitState);
-  phraseInput.addEventListener('input', setSubmitState);
-
-  submitBtn.addEventListener('click', () => {
-    if(!canSubmit()) return;
-
-    processing = true;
-    submitBtn.disabled = true;
-    statusLine.textContent = 'request received · processing';
-    // tiny forced delay = bureaucracy (no animation gimmicks)
-    setTimeout(() => {
-      granted = true;
-      processing = false;
-      statusLine.textContent = 'partial release issued · scope depends on format';
-      applyGrant();
-      setSubmitState();
-    }, 1400);
-  });
-
-  formatSel.addEventListener('change', () => {
-    // format is a condition: change it, the release changes
-    applyGrant();
-  });
-
-  /* ── Cross-link jumps between records ─────────────── */
-  document.addEventListener('click', (e) => {
-    const x = e.target.closest('.xref');
-    if(!x) return;
-    const jump = x.getAttribute('data-jump');
-    if(jump == null) return;
-    e.preventDefault();
-    const n = parseInt(jump, 10);
-    if(Number.isFinite(n)){
-      sessionStorage.setItem('auc_case', String(n));
-      loadRecord(n);
-      location.hash = '#record';
-    }
-  });
-
-  /* ── Build file grid ─────────────────────────────── */
   buildFiles();
 
-  filesGrid.addEventListener('click', e => {
-    const a = e.target.closest('a.file');
-    if(!a) return;
-    const idx = [...filesGrid.children].indexOf(a);
-    sessionStorage.setItem('auc_case', String(idx % records.length));
-    markVisited(idx);
-    loadRecord(idx % records.length);
-    chromeTitle.textContent = 'RECORD';
-  });
-
-  /* ── Boot ─────────────────────────────────────────── */
-  function boot(){
-    const saved = sessionStorage.getItem('auc_case');
-    loadRecord(saved ? +saved : 0);
+  if(location.hash === '#record'){
+    const saved = sessionStorage.getItem('auc_cur');
+    loadRecord(saved != null ? +saved : 0);
+  } else if(location.hash === '#about'){
+    urlBar.textContent = 'archive / about';
+    globalStatus.textContent = 'About';
+  } else {
+    goLanding();
   }
-  boot();
-
-  window.addEventListener('hashchange', () => {
-    if(location.hash === '#record'){
-      const saved = sessionStorage.getItem('auc_case');
-      loadRecord(saved ? +saved : currentIdx);
-      win.classList.remove('is-minimized');
-    } else if(location.hash === '#about'){
-      chromeTitle.textContent = 'ABOUT';
-    } else {
-      chromeTitle.textContent = 'ARCHIVE — PUBLIC RECORD';
-    }
-  });
-
 })();
 </script>
 </body>
-</html>
 </html>
 
