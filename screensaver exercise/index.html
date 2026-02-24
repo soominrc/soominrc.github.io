@@ -2,64 +2,58 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Screensaver</title>
 <style>
   :root{
-    --maxW: 430px;
-    --orbSize: 140px;
+    --orbSize: 160px;
     --hintSize: 12px;
     --captionSize: 12px;
+
+    /* desktop default: FULL WIDTH */
+    --stageMaxW: 100vw;
+    --stagePad: 0px;
   }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
 
   body{
     margin:0;
     background:#000;
-    display:flex;
-    justify-content:center;
-    touch-action: pan-y; 
-  }
-
-  .app{
-    width:100%;
-    max-width:var(--maxW);
-    min-height:100vh;
-    position:relative;
-    overflow-x:hidden;
+    touch-action: pan-y;
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
     color:white;
   }
 
+  /* Scroll driver */
   .scroll-area{
-    height:400vh; /* scroll controls "time" */
-    width:100%;
-    position:relative;
+    height: 400vh;
   }
 
+  /* Full-screen fixed stage */
   #stage{
-    position:fixed;
-    top:0; left:50%;
-    transform:translateX(-50%);
-    width:100%;
-    max-width:var(--maxW);
-    height:100%;
-    overflow:hidden;
+    position: fixed;
+    inset: 0;
+    width: min(100vw, var(--stageMaxW));
+    margin: 0 auto;
+    overflow: hidden;
+    padding: var(--stagePad);
   }
 
-
+  /* SKY LAYERS */
   .layer{
     position:absolute;
     inset:0;
     opacity:0;
     transition:opacity 280ms linear;
   }
-
   .layer.dawn   { background: linear-gradient(to top, #ffd89b, #ffb47a, #ffdca8, #fff7e6); }
   .layer.midday { background: linear-gradient(to top, #9ad0ff, #bfe8ff, #eaf6ff, #ffffff); }
   .layer.sunset { background: linear-gradient(to top, #0b2341, #2f2c66, #ff7a5a, #ffc87c, #ffd9b3); }
   .layer.night  { background: linear-gradient(to top, #020220, #07102a, #0b2a3a, #0b1b2d); }
 
-  /* HAZE (animated by opacity + transform changes in JS) */
+  /* HAZE */
   .haze{
     position:absolute;
     inset:0;
@@ -73,11 +67,11 @@
     pointer-events:none;
   }
 
-  /* ORB (animated position by JS + subtle pulse via CSS) */
+  /* ORB */
   #orb{
     position:absolute;
-    width:var(--orbSize);
-    height:var(--orbSize);
+    width: var(--orbSize);
+    height: var(--orbSize);
     border-radius:50%;
     transform: translate(-50%,-50%);
     left:50%;
@@ -86,14 +80,14 @@
     box-shadow: 0 0 120px rgba(255,255,255,0.35), 0 0 200px rgba(255,255,255,0.2);
     opacity:0.92;
     transition: background 380ms linear, box-shadow 380ms linear, transform 220ms ease;
-    animation: orbPulse 2.8s ease-in-out infinite; /* always-visible animation */
+    animation: orbPulse 2.8s ease-in-out infinite;
   }
   @keyframes orbPulse{
     0%,100%{ filter: brightness(1); }
     50%{ filter: brightness(1.12); }
   }
 
-  /* STARS (fade in by JS, twinkle via CSS animation) */
+  /* STARS */
   #stars{
     position:absolute;
     inset:0;
@@ -115,60 +109,63 @@
     100% { opacity:0.15; transform: scale(.8); }
   }
 
-  /* Minimal hint */
+  /* UI */
   .hint{
-    position:absolute;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%);
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
     background: rgba(0,0,0,0.35);
     color: rgba(255,255,255,0.9);
-    padding:6px 10px;
-    border-radius:999px;
-    font-size:var(--hintSize);
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: var(--hintSize);
     backdrop-filter: blur(6px);
-    opacity:0.7;
+    opacity: 0.75;
     user-select:none;
     pointer-events:none;
   }
 
-  /* Minimal caption */
-  .caption-block{
-    position:absolute;
-    top:18px;
-    left:18px;
-    right:18px;
-    z-index:10;
-    color:white;
-    font-size:var(--captionSize);
-    font-weight:300;
-    line-height:1.4;
-    opacity:0.0;
+  .caption{
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    font-size: var(--captionSize);
+    font-weight: 300;
+    letter-spacing: .02em;
+    opacity: 0;
     transition: transform 0.5s ease, opacity 0.5s ease;
+    user-select:none;
     pointer-events:none;
   }
 
+  /* -------- 4 responsive states -------- */
+
+  /* State 1: Desktop default (full width) */
+
   /* State 2: <= 1024px */
   @media (max-width: 1024px){
-    :root{ --maxW: 430px; --orbSize: 132px; --hintSize: 12px; --captionSize: 12px; }
-    .hint{ bottom:18px; }
+    :root{ --orbSize: 150px; }
   }
 
+  /* State 3: <= 768px */
   @media (max-width: 768px){
-    :root{ --maxW: 100vw; --orbSize: 122px; --hintSize: 11px; --captionSize: 12px; }
-    #stage{ max-width: 100vw; }
-    .hint{ bottom:14px; }
-    .caption-block{ top:14px; left:14px; right:14px; }
+    :root{ --orbSize: 132px; --hintSize: 11px; --captionSize: 12px; }
   }
 
+  /* State 4: <= 480px (phone: cap width like your original) */
   @media (max-width: 480px){
-    :root{ --maxW: 100vw; --orbSize: 110px; --hintSize: 11px; --captionSize: 11px; }
-    .hint{ padding:5px 9px; }
-  }
-
-  /* Extra-small polish */
-  @media (max-width: 360px){
-    :root{ --orbSize: 100px; --captionSize: 10px; }
+    :root{
+      --stageMaxW: 430px;
+      --orbSize: 118px;
+      --hintSize: 11px;
+      --captionSize: 11px;
+    }
+    #stage{
+      width: min(100vw, var(--stageMaxW));
+      border-left: 1px solid rgba(255,255,255,0.06);
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -180,155 +177,148 @@
 </head>
 
 <body>
-<div class="app">
-  <div class="scroll-area">
-    <div id="stage">
-      <div class="layer dawn"></div>
-      <div class="layer midday"></div>
-      <div class="layer sunset"></div>
-      <div class="layer night"></div>
+  <div class="scroll-area" aria-hidden="true"></div>
 
-      <div class="haze"></div>
-      <div id="orb"></div>
-      <div id="stars"></div>
+  <div id="stage" aria-label="Screensaver">
+    <div class="layer dawn"></div>
+    <div class="layer midday"></div>
+    <div class="layer sunset"></div>
+    <div class="layer night"></div>
 
-      <div class="caption-block" id="caption"></div>
-      <div class="hint">scroll / drag</div>
-    </div>
+    <div class="haze"></div>
+    <div id="orb"></div>
+    <div id="stars"></div>
   </div>
-</div>
+
+  <div class="caption" id="caption"></div>
+  <div class="hint">scroll / drag / click</div>
 
 <script>
+  const clamp = (v,a=0,b=1)=>Math.max(a,Math.min(b,v));
+  const stage = document.getElementById('stage');
 
-const clamp = (v,a=0,b=1)=>Math.max(a,Math.min(b,v));
-const stage = document.getElementById('stage');
+  const layers = {
+    dawn: stage.querySelector('.layer.dawn'),
+    midday: stage.querySelector('.layer.midday'),
+    sunset: stage.querySelector('.layer.sunset'),
+    night: stage.querySelector('.layer.night')
+  };
 
-const layers = {
-  dawn: stage.querySelector('.layer.dawn'),
-  midday: stage.querySelector('.layer.midday'),
-  sunset: stage.querySelector('.layer.sunset'),
-  night: stage.querySelector('.layer.night')
-};
+  const haze = stage.querySelector('.haze');
+  const orb = document.getElementById('orb');
+  const stars = document.getElementById('stars');
+  const caption = document.getElementById('caption');
 
-const haze = stage.querySelector('.haze');
-const orb = document.getElementById('orb');
-const stars = document.getElementById('stars');
-const caption = document.getElementById('caption');
+  let dayProgress = 0;
+  let isDragging = false;
+  let ticking = false;
 
-let dayProgress = 0;
-let isDragging = false;
-let ticking = false;
-
-const STAR_COUNT = 90;
-const starEls = [];
-
-for(let i=0;i<STAR_COUNT;i++){
-  const s = document.createElement('div');
-  s.className = 'star';
-  s.style.left = (Math.random()*100) + '%';
-  s.style.top  = (Math.random()*70) + '%';
-  s.dataset.base = (0.12 + Math.random()*0.55).toFixed(3);
-  stars.appendChild(s);
-  starEls.push(s);
-}
-
-function getOrbColorAt(p){
-  if(p < 0.65){
-    return "radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 70%)";
-  }else if(p < 0.85){
-    return "radial-gradient(circle, rgba(255,220,200,0.85) 0%, rgba(255,220,200,0) 70%)";
-  }
-  return "radial-gradient(circle, rgba(220,235,255,0.80) 0%, rgba(220,235,255,0) 70%)";
-}
-
-function triWeight(progress, center, span){
-  return clamp(1 - (Math.abs(progress - center) / span), 0, 1);
-}
-
-function updateCaption(p){
-  let txt = "";
-  if(p < 0.25) txt = "dawn";
-  else if(p < 0.50) txt = "midday";
-  else if(p < 0.75) txt = "sunset";
-  else txt = "night";
-
-  caption.textContent = txt;
-  caption.style.opacity = clamp(p*2, 0, 1);
-  caption.style.transform = `translateY(${18*(1-p)}px)`;
-}
-
-function updateVisuals(p){
-  /* Animation #1: Layer crossfade */
-  layers.dawn.style.opacity   = triWeight(p, 0.125, 0.25);
-  layers.midday.style.opacity = triWeight(p, 0.375, 0.25);
-  layers.sunset.style.opacity = triWeight(p, 0.625, 0.25);
-  layers.night.style.opacity  = triWeight(p, 0.875, 0.25);
-
-  /* Animation #2: Haze movement */
-  haze.style.opacity = clamp((Math.sin((p*Math.PI*2) - 0.6) * 0.12) + 0.22, 0, 0.6);
-  haze.style.transform = `translateY(${20*(p-0.5)}px) scale(${1 + p*0.06})`;
-
-  /* Animation #3: Orb movement + CSS pulse */
-  orb.style.top  = (10 + p*68) + '%';
-  orb.style.left = (50 + 30*Math.sin(p*Math.PI)) + '%';
-  orb.style.background = getOrbColorAt(p);
-
-  /* Animation #4: Stars fade in + twinkle */
-  const starAlpha = clamp((p - 0.70) / 0.25, 0, 1);
-  stars.style.opacity = starAlpha;
-
-  if(starAlpha > 0){
-    starEls.forEach(s=>{
-      s.style.opacity = (parseFloat(s.dataset.base) * starAlpha).toFixed(3);
-      if(starAlpha > 0.25 && !s._twinkle){
-        s._twinkle = true;
-        const dur = (1 + Math.random()*2).toFixed(2) + 's';
-        const delay = (Math.random()*1.5).toFixed(2) + 's';
-        s.style.animation = `twinkle ${dur} ${delay} infinite ease-in-out`;
-      }
-    });
-  }else{
-    /* reset twinkle when leaving night */
-    starEls.forEach(s=>{
-      s.style.opacity = 0;
-      s._twinkle = false;
-      s.style.animation = "none";
-    });
+  // Stars
+  const STAR_COUNT = 90;
+  const starEls = [];
+  for(let i=0;i<STAR_COUNT;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.left = (Math.random()*100) + '%';
+    s.style.top  = (Math.random()*70) + '%';
+    s.dataset.base = (0.12 + Math.random()*0.55).toFixed(3);
+    stars.appendChild(s);
+    starEls.push(s);
   }
 
-  updateCaption(p);
-}
+  function triWeight(progress, center, span){
+    return clamp(1 - (Math.abs(progress - center) / span), 0, 1);
+  }
 
-/* Scroll controls progress */
-window.addEventListener('scroll', ()=>{
-  if(isDragging) return;
-  if(ticking) return;
+  function getOrbColorAt(p){
+    if(p < 0.65){
+      return "radial-gradient(circle, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 70%)";
+    }else if(p < 0.85){
+      return "radial-gradient(circle, rgba(255,220,200,0.85) 0%, rgba(255,220,200,0) 70%)";
+    }
+    return "radial-gradient(circle, rgba(220,235,255,0.80) 0%, rgba(220,235,255,0) 70%)";
+  }
 
-  ticking = true;
-  requestAnimationFrame(()=>{
-    const max = document.documentElement.scrollHeight - window.innerHeight;
-    dayProgress = clamp(window.scrollY / (max || 1), 0, 1);
-    updateVisuals(dayProgress);
-    ticking = false;
+  function updateCaption(p){
+    let txt = "";
+    if(p < 0.25) txt = "dawn";
+    else if(p < 0.50) txt = "midday";
+    else if(p < 0.75) txt = "sunset";
+    else txt = "night";
+
+    caption.textContent = txt;
+    caption.style.opacity = clamp(p*2, 0, 1);
+    caption.style.transform = `translateY(${16*(1-p)}px)`;
+  }
+
+  function updateVisuals(p){
+    // layers
+    layers.dawn.style.opacity   = triWeight(p, 0.125, 0.25);
+    layers.midday.style.opacity = triWeight(p, 0.375, 0.25);
+    layers.sunset.style.opacity = triWeight(p, 0.625, 0.25);
+    layers.night.style.opacity  = triWeight(p, 0.875, 0.25);
+
+    // haze
+    haze.style.opacity = clamp((Math.sin((p*Math.PI*2) - 0.6) * 0.12) + 0.22, 0, 0.6);
+    haze.style.transform = `translateY(${20*(p-0.5)}px) scale(${1 + p*0.06})`;
+
+    // orb
+    orb.style.top  = (10 + p*68) + '%';
+    orb.style.left = (50 + 30*Math.sin(p*Math.PI)) + '%';
+    orb.style.background = getOrbColorAt(p);
+
+    // stars
+    const starAlpha = clamp((p - 0.70) / 0.25, 0, 1);
+    stars.style.opacity = starAlpha;
+
+    if(starAlpha > 0){
+      starEls.forEach(s=>{
+        s.style.opacity = (parseFloat(s.dataset.base) * starAlpha).toFixed(3);
+        if(starAlpha > 0.25 && !s._twinkle){
+          s._twinkle = true;
+          const dur = (1 + Math.random()*2).toFixed(2) + 's';
+          const delay = (Math.random()*1.5).toFixed(2) + 's';
+          s.style.animation = `twinkle ${dur} ${delay} infinite ease-in-out`;
+        }
+      });
+    }else{
+      starEls.forEach(s=>{
+        s.style.opacity = 0;
+        s._twinkle = false;
+        s.style.animation = "none";
+      });
+    }
+
+    updateCaption(p);
+  }
+
+  window.addEventListener('scroll', ()=>{
+    if(isDragging || ticking) return;
+    ticking = true;
+    requestAnimationFrame(()=>{
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      dayProgress = clamp(window.scrollY / (max || 1), 0, 1);
+      updateVisuals(dayProgress);
+      ticking = false;
+    });
   });
-});
 
-stage.addEventListener('pointerdown', ()=>{ isDragging = true; });
-window.addEventListener('pointerup', ()=>{ isDragging = false; });
+  stage.addEventListener('pointerdown', ()=>{ isDragging = true; });
+  window.addEventListener('pointerup', ()=>{ isDragging = false; });
 
-stage.addEventListener('pointermove', (e)=>{
-  if(!isDragging) return;
-  const delta = -e.movementY / window.innerHeight;
-  dayProgress = clamp(dayProgress + delta, 0, 1);
+  stage.addEventListener('pointermove', (e)=>{
+    if(!isDragging) return;
+    const delta = -e.movementY / window.innerHeight;
+    dayProgress = clamp(dayProgress + delta, 0, 1);
+    updateVisuals(dayProgress);
+  });
+
+  stage.addEventListener('click', ()=>{
+    dayProgress = clamp(dayProgress + 0.05, 0, 1);
+    updateVisuals(dayProgress);
+  });
+
   updateVisuals(dayProgress);
-});
-
-stage.addEventListener('click', ()=>{
-  dayProgress = clamp(dayProgress + 0.05, 0, 1);
-  updateVisuals(dayProgress);
-});
-
-updateVisuals(dayProgress);
 </script>
 </body>
 </html>
