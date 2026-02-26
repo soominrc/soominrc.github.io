@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orange Peel</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    :root{
+      --bg: #3f6dff;
+      --text: #ffffff;
+    }
+
+    html, body { height: 100%; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      position: relative;
+      overflow-x: hidden; 
+      overflow-y: auto;
+    }
+
+    .corner-note {
+      position: fixed;
+      top: 22px;
+      left: 22px;
+      z-index: 20;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: 0.003em;
+      color: rgba(255,255,255,0.95);
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .wrap {
+      width: min(96vw, 920px);
+      display: grid;
+      justify-items: center;
+      gap: 12px;
+      padding-top: 48px; 
+      padding-bottom: 24px;
+    }
+
+    .stage {
+      position: relative;
+      width: min(94vw, 760px);
+      aspect-ratio: 1 / 1;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    .slice {
+      opacity: 1;
+      transition:
+        transform 650ms cubic-bezier(.2,.9,.2,1),
+        opacity 220ms ease 170ms;
+      transform-box: fill-box;
+      transform-origin: 50% 50%;
+      will-change: transform, opacity;
+    }
+
+    .slice.peeled { opacity: 0; }
+
+    .slice0.peeled { transform: translate(0px,-36px) rotate(0deg) scale(0.99); }
+    .slice1.peeled { transform: translate(30px,-18px) rotate(10deg) scale(0.99); }
+    .slice2.peeled { transform: translate(30px,18px) rotate(10deg) scale(0.99); }
+    .slice3.peeled { transform: translate(0px,36px) rotate(0deg) scale(0.99); }
+    .slice4.peeled { transform: translate(-30px,18px) rotate(-10deg) scale(0.99); }
+    .slice5.peeled { transform: translate(-30px,-18px) rotate(-10deg) scale(0.99); }
+
+    .caption {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.78);
+      line-height: 1;
+    }
+
+    .loading {
+      position: absolute;
+      inset: auto 0 12px 0;
+      text-align: center;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      pointer-events: none;
+    }
+
+    .stage.ready .loading { display: none; }
+
+    @media (max-width: 640px) {
+      body { padding: 16px; }
+
+      .corner-note {
+        top: 12px;
+        left: 12px;
+        font-size: 14px;
+        max-width: calc(100vw - 24px);
+        white-space: normal;
+        line-height: 1.2;
+      }
+
+      .caption { font-size: 11px; }
+
+      .slice0.peeled { transform: translate(0px,-26px) rotate(0deg) scale(0.99); }
+      .slice1.peeled { transform: translate(22px,-13px) rotate(10deg) scale(0.99); }
+      .slice2.peeled { transform: translate(22px,13px) rotate(10deg) scale(0.99); }
+      .slice3.peeled { transform: translate(0px,26px) rotate(0deg) scale(0.99); }
+      .slice4.peeled { transform: translate(-22px,13px) rotate(-10deg) scale(0.99); }
+      .slice5.peeled { transform: translate(-22px,-13px) rotate(-10deg) scale(0.99); }
+    }
+  </style>
+</head>
+<body>
+  <div class="corner-note">Brian Eno's Oblique Strategies — Repetition is a form of change</div>
+
+  <div class="wrap">
+    <div class="stage" id="stage" role="button" tabindex="0" aria-label="Click to peel the orange">
+      <svg viewBox="0 0 1000 1000" aria-hidden="true">
+        <defs>
+          <!-- Slightly oversized circle removes anti-aliased halo -->
+          <clipPath id="orangeCircle">
+            <circle cx="500" cy="500" r="490"></circle>
+          </clipPath>
+
+          <!-- 6 even wedges -->
+          <clipPath id="wedge0"><polygon points="500,500 230,-20 770,-20"></polygon></clipPath>
+          <clipPath id="wedge1"><polygon points="500,500 770,-20 1080,500"></polygon></clipPath>
+          <clipPath id="wedge2"><polygon points="500,500 1080,500 770,1020"></polygon></clipPath>
+          <clipPath id="wedge3"><polygon points="500,500 770,1020 230,1020"></polygon></clipPath>
+          <clipPath id="wedge4"><polygon points="500,500 230,1020 -80,500"></polygon></clipPath>
+          <clipPath id="wedge5"><polygon points="500,500 -80,500 230,-20"></polygon></clipPath>
+        </defs>
+
+        <!-- base image (revealed layer) -->
+        <image id="baseImage"
+          x="-8" y="-8" width="1016" height="1016"
+          preserveAspectRatio="xMidYMid slice"
+          clip-path="url(#orangeCircle)"
+          href=""
+        ></image>
+
+        <!-- top image slices (peel pieces) -->
+        <g clip-path="url(#orangeCircle)">
+          <image class="slice slice0"
+            x="-8" y="-8" width="1016" height="1016"
+            preserveAspectRatio="xMidYMid slice"
+            clip-path="url(#wedge0)"
+            href=""></image>
+
+          <image class="slice slice1"
+            x="-8" y="-8" width="1016" height="1016"
+            preserveAspectRatio="xMidYMid slice"
+            clip-path="url(#wedge1)"
+            href=""></image>
+
+          <image class="slice slice2"
+            x="-8" y="-8" width="1016" height="1016"
+            preserveAspectRatio="xMidYMid slice"
+            clip-path="url(#wedge2)"
+            href=""></image>
+
+          <image class="slice slice3"
+            x="-8" y="-8" width="1016" height="1016"
+            preserveAspectRatio="xMidYMid slice"
+            clip-path="url(#wedge3)"
+            href=""></image>
+
+          <image class="slice slice4"
+            x="-8" y="-8" width="1016" height="1016"
+            preserveAspectRatio="xMidYMid slice"
+            clip-path="url(#wedge4)"
+            href=""></image>
+
+          <image class="slice slice5"
+            x="-8" y="-8" width="1016" height="1016"
+            preserveAspectRatio="xMidYMid slice"
+            clip-path="url(#wedge5)"
+            href=""></image>
+        </g>
+      </svg>
+
+      <div class="loading">loading images…</div>
+    </div>
+
+    <div class="caption">click to peel · click again to reset</div>
+  </div>
+
+  <script>
+    const TOP_IMAGE = "https://i.pinimg.com/1200x/21/e1/a0/21e1a06710d707d8b1b58568776b6c68.jpg";
+    const BASE_IMAGE = "https://i.pinimg.com/1200x/6b/51/fb/6b51fb9e960c7f7f3951441517f4694a.jpg";
+
+    const stage = document.getElementById("stage");
+    const baseImage = document.getElementById("baseImage");
+    const slices = Array.from(document.querySelectorAll(".slice"));
+
+    const peelOrder = [0, 1, 2, 3, 4, 5];
+    let peeledCount = 0;
+    let ready = false;
+
+    function preload(src) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve();
+        img.onerror = reject;
+        img.src = src;
+      });
+    }
+
+    function resetPeel() {
+      peeledCount = 0;
+      slices.forEach(s => s.classList.remove("peeled"));
+      void stage.offsetHeight;
+    }
+
+    function peelOne() {
+      if (!ready) return;
+
+      if (peeledCount >= peelOrder.length) {
+        resetPeel();
+        return;
+      }
+
+      const slice = slices[peelOrder[peeledCount]];
+      if (!slice) return;
+
+      getComputedStyle(slice).opacity;
+      slice.classList.add("peeled");
+      peeledCount += 1;
+    }
+
+    async function init() {
+      try {
+        await Promise.all([preload(TOP_IMAGE), preload(BASE_IMAGE)]);
+      } catch (_) {
+      }
+
+      baseImage.setAttribute("href", BASE_IMAGE);
+      slices.forEach(s => s.setAttribute("href", TOP_IMAGE));
+
+      resetPeel();
+      ready = true;
+      stage.classList.add("ready");
+    }
+
+    stage.addEventListener("click", peelOne);
+    stage.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        peelOne();
+      }
+    });
+
+    init();
+  </script>
+</body>
+</html>
