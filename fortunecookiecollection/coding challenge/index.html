@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample layout: CSS grid (Layout C)</title>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            letter-spacing: 0.01em;
+            line-height: 1.5;
+            font-family: Georgia, serif;
+        }
+
+        h1, h2 {
+            font-weight: normal;
+            font-size: 32px;
+            color: #8B3A3A;
+        }
+
+        p {
+            font-size: 22px;
+        }
+
+        img {
+            width: 100%;
+            object-fit: contain;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: auto;
+            border-top: 1px solid black;
+            border-left: 1px solid black;
+        }
+
+        .grid-item {
+            padding: 20px;
+            border-right: 1px solid black;
+            border-bottom: 1px solid black;
+        }
+
+        .title {
+            grid-column: 1 / 4; 
+            grid-row: 1;
+        }
+
+        .image {
+            grid-row: 2; 
+        }
+
+        .essay {
+            grid-column: 1 / 4; 
+            grid-row: 3;
+            max-width: 740px;
+            justify-self: center;
+        }
+
+        .essay p {
+            text-indent: 2em;
+        }
+
+        .essay p.about {
+            text-indent: 0;
+            font-size: 16px;
+            margin-top: 2em;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .title {
+            animation: fadeIn 1.2s ease-out 0s 1 normal forwards;
+        }
+
+        @keyframes gentlePulse {
+            0%   { opacity: 1; }
+            50%  { opacity: 0.75; }
+            100% { opacity: 1; }
+        }
+
+        .image img {
+            animation: gentlePulse 6s ease-in-out 0s infinite normal forwards;
+        }
+
+        .image:nth-child(3) img { animation-delay: 0s; }
+        .image:nth-child(4) img { animation-delay: 2s; }
+        .image:nth-child(5) img { animation-delay: 4s; }
+    </style>
+</head>
+<body>
+    <section class="grid-container">
+        <h1 class="grid-item title">Etel Adnan: <em>Voyage, War and Exile</em> (excerpt)</h1>
+
+        <div class="grid-item essay">
+            <p>
+                I originated in a part of the world that war has made and unmade since the beginning of this century. My
+                memory as well as my daily life are woven with war. I often wondered how as fragile a system as the
+                human body could bear upheavals become chronic as the ones that the Arab East has known and is still
+                experiencing.
+            </p>
+            <p>
+                I was the only child of a family which has known war and exile as a consequence of war. My father was a
+                Syrian, a high ranking officer of the Ottoman Empire, and my mother was a Greek from Smyrna, her father
+                being a wood-carver; they met and married during World War I. In 1922, Smyrna burned in a cataclysmic
+                fire, the war was lost, the Empire dismembered, so they came to Lebanon and settled in Beirut, a garden
+                city with a view from all over, on the sea they knew and the most beautiful harbor of the Mediterranean.
+            </p>
+            <p>
+                They exiled themselves into charm and beauty. Geographically it was a bearable exile for my father, for
+                after all, he was on Arab Land and close to his birthplace, Damascus. But he was living another exile, a
+                terrible one this one: the empire that he knew and served had disappeared; he was living on enemy
+                territory, a country under French occupation. I lived since my childhood with a knowledge which remained
+                inscribed in me: that geographical exile is but the frame for an exile which goes much deeper and
+                against which one can do nothing.
+            </p>
+            <p>
+                A little after I turned twenty, I started considering going to Paris for studies in Philosophy.
+                I was impatient, yearning to go, and I did get there. My father had already died and my mother was left
+                behind by me, with a pain whose scope I realized only much later. I was a bird then who flew out of her
+                cage and was desirous to go further away. Everywhere and nowhere.
+            </p>
+            <p>
+                But I went beyond the café. After Paris, I went to California by a series of occurrences which I am not
+                going to linger on today. I landed in Berkeley, far, very far, from every point of view, from Beirut and
+                from everything I knew.
+            </p>
+            <p>
+                This break which proved to be a radical one, was not an exile. It was adventure. I had decided to give
+                myself a destiny for which nothing had prepared me. After a few years of study at U.C. Berkeley, and
+                Harvard, I found a teaching job at a small college near San Francisco.
+            </p>
+            <p>Exile is a dispossession with no recourse. It is always accompanied by a feeling of humiliation: it is
+                the "other," somebody or something, who takes possession of what you give up, or leave behind. It makes
+                you feel pushed aside, as if you were a material object that is to be displaced.</p>
+
+            <p class="about">
+                Over the course of a lifetime that spanned almost a century, Etel Adnan (b. 1925, Beirut; d. 2021,
+                Paris) expressed her prodigious creative and intellectual vision in many forms. In addition to being a
+                visual artist, she was a renowned poet, a prominent journalist, and the author of one of the defining
+                novels of the modern Arab world. (Guggenheim, 2021)
+            </p>
+        </div>
+
+        <div class="grid-item image">
+            <img src="https://static-assets.artlogic.net/w_2400,h_2400,c_limit,f_auto,fl_lossy,q_auto/artlogicstorage/meemgallery/images/view/2ca469ef7a03fc8e8d590c25f0d50043j/meemgallery-etel-adnan-poids-de-la-lune-ii-2019.jpg"
+                alt="Etel Adnan, Poids de la Lune II, 2019">
+            <figcaption>Poids de la Lune II, 2019</figcaption>
+        </div>
+
+        <div class="grid-item image">
+            <img src="https://static-assets.artlogic.net/w_1600,h_1600,c_limit,f_auto,fl_lossy,q_auto/artlogicstorage/meemgallery/images/view/bfff3177c6dbc7293f04ce227d201c96j/meemgallery-etel-adnan-poids-du-monde-le-ii-2016.jpg"
+                alt="Etel Adnan, Poids Du Monde (Le) II, 2016">
+            <figcaption>Poids Du Monde (Le) II, 2016</figcaption>
+        </div>
+
+        <div class="grid-item image">
+            <img src="https://static-assets.artlogic.net/w_1600,h_1600,c_limit,f_auto,fl_lossy,q_auto/artlogicstorage/meemgallery/images/view/a5a6cc677dd647a15eb2f69afd934a0bj/meemgallery-etel-adnan-poids-du-monde-iv-2016.jpg"
+                alt="Etel Adnan, Poids du Monde IV, 2016">
+            <figcaption>Poids du Monde IV, 2016</figcaption>
+        </div>
+
+    </section>
+</body>
+</html>
